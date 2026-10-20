@@ -1,0 +1,194 @@
+{
+  "pyproject.toml": {
+    "mtime": 1787708844.3943224,
+    "seen": 1787717355.822767,
+    "ast_hash": "abebc6778bd31d8b97b6f61c5e15353d",
+    "semantic_hash": "abebc6778bd31d8b97b6f61c5e15353d"
+  },
+  "scripts/analyze_nci.py": {
+    "mtime": 1787712824.5463061,
+    "seen": 1787717355.8227847,
+    "ast_hash": "908e89d69fb49e305298b42afd2d91d0",
+    "semantic_hash": "908e89d69fb49e305298b42afd2d91d0"
+  },
+  "scripts/audit_nci_raw.py": {
+    "mtime": 1787716748.0087473,
+    "seen": 1787717355.822793,
+    "ast_hash": "4fafc75d9533490a393c87c76f6ad428",
+    "semantic_hash": "4fafc75d9533490a393c87c76f6ad428"
+  },
+  "scripts/fetch_nci.py": {
+    "mtime": 1787708565.6887534,
+    "seen": 1787717355.8227975,
+    "ast_hash": "76bd5442dd11a5e8d16bab4836de7e43",
+    "semantic_hash": "76bd5442dd11a5e8d16bab4836de7e43"
+  },
+  "scripts/interpret_candidates.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228014,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/prepare_coconut.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.822805,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/prepare_nci.py": {
+    "mtime": 1787710299.847934,
+    "seen": 1787717355.8228095,
+    "ast_hash": "d0ae4c50d5e9ca1ebe5001c78b036cf0",
+    "semantic_hash": "d0ae4c50d5e9ca1ebe5001c78b036cf0"
+  },
+  "scripts/prepare_normal.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228133,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/prepare_radiation.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.822817,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/rank_candidates.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228204,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/screen_coconut.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.822824,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/train_cancer.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228283,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "scripts/validate_external.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228314,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/__init__.py": {
+    "mtime": 1787705193.3940217,
+    "seen": 1787717355.8228347,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/analysis.py": {
+    "mtime": 1787712824.547306,
+    "seen": 1787717355.822838,
+    "ast_hash": "4ced2cf1662504780447ee5a2d8c297d",
+    "semantic_hash": "4ced2cf1662504780447ee5a2d8c297d"
+  },
+  "src/moringa_radioprotection/chemistry.py": {
+    "mtime": 1787711910.1845696,
+    "seen": 1787717355.8228416,
+    "ast_hash": "12af0e55a80d0231e6ec16ebe40c6051",
+    "semantic_hash": "12af0e55a80d0231e6ec16ebe40c6051"
+  },
+  "src/moringa_radioprotection/data.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.822845,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/models.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228486,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/nci.py": {
+    "mtime": 1787711910.179778,
+    "seen": 1787717355.822852,
+    "ast_hash": "fc5c2402475912875bdfb22b26ae4f2f",
+    "semantic_hash": "fc5c2402475912875bdfb22b26ae4f2f"
+  },
+  "src/moringa_radioprotection/plotting.py": {
+    "mtime": 1787711738.0204816,
+    "seen": 1787717355.8228552,
+    "ast_hash": "7ed75eb75908d4117467f7b28128348d",
+    "semantic_hash": "7ed75eb75908d4117467f7b28128348d"
+  },
+  "src/moringa_radioprotection/radiation.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228586,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/ranking.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228617,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/raw_activity.py": {
+    "mtime": 1787716747.8727617,
+    "seen": 1787717355.8228664,
+    "ast_hash": "0a23ae840e9e661508693749eada7df9",
+    "semantic_hash": "0a23ae840e9e661508693749eada7df9"
+  },
+  "src/moringa_radioprotection/screening.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.8228695,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/utils.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.822873,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "src/moringa_radioprotection/validation.py": {
+    "mtime": 1787706058.16525,
+    "seen": 1787717355.822877,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "tests/test_nci_preparation_utils.py": {
+    "mtime": 1787710299.8483806,
+    "seen": 1787717355.8228805,
+    "ast_hash": "24c307e0ebc651ef4ed38e3520f72e86",
+    "semantic_hash": "24c307e0ebc651ef4ed38e3520f72e86"
+  },
+  "tests/test_raw_activity.py": {
+    "mtime": 1787716377.0587072,
+    "seen": 1787717355.8228836,
+    "ast_hash": "f33922495a4b91c0cb9ea8f93d60517c",
+    "semantic_hash": "f33922495a4b91c0cb9ea8f93d60517c"
+  },
+  "README.md": {
+    "mtime": 1787705193.3940217,
+    "seen": 1787717355.822887,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "config/analysis.yaml": {
+    "mtime": 1787709138.9780087,
+    "seen": 1787717355.8228903,
+    "ast_hash": "551c02de07f8834d052c2574625a0e3a",
+    "semantic_hash": "551c02de07f8834d052c2574625a0e3a"
+  },
+  "environment.yml": {
+    "mtime": 1787706125.290722,
+    "seen": 1787717355.8228936,
+    "ast_hash": "d55e9a1a41a61d35f03cc3b625d66121",
+    "semantic_hash": "d55e9a1a41a61d35f03cc3b625d66121"
+  },
+  "requirements.txt": {
+    "mtime": 1787705193.3940217,
+    "seen": 1787717355.822897,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": "d41d8cd98f00b204e9800998ecf8427e"
+  }
+}
