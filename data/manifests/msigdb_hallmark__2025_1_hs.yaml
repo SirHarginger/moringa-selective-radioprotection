@@ -1,0 +1,27 @@
+# Provenance record: MSigDB Hallmark human gene sets, release 2025.1.Hs (symbols GMT).
+# Location and licence verified 2026-10-21 by Claude Code (directory listing and licence page).
+source_name: "Molecular Signatures Database (MSigDB), Hallmark collection (H)"
+source_slug: msigdb_hallmark
+publication_doi: "10.1016/j.cels.2015.12.004"   # Liberzon et al. 2015, Cell Systems 1:417-425
+landing_url: "https://www.gsea-msigdb.org/gsea/msigdb/"
+release: "2025.1.Hs"
+release_date: "2025-06-06"        # file last-modified date in the release directory listing
+licence: "CC-BY-4.0"
+licence_url: "https://www.gsea-msigdb.org/gsea/msigdb_license_terms.jsp"
+licence_note: "Additional terms apply only to KEGG, KEGG MEDICUS, BioCarta and ST_ gene sets (C2/M2); none to H."
+redistribution_allowed: true      # with attribution
+access_date: null                 # set from results/logs/phase_01/acquisition_log.tsv
+retrieved_by: null
+retrieval_method: scripted        # python scripts/acquire_data.py
+provenance_status: unverified
+files:
+  - path: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+    file_url: "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt"
+    published_md5: null           # none published; observed SHA-256 recorded after download
+    listed_size: "48K"            # directory listing, approximate
+    sha256: null
+    format: gmt
+    notes: "50 Hallmark sets; HGNC symbols, mapped to DepMap 'SYMBOL (Entrez)' columns by symbol."
+endpoint:
+  endpoint_class: unknown         # feature resource; no endpoint
+reviewer: null

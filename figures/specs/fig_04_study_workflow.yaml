@@ -1,0 +1,28 @@
+id: fig_04
+slug: study_workflow
+kind: main
+spec_version: 2              # shared diagram version (configs/diagrams.yaml); content unchanged
+manuscript_label: null       # likely "Figure 1" in the manuscript; set at phase_05
+title: Study workflow
+scientific_question: How does the study move from public sources to the single confirmatory comparison and its secondary outputs, with leakage and provenance controls?
+endpoint: none (conceptual diagram)
+data_sources: []
+data_provenance: conceptual_diagram
+inclusion_filter: null
+n: null
+units: null
+comparison: null
+uncertainty: null
+split_source: null
+layout:
+  width_mm: 180
+  height_mm: 192
+  panels: []
+outputs: [pdf, svg, png]
+png_dpi: 600
+script: scripts/generate_figures.py --config configs/diagrams.yaml (visualization/diagrams.py:study_workflow)
+caption_draft: see configs/diagrams.yaml
+accessibility_checked: false # greyscale cue = edge weight/style + labels; check after rendering
+status: code_ready
+owner: investigator
+reviewers: []

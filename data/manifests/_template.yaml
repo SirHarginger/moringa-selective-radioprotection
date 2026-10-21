@@ -1,0 +1,47 @@
+# Dataset manifest template. Copy to <source_slug>__<release_tag>.yaml.
+# Unknown values stay null. Do not guess.
+source_name: null
+source_slug: null
+publication_doi: null
+data_doi_or_accession: null
+landing_url: null
+release: null
+release_date: null
+licence: null                 # SPDX identifier where one exists, plus a link to the terms
+licence_url: null
+redistribution_allowed: null  # true / false / null (unknown)
+access_date: null             # ISO 8601
+retrieved_by: null
+retrieval_method: null        # manual / scripted
+provenance_status: unverified # unverified / verified
+verified_by: null
+files:
+  - path: null                # relative to the repository root
+    file_url: null
+    sha256: null
+    size_bytes: null
+    format: null
+    encoding: null
+    delimiter: null
+    n_lines: null             # state whether the header is included
+    header: []
+    columns:
+      - name: null
+        meaning: null
+        identifier_namespace: null   # e.g. depmap_model_id, ccle_name, cellosaurus_accession
+        unit: null
+endpoint:
+  # One of: clonogenic_sf | profiling_derived_survival | model_derived | viability |
+  #         proliferation_crystal_violet | proliferation_optical_density | gene_expression | unknown
+  endpoint_class: unknown
+  definition: null
+  assay: null
+  dose_gy: null
+  radiation_type: null
+  time_point: null
+  replicate_structure: null
+known_missingness: null
+transformations: []           # ordered and versioned; the raw file itself is never changed
+inclusion_exclusion: null
+notes: null
+reviewer: null

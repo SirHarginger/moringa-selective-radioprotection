@@ -1,4 +1,11 @@
-name: moringa-rad
+# Conda environment for Explainable Radiosensitivity ML.
+# Phase 00: environment renamed from "moringa-rad" (docs/decision_log.md D00.12).
+# Versions are NOT pinned and no lockfile exists yet. Pinning waits for the
+# environment review (docs/decision_log.md P00.02, P00.03).
+# Packages marked LEGACY were added for the historical NCI-60 compound-potency
+# prototype and have no documented need in the current study design. They are
+# kept until the investigator approves their removal.
+name: explainable-radiosensitivity-ml
 
 channels:
   - conda-forge
@@ -13,11 +20,11 @@ dependencies:
   - matplotlib
   - pyarrow
   - pyyaml
-  - requests
-  - tqdm
+  - requests     # LEGACY (prototype download scripts) - removal proposed
+  - tqdm         # LEGACY (prototype progress bars) - removal proposed
   - joblib
-  - rdkit
-  - xgboost
-  - openpyxl
+  - rdkit        # LEGACY (prototype chemical fingerprints) - removal proposed
+  - xgboost      # LEGACY (prototype benchmark) - not justified before docs/protocol.md
+  - openpyxl     # LEGACY (prototype spreadsheet input) - removal proposed
   - pytest
   - ruff

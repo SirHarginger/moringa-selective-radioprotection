@@ -1,0 +1,69 @@
+# Conceptual methods diagrams (no data). Rendered with:
+#   python scripts/generate_figures.py --config configs/diagrams.yaml
+# They show the study design only: no predictions, measurements, statistics or results.
+# Sidecars record data_provenance: conceptual_diagram. Write-once: bump `version` to
+# regenerate. Results-dependent figures stay in configs/figures.yaml.
+output_dir: figures/generated
+version: 2                 # v2: fig_s04b percentile wording (ties never raise a percentile)
+dpi: 600                   # line art (docs/figure_standards.md §7)
+formats: [pdf, svg, png]
+triage_config: configs/triage.yaml   # fig_s04 is drawn from these frozen thresholds
+diagrams:
+  - id: fig_04
+    slug: study_workflow
+    kind: study_workflow
+    caption: >
+      Study workflow. Public sources (CLARIFi literature-median clonogenic SF2 at 2 Gy,
+      DepMap 24Q4 RNA-seq expression, Cellosaurus identity records and MSigDB Hallmark
+      gene sets) pass an identifier QC that groups related cell lines into relationship
+      components. After protocol freeze, a coverage simulation on synthetic outcomes
+      selects the interval method and the number of cross-validation repeats; the split
+      table is frozen before the outcome is loaded. Models are fitted by nested grouped
+      cross-validation with all tuning and scaling inside training folds. The single
+      confirmatory comparison is the paired component-weighted ΔMAE of tissue +
+      expression (M2) versus tissue only (M1). Explainability and triage rankings are
+      secondary and hypothesis-generating. Conceptual diagram; no data shown.
+  - id: fig_s04
+    slug: triage_decision_rules
+    kind: triage_decision
+    caption: >
+      Prespecified triage rules, drawn from the implemented code and the frozen
+      thresholds (configs/triage.yaml); tiers are assigned top-down, first match wins.
+      (a) Gene sets: shares are proportions of the
+      5 × R cross-validation fits of M2, which share training data and are not
+      independent replicates; they are not probabilities or p-values. BH decisions are
+      adjusted within the 50-set family, separately for the within-tissue
+      permuted-outcome null and the matched random-gene-set null. Without a shown
+      primary gain, or with fewer than the required completed null draws, no set can
+      exceed tier C; only tier A sets may be described as associated in-model
+      (hypothesis-generating). (b) Measured cell lines: percentiles are cohort
+      percentiles of the absolute error of the repeat-averaged out-of-fold prediction,
+      (1 + lines with a smaller value) / n, so ties never raise a percentile; about 5%
+      and 10% of lines reach the 95th and 90th percentiles by construction.
+      Measured lines are not independent validation samples. Conceptual diagram; no
+      data shown.
+  - id: fig_s05
+    slug: triage_evidence
+    kind: triage_evidence
+    caption: >
+      Evidence used by each triage ranking. Model-derived evidence (permutation
+      importance, coefficient-sign consistency, null comparisons, out-of-fold errors,
+      spread of predictions across repeats, model disagreement) sets the tier.
+      The spread across repeats reflects split variability only and is not a
+      prediction or confidence interval. Independent radiobiological literature, when
+      curated with citations, is shown beside the tier and never changes it. Tissue
+      reproducibility of gene-set importance and per-line assay variability are not
+      assessable with the current data. Conceptual diagram; no data shown.
+  - id: fig_s06
+    slug: validation_pathway
+    kind: validation_pathway
+    caption: >
+      Proposed experimental validation pathway (future work, not performed). (a)
+      Re-measurement of prioritised CLARIFi lines tests agreement with the literature
+      median; lines selected for large residuals are expected to agree better on
+      re-measurement even without error (regression to the mean). (b) A prospective
+      panel of unassayed DepMap lines requires identity QC, investigator-run
+      predictions and a selection rule fixed by protocol amendment before predictions
+      are viewed. Both feed a clonogenic SF2 assay at 2 Gy with blinded experimenters;
+      the result is a designed validation panel, not an unbiased external cohort.
+      Conceptual diagram; no data shown.

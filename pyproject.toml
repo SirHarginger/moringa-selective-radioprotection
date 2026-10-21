@@ -3,12 +3,43 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "moringa-selective-radioprotection"
+# Phase 00: renamed from "moringa-selective-radioprotection" (see docs/decision_log.md D00.12).
+name = "explainable-radiosensitivity-ml"
 version = "0.1.0"
+description = "Explainable machine-learning research code for predicting cellular radiosensitivity"
+readme = "README.md"
 requires-python = ">=3.11"
+# Runtime dependencies are deliberately not declared yet: the package contains
+# placeholders only. They will be added with lower bounds in phase_03 after the
+# environment review (docs/decision_log.md P00.02).
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+extend-exclude = [".claude/vendor-review"]
+
+[tool.ruff.lint]
+# I: import order; BLE: blind except (the one deliberate catch carries a noqa);
+# RUF100: flag unused noqa directives.
+extend-select = ["I", "BLE", "RUF100"]
+# Intended typography in figure and diagram text: rho, multiplication sign, minus, en dash.
+allowed-confusables = ["ρ", "×", "−", "–"]
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts add src/ to sys.path before importing the package (no install needed).
+"scripts/*.py" = ["E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

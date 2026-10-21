@@ -1,0 +1,88 @@
+Proposed patch for protected .claude/hooks files (docs/architecture.md section 7.1).
+Prepared by Claude Code on 2026-10-21; NOT applied (Claude Code cannot edit .claude/).
+Fixes the 6 extended-rule lint findings and the hook formatting:
+  - EXE001 x2: remove shebangs (both hooks are invoked as `python3 <file>`; no exec bit needed)
+  - BLE001 (hook main): broad except is deliberate (fail closed) -> justified noqa
+  - SIM105 + BLE001 (session_note): contextlib.suppress with specific exceptions
+  - ruff format: 3 cosmetic hunks in block_model_execution.py
+Behaviour is unchanged: the hook still exits 2 on any internal error.
+Apply from the repository root, then run the hook tests:
+  git apply --check docs/proposed_patches/2026-10-21_hook_lint_format.patch
+  git apply docs/proposed_patches/2026-10-21_hook_lint_format.patch
+  ruff check .claude/hooks --extend-select EXE,BLE,SIM,RUF100 && ruff format --check .claude/hooks
+  PYTHONPATH=src python3 -m pytest tests/test_safety_hooks.py -q
+
+--- a/.claude/hooks/block_model_execution.py
++++ b/.claude/hooks/block_model_execution.py
+@@ -1,3 +1,2 @@
+-#!/usr/bin/env python3
+ """PreToolUse hook: stop Claude Code from running analyses or writing protected files.
+
+@@ -119,5 +118,10 @@
+ # fmt: on
+ GIT_FORBIDDEN_ARG_PREFIXES = (
+-    "--ext-diff", "--textconv", "--output", "--exec", "--upload-pack", "--pathspec-from-file",
++    "--ext-diff",
++    "--textconv",
++    "--output",
++    "--exec",
++    "--upload-pack",
++    "--pathspec-from-file",
+ )
+ GIT_TAG_FORBIDDEN = {"-f", "--force", "-d", "--delete"}
+@@ -211,11 +215,7 @@
+-def names_protected(
+-    args: list[str], base: str, project_dir: str, containing: bool = False
+-) -> bool:
++def names_protected(args: list[str], base: str, project_dir: str, containing: bool = False) -> bool:
+     """True if any argument names a protected path (substring or resolved)."""
+     if any(part in arg for arg in args for part in PROTECTED_PATH_PARTS):
+         return True
+     return any(
+-        is_protected(value, base, project_dir, containing)
+-        for value in path_operands(args)
+-        if value
++        is_protected(value, base, project_dir, containing) for value in path_operands(args) if value
+     )
+@@ -411,4 +411,10 @@
+         if arg == "--config" or arg.startswith("--config="):
+-            value = arg.split("=", 1)[1] if "=" in arg else (args[index + 1] if index + 1 < len(args) else "")
++            value = (
++                arg.split("=", 1)[1]
++                if "=" in arg
++                else (args[index + 1] if index + 1 < len(args) else "")
++            )
+             if "=" in value or not value.endswith(".toml"):
+-                return "ruff --config may only name a .toml file (inline settings could enable fixes)"
++                return (
++                    "ruff --config may only name a .toml file (inline settings could enable fixes)"
++                )
+@@ -593,5 +599,5 @@
+     try:
+         code, message = evaluate_payload(sys.stdin.read())
+-    except Exception as exc:  # fail closed on any unexpected error
++    except Exception as exc:  # noqa: BLE001 - deliberate: fail closed on any error
+         reason = f"internal hook error ({type(exc).__name__})"
+         code, message = 2, BLOCK_MESSAGE.format(reason=reason)
+--- a/.claude/hooks/session_note.py
++++ b/.claude/hooks/session_note.py
+@@ -1,16 +1,14 @@
+-#!/usr/bin/env python3
+ """SessionStart hook: print the project's research policy reminder."""
+
++import contextlib
+ import json
+ import sys
+
+ POLICY = (
+     "RESEARCH POLICY: You must not run ML training, prediction, tuning, analyses or "
+     "notebooks. Draft code only. Verify every scientific claim and source."
+ )
+
+-try:
+-    json.load(sys.stdin)
+-except Exception:
+-    pass
++with contextlib.suppress(ValueError, OSError):  # payload is read only to drain stdin
++    json.load(sys.stdin)
+ print(POLICY)

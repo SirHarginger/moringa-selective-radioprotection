@@ -1,0 +1,92 @@
+# Phase 01 identifier QC configuration (descriptive; no outcome analysis).
+# Fixed BEFORE the QC is run (docs/phase_01_investigator_qc_checklist.md, Stage 0).
+# Changing any rule after QC counts have been seen must be recorded in docs/decision_log.md.
+# All paths are relative to the repository root.
+schema_version: 1
+
+inputs:
+  clarifi: data/raw/CLARIFi.csv
+  clarifi_manifest: data/manifests/clarifi__v1_0.yaml
+  model: data/raw/depmap/24q4/Model.csv
+  default_profiles: data/raw/depmap/24q4/OmicsDefaultModelProfiles.csv
+  omics_profiles: data/raw/depmap/24q4/OmicsProfiles.csv      # strandedness availability check only
+  # Primary expression input is the UNCORRECTED matrix below. The batch-corrected matrix
+  # (data/raw/depmap/24q4_sensitivity/, --batch-corrected) is a sensitivity option only.
+  expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+  cellosaurus_dir: data/raw/cellosaurus/r56_0
+
+cellosaurus:
+  expected_release: "56.0"          # data/manifests/cellosaurus__r56_0.yaml
+  # SHA-256 printed by scripts/acquire_data.py. Record it here (and in the
+  # manifest) and commit BEFORE running the QC; the QC refuses to run while it is null.
+  complete_json_sha256: "002524b7dae0eccee981dd252a31a13e7600ac027567c53fbab7858eeb9e7342"
+
+population:
+  # OncoTree level-1 tissues (oncotree.info API /api/tumorTypes/search/level/1,
+  # read 2026-10-21; 32 tissues). Exact 24Q4 OncotreeLineage strings are UNVERIFIED:
+  # compare with the Model.csv value list (checklist Stage 2) before running the QC.
+  # Unknown strings are not accepted silently; they get "lineage_unrecognised_review".
+  haematopoietic_lineages: [Myeloid, Lymphoid]   # sensitivity stratum (O01.02)
+  excluded_lineages: [Other]
+  # Case-insensitive substrings searched in OncotreePrimaryDisease and DepmapModelType;
+  # a hit gives "non_cancer_model_review". UNVERIFIED for 24Q4: replace with the exact
+  # non-cancerous label(s) from the Model.csv value lists (checklist Stage 2) before running.
+  # Avoid short generic words ("normal" would also match "abnormal").
+  non_cancer_markers: [non-cancerous]
+  # Which component members count for "component_spans_lineages" (P01.13, needs ruling):
+  # record_eligible = members with no record-level exclusion (an excluded relative, e.g. a
+  # haematopoietic line from the same donor, does not exclude a solid line); all_members = every member.
+  lineage_span_scope: record_eligible
+  # Investigator 2026-10-21: an otherwise eligible line is not excluded because a relative
+  # is flagged; the flag is still reported (component_flag_sources). true = exclude.
+  propagate_problem_flags: false
+  solid_lineages:
+    - Adrenal Gland
+    - Ampulla of Vater
+    - Biliary Tract
+    - Bladder/Urinary Tract
+    - Bone
+    - Bowel
+    - Breast
+    - Cervix
+    - CNS/Brain
+    - Esophagus/Stomach
+    - Eye
+    - Head and Neck
+    - Kidney
+    - Liver
+    - Lung
+    - Ovary/Fallopian Tube
+    - Pancreas
+    - Penis
+    - Peripheral Nervous System
+    - Peritoneum
+    - Pleura
+    - Prostate
+    - Skin
+    - Soft Tissue
+    - Testis
+    - Thymus
+    - Thyroid
+    - Uterus
+    - Vulva/Vagina
+
+tissue:
+  primary_taxonomy: OncotreeLineage   # O01.03; CCLE suffix is reported as a sensitivity taxonomy
+  min_components_per_tissue: 10       # defines T10; tissues below it are pooled as "other solid"
+
+validation_structure:
+  outer_folds: 5                      # planned K for StratifiedGroupKFold (descriptive check only)
+
+# Provisional data-sufficiency floors (docs/phase_01_recommendations.md section 3, relabelled in
+# docs/phase_01_reconciliation.md section 6). DESCRIPTIVE ONLY; NOT evidence of power.
+provisional_floors:
+  - {name: go, min_n: 230, min_t10: 10}
+  - {name: conditional_go, min_n: 180, min_t10: 6}
+  - {name: rescope, min_n: 150, min_t10: 6}
+
+moringa_lines:                        # Cellosaurus spot checks, data/manifests/cellosaurus__r56_0.yaml
+  ACH-000019: MCF-7
+  ACH-000979: DU145
+
+output_dir: results/tables/phase_01/identifier_qc

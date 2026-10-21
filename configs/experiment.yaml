@@ -1,0 +1,80 @@
+# Primary experiment (protocol v0.3). Every value is fixed BEFORE any outcome is seen.
+# Changing anything after the freeze requires an amendment (docs/protocol_amendments.md).
+# Values marked [SIM] are replaced from results/simulation/<run_id>/decision.json before
+# the real run; values marked [OPEN] await the investigator.
+schema_version: 1
+run_id: primary_v1
+
+inputs:
+  qc_dir: results/tables/phase_01/identifier_qc       # frozen QC (re-run on a clean commit first)
+  qc_sha256:                                          # D02.01; update if the QC is re-run
+    eligibility.csv: 2b820626c5321b8a1ab152e1fd08e839e059f451fbe6d45cad393b760423495c
+    components.csv: 3c310374df8c5631675674c90c44d2094b41511e0846315eaca7541d01a7f6da
+    summary.json: b09e74eca4fce81ac2a8e897f8083f5fd57ebf71f8d01f2b07327c735a7ff402
+  clarifi: data/raw/CLARIFi.csv
+  clarifi_manifest: data/manifests/clarifi__v1_0.yaml
+  expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+  gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+  gene_sets_sha256: null      # [OPEN] copy from results/logs/phase_01/acquisition_log.tsv
+
+population: primary           # 241 records / 237 components
+population_options:
+  min_components_per_tissue: 10   # stratification only (T10); prediction uses all 20 lineages
+  stranded_ids: [ACH-000095, ACH-000337, ACH-000455, ACH-000468, ACH-000979, ACH-001001, ACH-001061]
+
+scales: [raw]                 # primary; transformed scales: configs/experiment_scales.yaml
+tier: within
+models: [M0, M1, M1P, M2, M2P]
+
+# Grid values are listed from most to least regularised; ties keep the earlier point.
+# Same grids are used in the simulation (configs/simulation.yaml reads this file).
+grids:
+  M0: {}
+  M1:
+    alpha: [100.0, 10.0, 1.0, 0.1]
+  M1P:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.5]
+  M2:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.9, 0.5, 0.1]
+  M2P:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [0.1, 0.01, 0.001]   # the M1P residual penalty, same grid as M1P
+    baseline__baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.9, 0.5, 0.1]
+  M2X:
+    alpha: [0.1, 0.01, 0.001]
+    l1_ratio: [0.9, 0.5, 0.1]
+  M3:
+    min_samples_leaf: [10, 5]
+    max_features: [0.33, 1.0]
+
+validation:
+  k_outer: 5
+  k_inner: 5
+  repeats: 20                 # [SIM] replace with decision.json "repeats" (10, 20 or 50)
+
+seeds:
+  base_seed: 20261021
+
+fit:
+  component_weighting: true   # sample weight 1/|component| in every fit and inner score
+
+predictions:
+  clip_raw_to_unit_interval: true   # predictions only; outcomes are never clipped
+
+controls:                     # negative controls (M1/M2, repeat 0 only)
+  permuted_outcome: 0         # [OPEN] protocol proposes 1000; set after the runtime pilot
+  random_gene_sets: 0         # [OPEN] protocol proposes 1000; set after the runtime pilot
+
+inference:
+  method: not_assessable      # [SIM] replace with decision.json "adopted_method"
+  alpha_one_sided: 0.05       # reported with two-sided 90% intervals
+  bh_q: 0.05                  # Benjamini-Hochberg q for the gene-set importance screen
+  decision_file: null         # [SIM] results/simulation/coverage_v1/decision.json
+  decision_sha256: null       # [SIM] SHA-256 of that file; method and repeats are checked against it
+
+output_dir: results/models

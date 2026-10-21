@@ -1,0 +1,30 @@
+# Post-evaluation triage (protocol §21). SECONDARY, hypothesis-generating.
+# Thresholds are fixed at the protocol freeze, BEFORE any real ranking is viewed.
+# Changing them afterwards requires an amendment (docs/protocol_amendments.md).
+schema_version: 1
+experiment_config: configs/experiment.yaml   # run_id, QC and run folder come from here
+tables_root: results/tables                  # evaluation + explainability outputs
+output_dir: results/triage                   # writes results/triage/<run_id>/ (write-once)
+external_evidence: null   # optional investigator-curated CSV: gene_set, evidence_summary,
+                          # citation (DOI/PMID). Shown beside the tier; never changes it.
+
+# Shares are proportions of the 5 x R cross-validation fits of M2 (all must be complete;
+# R comes from the experiment config). Fits share most training data and are not
+# independent replicates: these proportions are not probabilities, confidence levels or
+# p-values, and describe split-to-split stability in this dataset only.
+pathway:
+  strong: 0.90            # A: sign consistency and positive-importance share >= 0.90
+  moderate: 0.75          # B: both >= 0.75
+  exploratory: 0.50       # C: importance positive in at least half the fits ...
+  max_share_zero: 0.50    #    ... and the set selected (non-zero) in more than half
+  correlation_flag: 0.80  # |Spearman| between set scores flagged as shared signal
+  min_null_draws: 1000    # A/B need >= this many completed draws of EACH null (§15)
+
+# Percentile = (1 + number of evaluated lines with a strictly smaller value) / n, for the
+# absolute error of the repeat-averaged out-of-fold prediction (and for spread and
+# disagreement). Ties never raise a percentile. By construction about 5% / 10% of lines
+# reach the 95th / 90th percentile.
+cell_lines:
+  min_repeats: 10         # fewer CV repeats per record -> not_rankable
+  high_percentile: 0.95   # A (both models); technical flags (instability, disagreement)
+  flag_percentile: 0.90   # B (both models) and C (either model)

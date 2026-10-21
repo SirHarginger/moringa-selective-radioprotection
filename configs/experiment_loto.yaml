@@ -1,0 +1,32 @@
+# Tier (b), descriptive: leave one of the 9 qualifying lineages out (protocol §16).
+# Expression-only model (M2X) vs global mean (M0): "beyond a tissue-agnostic mean".
+schema_version: 1
+run_id: loto_v1
+inputs:
+  qc_dir: results/tables/phase_01/identifier_qc
+  qc_sha256:
+    eligibility.csv: 2b820626c5321b8a1ab152e1fd08e839e059f451fbe6d45cad393b760423495c
+    components.csv: 3c310374df8c5631675674c90c44d2094b41511e0846315eaca7541d01a7f6da
+    summary.json: b09e74eca4fce81ac2a8e897f8083f5fd57ebf71f8d01f2b07327c735a7ff402
+  clarifi: data/raw/CLARIFi.csv
+  clarifi_manifest: data/manifests/clarifi__v1_0.yaml
+  expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+  gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+  gene_sets_sha256: null
+population: primary
+population_options:
+  min_components_per_tissue: 10
+scales: [raw]
+tier: loto
+models: [M0, M2X]
+grids:
+  M0: {}
+  M2X:
+    alpha: [0.1, 0.01, 0.001]
+    l1_ratio: [0.9, 0.5, 0.1]
+validation: {k_outer: 5, k_inner: 5, repeats: 1}
+seeds: {base_seed: 20261021}
+fit: {component_weighting: true}
+predictions: {clip_raw_to_unit_interval: true}
+inference: {method: not_assessable, alpha_one_sided: 0.05}
+output_dir: results/models

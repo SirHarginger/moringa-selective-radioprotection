@@ -1,0 +1,44 @@
+# Provenance record: Cellosaurus API responses for the CLARIFi DepMap IDs (canonical identity).
+# Release and query syntax verified 2026-10-21 by the radiogenomics-curator.
+# RESPONSES NOT YET SAVED: the investigator runs scripts/fetch_cellosaurus_phase_01.py, which
+# saves each response unchanged with a sidecar JSON (URL, UTC time, SHA-256).
+source_name: "Cellosaurus (SIB) via api.cellosaurus.org"
+source_slug: cellosaurus
+publication_doi: "10.7171/jbt.18-2902-002"     # Bairoch 2018, J Biomol Tech 29:25-38
+data_doi_or_accession: "10.26037/yareta:lbz6rhlaavbldmavv4k5jdaphe"   # release 56 archive (Yareta)
+landing_url: "https://api.cellosaurus.org/"
+release: "56.0"
+release_date: "2026-06-25"
+release_info_checked: "api.cellosaurus.org/release-info, 2026-10-21: 56.0 / 2026-06-25 (curator and auditor); fetch script stops if the live release differs"
+licence: "CC-BY-4.0"            # stated on the Yareta archive; www.cellosaurus.org/terms-of-use returned 404
+licence_url: "https://creativecommons.org/licenses/by/4.0/"
+redistribution_allowed: true
+access_date: null
+retrieved_by: null
+retrieval_method: scripted
+provenance_status: unverified
+verified_by: "radiogenomics-curator agent (release info and queries, 2026-10-21)"
+queries:
+  template: "https://api.cellosaurus.org/search/cell-line?q=dr:(ACH-...%20OR%20...)&fields=id,ac,sy,dr,cc,hi,oi,ox,ca&format=tsv&rows=1000"
+  batch_size: 50
+  field_note: "hi (hierarchy) and oi (same individual) field names UNVERIFIED; fallback fields id,ac,sy,dr,cc,ox,ca"
+  release_check: "https://api.cellosaurus.org/release-info?format=json (saved as release_info.json)"
+pilot_2026_10_21:                # Claude Code WebFetch pilot (no files saved; responses only read)
+  batched_dr_or: "dr:(ACH-000019 OR ACH-000979 OR ACH-000001) -> numFound 3 (CVCL_0105, CVCL_0465, CVCL_0031)"
+  batched_ac_or: "ac:(CVCL_0031 OR CVCL_0105) -> numFound 2"
+  release_info_json_path: "Cellosaurus.header.release.version = 56.0 (updated 2026-06-25)"
+  tsv_format: "'##' metadata incl. response.numFound; prob -> column 'problematic'; dr '|'-separated 'DepMap; ACH-...'; hi/oi '|'-separated 'CVCL_x ! name'"
+  relationship_example: "MCF-7 (CVCL_0031) oi = CVCL_N481 ! Hs 631.T"
+  not_verified: "whether ac: matches secondary accessions"
+spot_checks_verified:
+  - {name: "MCF-7", accession: "CVCL_0031", depmap: "ACH-000019"}
+  - {name: "DU145", accession: "CVCL_0105", depmap: "ACH-000979", note: "16 derived lines exist; match exactly"}
+  - {name: "V79", accession: "CVCL_2234", species: "Cricetulus griseus", depmap: null, note: "62 records match 'V79'; subline used by the Moringa study unresolved"}
+files: []                       # filled from the sidecar JSON files after the fetch
+endpoint:
+  endpoint_class: unknown        # identity resource; no endpoint
+notes: >
+  Accept a CLARIFi line's accession only when exactly one record carries its DepMap ID as a
+  DepMap cross-reference and it agrees with DepMap Model.csv RRID; otherwise a human resolves it.
+  1392 records carried a "Problematic cell line" comment on 2026-10-21.
+reviewer: null

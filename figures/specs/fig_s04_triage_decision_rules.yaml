@@ -1,0 +1,28 @@
+id: fig_s04
+slug: triage_decision_rules
+kind: supplementary
+spec_version: 2              # v2: percentile wording after the tie-handling fix (D03.06)
+manuscript_label: null
+title: Prespecified triage decision rules
+scientific_question: Which exact, prespecified criteria assign gene sets and measured cell lines to triage tiers A, B, C, not prioritised and not rankable?
+endpoint: none (conceptual diagram of decision rules)
+data_sources: [configs/triage.yaml]   # thresholds only; SHA-256 recorded in the sidecar
+data_provenance: conceptual_diagram
+inclusion_filter: null
+n: null
+units: null
+comparison: null
+uncertainty: null
+split_source: null
+layout:
+  width_mm: 180
+  height_mm: 192
+  panels: [a gene sets, b measured cell lines]
+outputs: [pdf, svg, png]
+png_dpi: 600
+script: scripts/generate_figures.py --config configs/diagrams.yaml (visualization/diagrams.py:triage_decision; text from triage/rules.py:criteria_text)
+caption_draft: see configs/diagrams.yaml
+accessibility_checked: false
+status: code_ready
+owner: investigator
+reviewers: [statistical-reviewer (rules, D03.05)]

@@ -27,18 +27,16 @@ data/processed/*
 !data/interim/.gitkeep
 !data/processed/.gitkeep
 
-# Generated outputs
-results/figures/*
+# Generated outputs (results/figures/ and results/screening/ retired in phase_00, D00.22)
 results/tables/*
 results/models/*
-results/screening/*
 results/logs/*
+results/simulation/
+results/triage/
 
 # Keep result directories
-!results/figures/.gitkeep
 !results/tables/.gitkeep
 !results/models/.gitkeep
-!results/screening/.gitkeep
 !results/logs/.gitkeep
 
 # Large model/data files
@@ -54,3 +52,49 @@ results/logs/*
 *.tmp
 *.temp
 *.bak
+
+# --- Added in phase_00 (2026-10-20); see docs/decision_log.md D00.09 ---
+
+# Secrets and local environment files (covers .env, .env.local, ...)
+.env*
+!.env.example
+
+# Tool caches and build outputs
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+htmlcov/
+.coverage.*
+build/
+dist/
+
+# Rendered figures (outputs only; specs in figures/specs/ stay tracked)
+figures/generated/*
+!figures/generated/.gitkeep
+
+# LaTeX build artefacts (sources stay tracked)
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.toc
+manuscript/**/build/
+
+# Auto-generated code-graph cache (contains machine-specific paths).
+# Files from commit 76f9e6f stay in the index until the investigator runs
+# `git rm -r --cached graphify-out` (decision log P00.06).
+graphify-out/
+
+# Provenance manifests must stay tracked
+!data/manifests/
+!data/manifests/**
+
+# Source manuscripts: redistribution not authorised. Only the checksum
+# manifest and README are tracked (decision log D00.19).
+references/source_manuscripts/*
+!references/source_manuscripts/manifest.yaml
+!references/source_manuscripts/README.md

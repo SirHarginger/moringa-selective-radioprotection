@@ -1,0 +1,146 @@
+# Provenance record: CLARIFi mSF2 dataset (data/raw/CLARIFi.csv).
+# Metadata verified on 2026-10-20 by the radiogenomics-curator agent from the
+# sources listed under `verification_sources` (landing/metadata pages only; the
+# dataset was NOT re-downloaded). Local checksums computed by Claude Code.
+# The values in the file were NOT analysed.
+source_name: "CLARIFi - cancer cell radiosensitivity database (mSF2 dataset)"
+source_slug: clarifi
+publication:
+  title: "Establishment of cancer cell radiosensitivity database linked to multi-layer omics data"
+  first_author: "Takahiro Oike"
+  journal: "Cancer Science"
+  volume_issue_pages: "116(3):690-697"
+  published_online: "2024-12-12"
+  issue_date: "2025-03"
+  doi: "10.1111/cas.16334"
+  pmid: "39668120"
+  pmcid: "PMC11875790"
+  licence: "CC BY-NC 4.0"   # applies to the ARTICLE; see licences.article below
+data_doi_or_accession: "10.5281/zenodo.20710748"
+concept_doi: "10.5281/zenodo.20710747"
+landing_url: "https://zenodo.org/records/20710748"
+zenodo_creators: ["Oike T", "Kambe R", "Darwis NDM", "Shibata A", "Ohno T"]
+release: "1.0"
+zenodo_revision: 4
+release_date: null   # CONFLICT: Zenodo publication_date 2024-08-23 vs record created 2026-06-16; see notes
+licence: null                  # UNRESOLVED: CC-BY-4.0 (Zenodo) vs CC-BY-NC-4.0 (article); see licences (auditor fix 2026-10-21)
+licence_url: null
+licence_terms_applied: "CC-BY-NC-4.0 (stricter; pending author confirmation)"
+licences:                      # declared separately; neither is assumed to override the other
+  dataset:
+    declared: "cc-by-4.0 (Creative Commons Attribution 4.0 International)"
+    source: "https://zenodo.org/api/records/20710748 ; https://zenodo.org/records/20710748"
+    accessed: "2026-10-20"
+    notes: >
+      Record owner is Zenodo user 1690077 (no name shown); publisher shown as
+      "Gunma University Heavy Ion Medical Center", contact Oike T. Creators match
+      the article authors in name and order. Whether an author uploaded it is unverified.
+  article:
+    declared: "CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/)"
+    sources:
+      - "https://api.crossref.org/works/10.1111/cas.16334 (license URL, content-version vor, start 2024-12-12)"
+      - "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11875790/fullTextXML (ccbynclicense)"
+      - "https://pmc.ncbi.nlm.nih.gov/articles/PMC11875790/"
+    accessed: "2026-10-20"
+    notes: >
+      The article has no Data Availability Statement and states no reuse terms for
+      the database. Its Discussion says CLARIFi "is accessible via
+      https://researchmap.jp/oiketakahiro/published_works" (HTTP 403 on 2026-10-20;
+      unverified). The article never mentions the Zenodo record. Its supplements
+      (Data S1 250.1 KB, Data S2 18.1 KB, Figure S1) are not described as the mSF2 table.
+  assessment: >
+    Unresolved. An independently deposited dataset may carry its own licence, so
+    the article's CC BY-NC does not automatically supersede the Zenodo CC BY. But the
+    uploader's identity is unconfirmed and the authors' own hosting states no terms.
+    Until the authors confirm: apply the stricter terms (attribution, non-commercial),
+    keep the raw file out of Git, and cite both DOIs and both licences in any
+    reuse statement, stating whether the data were modified. Recommended: contact the
+    corresponding author (Oike T) to confirm the deposit and its licence.
+redistribution_allowed: null   # unresolved (template allows true/false/null); do not redistribute
+access_date: null              # original download date unknown
+metadata_verified_date: "2026-10-20"
+retrieved_by: "investigator"   # file placed in data/raw/ by the investigator
+retrieval_method: manual
+provenance_status: unverified  # changed 2026-10-21 (reproducibility-auditor): licence unresolved and no named human reviewer (data_management.md §2)
+integrity_status: verified     # local md5 == Zenodo md5, 2026-10-20
+location_note: >
+  Legacy location data/raw/CLARIFi.csv predates the <slug>/<release>/ convention. Not moved
+  (raw data are immutable); no folder SHA256SUMS; the sha256 in this manifest is authoritative.
+verified_by: "radiogenomics-curator agent (metadata); Claude Code (local checksums)"
+files:
+  - path: data/raw/CLARIFi.csv
+    file_url: "https://zenodo.org/records/20710748"
+    published_md5: "6f52f03db6d33ad9a0cac9f3dbbcbb2d"   # Zenodo API, verified
+    published_size_bytes: 10655                        # Zenodo API, verified
+    local_md5: "6f52f03db6d33ad9a0cac9f3dbbcbb2d"      # local, md5sum 2026-10-20: MATCHES published_md5
+    sha256: "fb0ec3528b9c986740bd44dd920ecd62ac7e356137b7da70bd4f1688e6e68503"  # local, sha256sum
+    size_bytes: 10655                                  # local, ls -l
+    format: csv
+    encoding: null                                     # ASCII-compatible content observed; BOM not checked
+    line_terminator: CRLF
+    delimiter: ","
+    n_lines: 286                                       # grep -c '' (header + 285 data rows); last line has no trailing newline, so wc -l reports 285
+    n_data_rows: 285                                   # matches the article's 285 cell lines (263 solid, 22 blood, per reproducibility-auditor reading of the article)
+    header: ["CCLE Name", "Depmap ID", "mSF2"]
+    columns:
+      - name: CCLE Name
+        meaning: "Cell line name as obtained from the DepMap portal (paper Methods)"
+        identifier_namespace: ccle_name
+        unit: null
+      - name: Depmap ID
+        meaning: "DepMap model identifier obtained from the DepMap portal (paper Methods)"
+        identifier_namespace: depmap_model_id
+        unit: null
+      - name: mSF2
+        meaning: >
+          Median SF2 per cell line, where SF2 is the "survival fraction after 2 Gy
+          irradiation" "assessed by the gold standard clonogenic assays" after
+          photon irradiation, extracted from published studies (paper abstract and Methods).
+        identifier_namespace: null
+        unit: "dimensionless fraction"
+endpoint:
+  endpoint_class: clonogenic_sf
+  definition: >
+    Literature-derived clonogenic radiosensitivity: per-cell-line median of
+    published SF2 values (photon irradiation, clonogenic assay). Studies using
+    concomitant reagents, plasmids or siRNAs with radiation were excluded (paper Methods).
+  assay: clonogenic survival (as reported by the source studies)
+  dose_gy: 2
+  radiation_type: photon
+  time_point: null
+  replicate_structure: >
+    UNKNOWN: whether the median is across studies or across individual values,
+    and how many values contribute per cell line, are not stated.
+known_missingness: >
+  Phase_01 descriptive check (Claude Code, 2026-10-21; grep/cut/sort/uniq on the unchanged raw file):
+  0 blank mSF2 cells; 0 non-numeric mSF2 cells; every row has exactly 3 fields. No outcome
+  summary statistics were computed (by design; statistical-reviewer SR-08).
+phase_01_identifier_checks:      # Claude Code, 2026-10-21, descriptive only
+  line_endings: "CRLF (285 of 286 lines carry CR; the last line has no line terminator)"
+  depmap_id_format: "285/285 match ^ACH-[0-9]{6}$"
+  duplicate_depmap_ids: 0
+  duplicate_ccle_names: 0
+  ccle_name_tissue_suffixes: 24        # the article reports 28 cancer types; the taxonomies differ (unresolved)
+  haematopoietic_suffix_count: 22      # matches the article's 22 blood lines
+  moringa_lines: {MCF7_BREAST: "ACH-000019", DU145_PROSTATE: "ACH-000979", V79: "absent (hamster)"}
+  depmap_match: "PENDING: scripts/qc_phase_01_identifiers.py after DepMap 24Q4 acquisition"
+  values_per_line_source: "Article Fig. 1C (graphical only) and Data S2 (list of 926 papers); not yet retrieved"
+transformations: []
+inclusion_exclusion: "As described in the source paper; no project-level filtering applied."
+identifier_release: >
+  DepMap release not stated. Paper Methods: names and IDs "obtained from the
+  DepMap portal", reference list gives "Accessed December 1, 2023".
+verification_sources:
+  - "https://zenodo.org/api/records/20710748"
+  - "https://api.crossref.org/works/10.1111/cas.16334"
+  - "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI:10.1111/cas.16334&format=json&resultType=core"
+  - "https://pmc.ncbi.nlm.nih.gov/articles/PMC11875790/"
+  - "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC11875790/fullTextXML"
+notes: >
+  The paper's Discussion points to a researchmap.jp location rather than this
+  Zenodo record, and the record's uploader (Zenodo owner 1690077) is not
+  confirmed to be the authors. The Zenodo publication_date (2024-08-23) predates
+  the record's creation (2026-06-16) and was set by the uploader. Licence and
+  redistribution rights stay unresolved until the CC-BY / CC-BY-NC conflict is
+  settled; until then, do not redistribute the file.
+reviewer: null

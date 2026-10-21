@@ -1,0 +1,33 @@
+# Figure/table specification template.
+# Copy to fig_NN_<slug>.yaml (or fig_sNN_, table_NN_, table_sNN_) before writing any code.
+id: null                     # e.g. fig_01, fig_s01, table_01
+slug: null                   # lowercase snake_case, e.g. sf2_by_tissue
+kind: main                   # main | supplementary
+spec_version: 1              # becomes the _vN suffix of output files
+manuscript_label: null       # e.g. "Figure 2"; record here if manuscript order differs from id
+title: null
+scientific_question: null    # the one question this figure answers
+endpoint: null               # one named endpoint and assay; never pool endpoints on one axis
+data_sources: []             # manifest IDs and sha256 of input tables
+data_provenance: empirical   # must match the sidecar; synthetic fixtures are never allowed here
+inclusion_filter: null
+n: null                      # per group, with the unit of n (cell lines, biological replicates, experiments)
+units: null                  # every axis, e.g. "Dose (Gy)"
+comparison: null             # the contrast shown
+uncertainty: null            # statistic (SD / SEM / 95% CI) and how it was computed
+split_source: null           # held-out fold or dataset that predictions come from; null for observations
+encoding:
+  observed: filled markers, solid lines
+  predicted: open markers, dashed lines, labelled with the held-out split
+layout:
+  width_mm: null             # check against the target journal
+  height_mm: null
+  panels: []
+outputs: [pdf, svg, png]
+png_dpi: 300                 # 600 for line art
+script: null                 # e.g. scripts/make_fig_01_sf2_by_tissue.py
+caption_draft: null
+accessibility_checked: false # grayscale and colour-vision-deficiency check
+status: planned              # planned | code_ready | awaiting_human_run | generated | reviewed
+owner: null
+reviewers: []

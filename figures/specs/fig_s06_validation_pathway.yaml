@@ -1,0 +1,28 @@
+id: fig_s06
+slug: validation_pathway
+kind: supplementary
+spec_version: 2              # shared diagram version (configs/diagrams.yaml); content unchanged
+manuscript_label: null
+title: Proposed experimental validation pathway (future work)
+scientific_question: How could triage outputs lead to a designed experimental validation panel without being mistaken for an unbiased external cohort?
+endpoint: clonogenic SF2 at 2 Gy (proposed future measurement; nothing measured)
+data_sources: []
+data_provenance: conceptual_diagram
+inclusion_filter: null
+n: null
+units: null
+comparison: null
+uncertainty: null
+split_source: null
+layout:
+  width_mm: 180
+  height_mm: 135
+  panels: [a measured CLARIFi lines, b new unassayed DepMap lines]
+outputs: [pdf, svg, png]
+png_dpi: 600
+script: scripts/generate_figures.py --config configs/diagrams.yaml (visualization/diagrams.py:validation_pathway)
+caption_draft: see configs/diagrams.yaml
+accessibility_checked: false
+status: code_ready
+owner: investigator
+reviewers: [radiobiologist (assay wording) - not yet consulted]

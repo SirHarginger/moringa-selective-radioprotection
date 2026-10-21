@@ -1,0 +1,93 @@
+# Provenance record: DepMap Public 24Q4 (features and cell-line identity).
+# Metadata verified 2026-10-21 by the radiogenomics-curator agent from
+# https://api.figshare.com/v2/articles/27993248 and the release README (figshare file 51065795).
+# FILES NOT YET ACQUIRED: the investigator runs scripts/acquire_phase_01.sh, then fills
+# sha256/size/n_lines from data/raw/depmap/24q4/SHA256SUMS and sets provenance_status.
+source_name: "DepMap Public 24Q4 (Broad Institute)"
+source_slug: depmap
+publication_doi: null           # data release; cite as "DepMap, Broad (2024). DepMap 24Q4 Public. Figshare+. Dataset."
+data_doi_or_accession: "10.25452/figshare.plus.27993248.v1"
+landing_url: "https://plus.figshare.com/articles/dataset/DepMap_24Q4_Public/27993248"
+release: "24Q4"
+release_date: "2024-12-10"      # figshare API published date
+licence: "CC-BY-4.0"            # stated on the figshare record; DepMap forum (2020-07-30): DepMap-generated data CC BY 4.0
+licence_url: "https://creativecommons.org/licenses/by/4.0/"
+redistribution_allowed: true    # with attribution; project default still keeps raw files out of Git
+licence_source: "https://api.figshare.com/v2/articles/27993248 (file IDs, sizes, md5 and licence confirmed by reproducibility-auditor 2026-10-21)"
+metadata_verified_date: "2026-10-21"
+access_date: null               # set when downloaded
+retrieved_by: null
+retrieval_method: scripted      # scripts/acquire_phase_01.sh
+provenance_status: unverified   # metadata verified; files not yet downloaded or checksum-checked
+verified_by: "radiogenomics-curator agent (metadata, 2026-10-21)"
+release_choice_rationale: >
+  Newest release with a citable DOI, published per-file MD5 and stable figshare file IDs.
+  Releases from 25Q2 onward are portal-only (DepMap forum, 2025-08-18); their file lists and
+  checksums could not be verified (portal bot check). CLARIFi IDs most likely come from 23Q4
+  (portal accessed 2023-12-01); see depmap__23q4_v1.yaml for the identity audit.
+files:
+  - path: data/raw/depmap/24q4/Model.csv
+    file_url: "https://ndownloader.figshare.com/files/51065297"
+    published_md5: "675210d17675f3517b0ce39a3c274f16"
+    published_size_bytes: 645696
+    sha256: null
+    format: csv
+    columns_of_interest:
+      - {name: ModelID, meaning: "Unique identifier for the model (ACH-xxxxxx)", identifier_namespace: depmap_model_id}
+      - {name: CCLEName, meaning: "CCLE name for the cell line", identifier_namespace: ccle_name}
+      - {name: RRID, meaning: "Cellosaurus ID", identifier_namespace: cellosaurus_accession}
+      - {name: PatientID, meaning: "Unique identifier for models derived from the same tissue sample (donor group)", identifier_namespace: depmap_patient_id}
+      - {name: OncotreeLineage, meaning: "Lineage of model (Oncotree for cancer models)", identifier_namespace: null}
+  - path: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+    file_url: "https://ndownloader.figshare.com/files/51065489"
+    published_md5: "71794802b750ce77c422dad0720a40af"
+    published_size_bytes: 506628654
+    sha256: null
+    format: csv
+    unit: "log2(TPM + 1); RSEM, unstranded mode, protein-coding genes (README)"
+    layout: "UNVERIFIED: model IDs assumed in the first column; checked by scripts/qc_phase_01_identifiers.py"
+  - path: data/raw/depmap/24q4/OmicsProfiles.csv
+    file_url: "https://ndownloader.figshare.com/files/51065723"
+    published_md5: "7195088a5fc41eddb3f896c6e984a992"
+    published_size_bytes: 254733
+    sha256: null
+    format: csv
+    notes: "Columns ProfileID, ModelID, ModelConditionID, Datatype, Source, Product, Stranded, WESKit, SharedToDbgap. Stranded is a technical batch variable."
+  - path: data/raw/depmap/24q4/OmicsDefaultModelProfiles.csv
+    file_url: "https://ndownloader.figshare.com/files/51065339"
+    published_md5: "4d342a03701c0a4c0742fedb56c1de40"
+    published_size_bytes: 90080
+    sha256: null
+    format: csv
+    notes: "Columns ModelID, ProfileID, ProfileType. Defines which profile represents each model."
+  - path: data/raw/depmap/24q4/README.txt
+    file_url: "https://ndownloader.figshare.com/files/51065795"
+    published_md5: "54628c15a10b9ff6536db245cfed5231"
+    published_size_bytes: 43103
+    sha256: null
+    format: txt
+sensitivity_files:               # NOT primary input; downloaded only with --batch-corrected
+  - path: data/raw/depmap/24q4_sensitivity/OmicsExpressionProteinCodingGenesTPMLogp1BatchCorrected.csv
+    file_url: "https://ndownloader.figshare.com/files/51065492"
+    published_md5: "afefd19098154a62972eb975a55a36c9"   # figshare API, 2026-10-21
+    published_size_bytes: 616166707
+    sha256: null
+    format: csv
+    role: "batch-corrected expression; prespecified sensitivity option only, never a silent substitute"
+endpoint:
+  endpoint_class: gene_expression
+  definition: "Basal (unirradiated) RNA-seq expression of protein-coding genes; used as FEATURES only"
+  assay: "RNA-seq, RSEM quantification"
+  dose_gy: null
+  radiation_type: null
+  time_point: null
+  replicate_structure: "One default RNA profile per model (OmicsDefaultModelProfiles)"
+known_missingness: "Not every CLARIFi line will have an RNA profile; measured by the phase_01 identifier QC"
+transformations: []
+inclusion_exclusion: null
+notes: >
+  Model IDs can be merged or retired between releases (DepMap forum threads 231 and 3627); no public list
+  of retired IDs exists, so unmatched IDs must be resolved by a human. BatchCorrected
+  (51065492) is acquired only with --batch-corrected, as a sensitivity option (see sensitivity_files).
+  Stranded (51065495) is not acquired.
+reviewer: null

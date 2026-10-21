@@ -1,0 +1,36 @@
+# Mandatory sensitivity analysis: transformed outcome scales (protocol §5).
+# -ln(y) drops y == 0; logit(y) drops y in {0, 1}; counts are logged and reported.
+# Identical to configs/experiment.yaml except run_id, scales and models.
+schema_version: 1
+run_id: scales_v1
+inputs:
+  qc_dir: results/tables/phase_01/identifier_qc
+  qc_sha256:
+    eligibility.csv: 2b820626c5321b8a1ab152e1fd08e839e059f451fbe6d45cad393b760423495c
+    components.csv: 3c310374df8c5631675674c90c44d2094b41511e0846315eaca7541d01a7f6da
+    summary.json: b09e74eca4fce81ac2a8e897f8083f5fd57ebf71f8d01f2b07327c735a7ff402
+  clarifi: data/raw/CLARIFi.csv
+  clarifi_manifest: data/manifests/clarifi__v1_0.yaml
+  expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+  gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+  gene_sets_sha256: null
+population: primary
+population_options:
+  min_components_per_tissue: 10
+  stranded_ids: [ACH-000095, ACH-000337, ACH-000455, ACH-000468, ACH-000979, ACH-001001, ACH-001061]
+scales: [neglog, logit]
+tier: within
+models: [M1, M2]
+grids:
+  M1:
+    alpha: [100.0, 10.0, 1.0, 0.1]
+  M2:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.9, 0.5, 0.1]
+validation: {k_outer: 5, k_inner: 5, repeats: 20}
+seeds: {base_seed: 20261021}
+fit: {component_weighting: true}
+predictions: {clip_raw_to_unit_interval: true}
+inference: {method: not_assessable, alpha_one_sided: 0.05}
+output_dir: results/models

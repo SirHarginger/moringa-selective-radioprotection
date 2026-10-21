@@ -1,0 +1,59 @@
+# Provenance record: Yard et al. 2016 radiation profiling (secondary, different endpoint class).
+# Article metadata and assay verified 2026-10-21 (radiogenomics-curator, radiobiologist,
+# literature-reviewer) from the open-access full text PMC4848553. FILES NOT YET ACQUIRED;
+# sheet names, columns and identifiers inside Supplementary Data 1 are UNVERIFIED.
+source_name: "Yard et al. 2016 high-throughput radiation profiling (Supplementary Data 1)"
+source_slug: yard2016
+publication:
+  title: "A genetic basis for the variation in the vulnerability of cancer to DNA damage"
+  first_author: "Brian D. Yard"
+  journal: "Nature Communications"
+  volume_issue_pages: "7:11428"
+  published_online: "2016-04-25"
+  doi: "10.1038/ncomms11428"
+  pmid: "27109210"
+  pmcid: "PMC4848553"
+  licence: "CC BY 4.0"
+data_doi_or_accession: null     # supplementary files of the article; no data DOI
+landing_url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4848553/"
+release: "ncomms11428_v1"       # article supplements as published
+release_date: "2016-04-25"
+licence: "CC-BY-4.0"
+licence_url: "https://creativecommons.org/licenses/by/4.0/"
+redistribution_allowed: true
+licence_source: "Europe PMC core record PMCID:PMC4848553 (license: cc by), accessed 2026-10-21"
+published_checksum: none        # verify by file type and size after download
+access_date: null
+retrieved_by: null
+retrieval_method: null          # scripted if PMC allows curl, otherwise manual (browser)
+provenance_status: unverified
+verified_by: "radiogenomics-curator, radiobiologist, literature-reviewer (article; 2026-10-21)"
+files:
+  - path: data/raw/yard2016/ncomms11428_v1/ncomms11428-s2.xlsx
+    file_url: "https://pmc.ncbi.nlm.nih.gov/articles/instance/4848553/bin/ncomms11428-s2.xlsx"   # constructed from PMC page hrefs; curl access UNVERIFIED
+    description: "Supplementary Data 1: CCLE cell lines profiled and radiation sensitivity data"
+    displayed_size: "72.1 KB (PMC display, not byte-exact)"
+    sha256: null
+    format: xlsx                # openpyxl needed only if parsed (dependency table, decision log)
+  - path: data/raw/yard2016/ncomms11428_v1/ncomms11428-s1.pdf
+    file_url: "https://pmc.ncbi.nlm.nih.gov/articles/instance/4848553/bin/ncomms11428-s1.pdf"
+    description: "Supplementary Figures 1-11"
+    sha256: null
+    format: pdf
+endpoint:
+  endpoint_class: profiling_derived_survival    # NOT clonogenic_sf; never pooled with mSF2
+  definition: >
+    Integral survival: trapezoidal area under the survival curve over log2-transformed dose,
+    rescaled to 0 (completely sensitive) - 7 (completely resistant). Per-dose normalisation not stated.
+  assay: "CellTiter-Glo ATP luminescence, white 384-well plates, 25-225 cells/well, >= quadruplicate"
+  dose_gy: [1, 2, 3, 4, 5, 6, 8, 10]
+  radiation_type: "gamma, 137Cs, 0.91 Gy/min (GammaCell 40 Exactor)"
+  time_point: "9 days after irradiation"
+  replicate_structure: "UNVERIFIED in the supplement"
+known_missingness: null
+transformations: []
+inclusion_exclusion: "533 lines, 26 cancer types (article). RadioGx refits retain 498 (Manem 2019) or 511 (Kolnohuz 2024); the version used must be named."
+notes: >
+  Clonogenic comparison only in 15 unnamed lines (r = 0.85-0.89). CLARIFi reports mSF2 vs integral
+  survival r = 0.28 (n = 187). Use only as a separate endpoint for cross-assay transportability.
+reviewer: null

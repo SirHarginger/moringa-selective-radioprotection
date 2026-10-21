@@ -1,0 +1,36 @@
+# Provenance record: DepMap Public 23Q4 v1, Model.csv only (identity audit; no features).
+# Metadata verified 2026-10-21 by the radiogenomics-curator from
+# https://api.figshare.com/v2/articles/24667905 (version 1). FILE NOT YET ACQUIRED.
+source_name: "DepMap Public 23Q4 (version 1 files)"
+source_slug: depmap
+publication_doi: null
+data_doi_or_accession: "10.25452/figshare.plus.24667905.v1"
+landing_url: "https://plus.figshare.com/articles/dataset/DepMap_23Q4_Public/24667905/1"
+release: "23Q4_v1"
+release_date: "2023-12-01"      # figshare posted 2023-12-01T19:46:52Z (firstOnline 2023-11-30)
+licence: "CC-BY-4.0"
+licence_url: "https://creativecommons.org/licenses/by/4.0/"
+redistribution_allowed: true
+licence_source: "https://api.figshare.com/v2/articles/24667905/versions/1 (file 43346895 md5 and licence confirmed by reproducibility-auditor 2026-10-21)"
+metadata_verified_date: "2026-10-21"
+access_date: null
+retrieved_by: null
+retrieval_method: scripted
+provenance_status: unverified
+verified_by: "radiogenomics-curator agent (metadata, 2026-10-21)"
+purpose: >
+  Identity audit only: check CLARIFi's ACH IDs against the release CLARIFi most likely used
+  (portal accessed 2023-12-01; 23Q4 announced 2023-11-21). 23Q2 cannot be excluded. Note that
+  23Q4 v2 (2023-12-19) has a different Model.csv (file 43746708, md5 74ca5c14f118e445f1ad5a1a0335492e).
+files:
+  - path: data/raw/depmap/23q4_v1/Model.csv
+    file_url: "https://ndownloader.figshare.com/files/43346895"
+    published_md5: "c14f90f02609b9507c8b31e6d5db309b"
+    published_size_bytes: 582229
+    sha256: null
+    format: csv
+endpoint:
+  endpoint_class: unknown        # annotation table; no endpoint
+  definition: "Cell-line annotation (identity audit only)"
+transformations: []
+reviewer: null

@@ -1,0 +1,25 @@
+# Provenance record: ICLAC register of misidentified cell lines, version 14 (lookup only).
+# Metadata verified 2026-10-21 by the radiogenomics-curator. OPTIONAL; NOT ACQUIRED.
+source_name: "ICLAC Register of Misidentified Cell Lines"
+source_slug: iclac
+publication_doi: null
+data_doi_or_accession: null
+landing_url: "https://iclac.org/databases/cross-contaminations/"
+release: "14"
+release_date: "2026-02-15"      # 608 lines
+licence: "CC-BY-NC-ND-4.0"      # "do not modify entries": use as an unmodified lookup only
+licence_url: "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+redistribution_allowed: false   # project policy (stricter than licence): CC BY-NC-ND permits unmodified non-commercial sharing; ICLAC asks users to download from iclac.org
+licence_source: "https://iclac.org/databases/cross-contaminations/ (accessed 2026-10-21; auditor confirmed)"
+access_date: null
+retrieved_by: null
+retrieval_method: scripted      # scripts/acquire_phase_01.sh --optional
+provenance_status: unverified
+verified_by: "radiogenomics-curator agent (metadata, 2026-10-21)"
+files:
+  - {path: data/raw/iclac/v14/Cross-Contaminations_v14_distribution.xlsx, file_url: "https://iclac.org/wp-content/uploads/Cross-Contaminations_v14_distribution.xlsx", sha256: null, format: xlsx}
+endpoint:
+  endpoint_class: unknown
+transformations: []
+notes: "Complements Cellosaurus 'Problematic cell line' comments; record the version used for every flag."
+reviewer: null

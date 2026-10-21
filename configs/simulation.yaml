@@ -1,0 +1,46 @@
+# Interval-selection coverage simulation (protocol §13; ADEMP). Synthetic outcomes only.
+# Run after the protocol freeze and BEFORE the real outcome is unsealed.
+# Scenario values are prespecified design parameters, NOT estimates from CLARIFi. Those
+# marked [OPEN] must be confirmed (with literature sources) at the freeze.
+schema_version: 1
+run_id: coverage_v1
+experiment_config: configs/experiment.yaml   # same pipeline, grids, K, weights, clip rule
+
+nsim: 500                  # per scenario; Monte Carlo SE of 95% coverage ~ 0.0097
+n_truth: 200               # fresh training sets per scenario for the truth (MCSE recorded)
+truth_test_records: 10000  # fresh test records per truth training set (and signal reference)
+repeats: 10                # CV repeats inside each replicate (R rule extrapolates to 10/20/50)
+copula_components: 50      # rank of the residual copula correlation (<= n - 1)
+base_seed: 20261021
+pilot_replicates: 2        # --pilot: replicates per scenario, n_truth forced to 2
+
+# Frozen adoption rule (implemented in simulation/study.py:adopt):
+adoption_rule: >
+  qualify if in every scenario one-sided lower-bound coverage >= 0.95 - 2*MCSE and, in
+  null scenarios, false-positive rate (LB > 0) <= 0.05 + 2*MCSE (MCSE from nsim);
+  adopt the qualifier with the smallest mean width; else not_assessable. R = smallest of
+  {10, 20, 50} with max mean SD between repeats / sqrt(R) <= 10% of the mean half-width;
+  if none qualifies, repeats is null with repeats_status R_rule_not_met (investigator
+  decision). recheck_required is true when the adopted R differs from the simulated R.
+
+# Scenario weights (unnormalised): tissue_share, component_share, noise_share; the
+# expression weight is effect_k^2 x noise_share (effect_k = signal SD / noise SD). All
+# four are normalised to sum to 1 (generator.Scenario.shares). effect_k = 0 is a null.
+# Three backgrounds x effect_k in {0, 0.25, 0.5}. effect_k values, logit_mean and
+# logit_sd are [OPEN] design parameters to confirm with sources at the freeze.
+# noise_share 0.5 ~ cross-lab label reliability (mSF2 vs in-house r = 0.50);
+# 0.2 ~ within-lab replicate noise (A1). Tissue imbalance and grouping come from the
+# real lineage/component structure; lineage-conditional correlated predictors from the
+# residual copula.
+scenarios:
+  - {name: null_lowtissue,      tissue_share: 0.15, effect_k: 0.00, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: weak_lowtissue,      tissue_share: 0.15, effect_k: 0.25, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: moderate_lowtissue,  tissue_share: 0.15, effect_k: 0.50, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: null_hightissue,     tissue_share: 0.35, effect_k: 0.00, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: weak_hightissue,     tissue_share: 0.35, effect_k: 0.25, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: moderate_hightissue, tissue_share: 0.35, effect_k: 0.50, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: null_lownoise,       tissue_share: 0.35, effect_k: 0.00, component_share: 0.05, noise_share: 0.20, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: weak_lownoise,       tissue_share: 0.35, effect_k: 0.25, component_share: 0.05, noise_share: 0.20, logit_mean: -0.2, logit_sd: 1.0}
+  - {name: moderate_lownoise,   tissue_share: 0.35, effect_k: 0.50, component_share: 0.05, noise_share: 0.20, logit_mean: -0.2, logit_sd: 1.0}
+
+output_dir: results/simulation

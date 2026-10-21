@@ -1,0 +1,28 @@
+id: fig_s05
+slug: triage_evidence
+kind: supplementary
+spec_version: 2              # shared diagram version (configs/diagrams.yaml); content unchanged
+manuscript_label: null
+title: Evidence behind each triage ranking
+scientific_question: Which model-derived evidence sets each triage tier, which independent evidence is shown beside it, and what cannot be assessed?
+endpoint: none (conceptual diagram)
+data_sources: []
+data_provenance: conceptual_diagram
+inclusion_filter: null
+n: null
+units: null
+comparison: null
+uncertainty: null
+split_source: null
+layout:
+  width_mm: 180
+  height_mm: 150
+  panels: [a gene sets, b measured cell lines]
+outputs: [pdf, svg, png]
+png_dpi: 600
+script: scripts/generate_figures.py --config configs/diagrams.yaml (visualization/diagrams.py:triage_evidence)
+caption_draft: see configs/diagrams.yaml
+accessibility_checked: false
+status: code_ready
+owner: investigator
+reviewers: []
