@@ -4,6 +4,9 @@
 # marked [OPEN] must be confirmed (with literature sources) at the freeze.
 schema_version: 1
 run_id: coverage_v1
+# Pilot folder. coverage_v1_pilot holds the pre-optimisation pilot (original tuning code,
+# kept as the equivalence reference, D04.05); never reuse that ID.
+pilot_run_id: coverage_v1_pilot_opt
 experiment_config: configs/experiment.yaml   # same pipeline, grids, K, weights, clip rule
 
 nsim: 500                  # per scenario; Monte Carlo SE of 95% coverage ~ 0.0097
@@ -26,12 +29,17 @@ adoption_rule: >
 # Scenario weights (unnormalised): tissue_share, component_share, noise_share; the
 # expression weight is effect_k^2 x noise_share (effect_k = signal SD / noise SD). All
 # four are normalised to sum to 1 (generator.Scenario.shares). effect_k = 0 is a null.
-# Three backgrounds x effect_k in {0, 0.25, 0.5}. effect_k values, logit_mean and
-# logit_sd are [OPEN] design parameters to confirm with sources at the freeze.
-# noise_share 0.5 ~ cross-lab label reliability (mSF2 vs in-house r = 0.50);
-# 0.2 ~ within-lab replicate noise (A1). Tissue imbalance and grouping come from the
-# real lineage/component structure; lineage-conditional correlated predictors from the
-# residual copula.
+# Three backgrounds x effect_k in {0, 0.25, 0.5}. All values are on the logit scale and
+# are WEIGHTS, not variance shares; realised shares go to operating_characteristics.csv.
+# Status (protocol §13 table, D04.02):
+#   noise weight 0.50: literature-motivated anchor (Oike 2025: mSF2 vs in-house SF2
+#     r = 0.50, n = 23; reliability ~0.5 under a parallel-measures assumption; imprecise);
+#   noise weight 0.20, tissue/component weights, effect_k, logit_mean, logit_sd:
+#     declared synthetic stress-test values, not measured and not calibrated on any
+#     real mSF2-expression association.
+# Tissue imbalance and grouping come from the real lineage/component structure;
+# lineage-conditional correlated predictors from the residual copula.
+# Pilot (--pilot) writes runtime.json only; the §13 budget rule sets nsim (500 or 250).
 scenarios:
   - {name: null_lowtissue,      tissue_share: 0.15, effect_k: 0.00, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}
   - {name: weak_lowtissue,      tissue_share: 0.15, effect_k: 0.25, component_share: 0.05, noise_share: 0.50, logit_mean: -0.2, logit_sd: 1.0}

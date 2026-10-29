@@ -15,7 +15,9 @@ inputs:
   clarifi_manifest: data/manifests/clarifi__v1_0.yaml
   expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
   gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
-  gene_sets_sha256: null      # [OPEN] copy from results/logs/phase_01/acquisition_log.tsv
+  # Observed SHA-256 of the local file (50 HALLMARK_ sets, verified 2026-10-21, D04.01).
+  # Freeze requires the investigator's match against the official URL (README §4).
+  gene_sets_sha256: f22066af72e215ccb7b89d88e492c07e1eef17534c2ca7b0f9902cfecbbdd8e9
 
 population: primary           # 241 records / 237 components
 population_options:
@@ -55,7 +57,10 @@ grids:
 validation:
   k_outer: 5
   k_inner: 5
-  repeats: 20                 # [SIM] replace with decision.json "repeats" (10, 20 or 50)
+  # D04.06 (investigator-directed, deadline deviation): R = 10, the repeat count at which
+  # the coverage simulation was designed (§13); the full simulation and its R rule are
+  # deferred, so no decision.json sets R.
+  repeats: 10
 
 seeds:
   base_seed: 20261021
@@ -67,11 +72,13 @@ predictions:
   clip_raw_to_unit_interval: true   # predictions only; outcomes are never clipped
 
 controls:                     # negative controls (M1/M2, repeat 0 only)
-  permuted_outcome: 0         # [OPEN] protocol proposes 1000; set after the runtime pilot
-  random_gene_sets: 0         # [OPEN] protocol proposes 1000; set after the runtime pilot
+  permuted_outcome: 0         # [PILOT] 1999, 1000 or 0 by the protocol §13 budget rule
+  random_gene_sets: 0         # [PILOT] same value as permuted_outcome
 
 inference:
-  method: not_assessable      # [SIM] replace with decision.json "adopted_method"
+  # D04.06: descriptive-only route. No simulation decision exists, so no interval or
+  # p-value is reported and the primary result reads "superiority not formally assessed".
+  method: not_assessable
   alpha_one_sided: 0.05       # reported with two-sided 90% intervals
   bh_q: 0.05                  # Benjamini-Hochberg q for the gene-set importance screen
   decision_file: null         # [SIM] results/simulation/coverage_v1/decision.json

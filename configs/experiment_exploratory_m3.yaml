@@ -1,0 +1,75 @@
+# POST HOC, EXPLORATORY (D04.07). Not confirmatory; the frozen primary benchmark stays
+# M2 vs M1 in results/models/primary_v1 (never modified). Added after the primary
+# results were seen, so no better score here can make M3 a new primary model.
+#
+# M3 = random forest on lineage one-hot + the 50 training-fold Hallmark scores (protocol
+# §9, "optional secondary"), with the grid prespecified there (below, unchanged).
+# Same cohort, components, seeds, K, R and population as primary_v1, so the split table
+# is identical; verify its SHA-256 equals primary_v1's before evaluating (README).
+# M0, M1 and M2 are refitted here (deterministic seeds) so M3 can be compared with M0
+# and M1 on the same splits; they must reproduce primary_v1's predictions.
+schema_version: 1
+run_id: exploratory_m3_v1
+
+inputs:
+  qc_dir: results/tables/phase_01/identifier_qc
+  qc_sha256:
+    eligibility.csv: 2b820626c5321b8a1ab152e1fd08e839e059f451fbe6d45cad393b760423495c
+    components.csv: 3c310374df8c5631675674c90c44d2094b41511e0846315eaca7541d01a7f6da
+    summary.json: b09e74eca4fce81ac2a8e897f8083f5fd57ebf71f8d01f2b07327c735a7ff402
+  clarifi: data/raw/CLARIFi.csv
+  clarifi_manifest: data/manifests/clarifi__v1_0.yaml
+  expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+  gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+  gene_sets_sha256: f22066af72e215ccb7b89d88e492c07e1eef17534c2ca7b0f9902cfecbbdd8e9
+
+population: primary
+population_options:
+  min_components_per_tissue: 10
+  stranded_ids: [ACH-000095, ACH-000337, ACH-000455, ACH-000468, ACH-000979, ACH-001001, ACH-001061]
+
+scales: [raw]
+tier: within
+models: [M0, M1, M2, M3]
+
+grids:
+  M0: {}
+  M1:
+    alpha: [100.0, 10.0, 1.0, 0.1]
+  M2:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.9, 0.5, 0.1]
+  # Prespecified (protocol §9): 500 trees; leaves of at least 10 or 5 records limit
+  # depth on ~190 training rows; max_features restricts each split. Tuned by the same
+  # grouped inner 5-fold CV (weighted MAE) inside each outer training fold.
+  M3:
+    min_samples_leaf: [10, 5]
+    max_features: [0.33, 1.0]
+
+validation:
+  k_outer: 5
+  k_inner: 5
+  repeats: 10
+
+seeds:
+  base_seed: 20261021
+
+fit:
+  component_weighting: true
+
+predictions:
+  clip_raw_to_unit_interval: true
+
+controls:
+  permuted_outcome: 0
+  random_gene_sets: 0
+
+inference:
+  method: not_assessable
+  alpha_one_sided: 0.05
+  bh_q: 0.05
+  decision_file: null
+  decision_sha256: null
+
+output_dir: results/models

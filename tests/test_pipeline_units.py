@@ -457,6 +457,12 @@ def test_adoption_rule() -> None:
     )
     assert noisy["repeats"] is None and noisy["repeats_status"] == "R_rule_not_met"
     assert noisy["recheck_required"] is True
+    # more than 1% non-finite bounds in any scenario disqualifies a method
+    unstable = summary.assign(n_replicates=500, n_nonfinite_bounds=[6, 0, 0, 0])
+    assert (
+        adopt(unstable, nsim=500, alpha=0.05, simulated_repeats=10)["adopted_method"]
+        == "not_assessable"
+    )
 
 
 def test_simulation_checkpoints_are_verified(tmp_path: Path) -> None:

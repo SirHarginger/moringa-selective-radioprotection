@@ -1,0 +1,43 @@
+\babel@toc {british}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {1}{\ignorespaces Project objectives and their status.}}{6}{table.caption.15}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {2}{\ignorespaces Data resources, releases, identifiers and licences.}}{7}{table.caption.16}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3}{\ignorespaces The five prespecified models of the primary benchmark.}}{9}{table.caption.18}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4}{\ignorespaces Dataset composition by tissue}}{14}{table.caption.19}%
+\contentsline {table}{\numberline {5}{\ignorespaces Model comparison}}{14}{table.caption.21}%
+\contentsline {table}{\numberline {6}{\ignorespaces The primary difference as recorded in three saved output files.}}{15}{table.caption.24}%
+\contentsline {table}{\numberline {7}{\ignorespaces Tissue-specific performance}}{18}{table.caption.27}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {8}{\ignorespaces The exploratory and robustness layer: questions, runs and execution status.}}{20}{table.caption.29}%
+\contentsline {table}{\numberline {9}{\ignorespaces Exploratory model comparison including the random forest M3}}{21}{table.caption.30}%
+\contentsline {table}{\numberline {10}{\ignorespaces Leave-one-tissue-out performance by held-out tissue}}{21}{table.caption.31}%
+\contentsline {table}{\numberline {11}{\ignorespaces Outcome-scale sensitivity of the primary comparison}}{22}{table.caption.32}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {12}{\ignorespaces Candidate ranking}}{28}{table.caption.42}%
+\contentsline {table}{\numberline {13}{\ignorespaces What a compound tier does and does not say.}}{32}{table.caption.50}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {14}{\ignorespaces Results supported by the saved outputs, separated from plausible explanations that are not established.}}{36}{table.caption.54}%
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {15}{\ignorespaces Analyses implemented and tested but not executed.}}{38}{table.caption.61}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\def \@chapapp {\appendixname }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {S1}{\ignorespaces $\mitDelta $MAE per cross-validation repeat}}{46}{table.caption.76}%
+\contentsline {table}{\numberline {S2}{\ignorespaces Within-tissue Spearman correlation (corrected version)}}{46}{table.caption.77}%
+\contentsline {table}{\numberline {S3}{\ignorespaces Exploratory Hallmark gene-set ranking}}{48}{table.S3}%
+\contentsline {table}{\numberline {S4}{\ignorespaces Cell-line discrepancy review}}{50}{table.S4}%
+\contentsline {table}{\numberline {S5}{\ignorespaces \textit {Moringa} constituent inventory}}{54}{table.S5}%
+\contentsline {table}{\numberline {S6}{\ignorespaces Compound--biology evidence}}{58}{table.S6}%
+\contentsline {table}{\numberline {S7}{\ignorespaces Written justification of every ranking score}}{60}{table.S7}%
+\contentsline {table}{\numberline {S8}{\ignorespaces Compound--pathway measured-gene overlap}}{62}{table.S8}%
+\contentsline {table}{\numberline {S9}{\ignorespaces Correspondence between the result tables of this report, the project's table identifiers and the saved output files.}}{63}{table.caption.80}%
+\contentsline {table}{\numberline {S10}{\ignorespaces Configuration file and script for each step of the pipeline.}}{64}{table.caption.81}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

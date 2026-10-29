@@ -1,0 +1,289 @@
+\chapter{Machine-learning experiments and results}\label{ch:results}
+
+\section{The analysed cohort}\label{sec:cohort}
+
+The analysis cohort comprises \textbf{241 eligible records forming 237 independent
+biological components} across 20 tissues (Table~\ref{tab:composition};
+Figure~\ref{fig:cohort}a). Nine tissues have at least ten components and form their own
+cross-validation strata: Lung (46), CNS/Brain (23), Esophagus/Stomach (23), Bowel (21), Head
+and Neck (18), Breast (17), Pancreas (16), Bladder/Urinary Tract (11) and Ovary/Fallopian
+Tube (10). The remaining eleven tissues, from Skin (9) to Biliary Tract (1), are pooled.
+Seven components contain more than one record, and seven expression profiles are flagged
+as stranded RNA preparations.
+
+\begin{table}[tbp]
+  \caption[Dataset composition by tissue]{Dataset composition by tissue of origin
+    (OncotreeLineage). Components group related cell lines; tissues with fewer than ten
+    components are pooled into one cross-validation stratum. Source:
+    \path{results/tables/primary_v1/publication_v1/table_1_dataset_composition.csv}.}
+  \label{tab:composition}
+  \small
+  \begin{tabular}{@{}L{0.30\linewidth}S[table-format=2.0]S[table-format=3.0]S[table-format=1.0]S[table-format=1.0]L{0.20\linewidth}@{}}
+    \toprule
+    \thead{Tissue} & {\thead{Records}} & {\thead{Components}}
+      & {\thead{Multi-record}} & {\thead{Stranded RNA}} & \thead{Stratification} \\
+    \midrule
+    Lung & 46 & 46 & 1 & 1 & own stratum \\
+    CNS/Brain & 23 & 23 & 1 & 2 & own stratum \\
+    Esophagus/Stomach & 23 & 23 & 0 & 0 & own stratum \\
+    Bowel & 23 & 21 & 2 & 1 & own stratum \\
+    Head and Neck & 18 & 18 & 0 & 0 & own stratum \\
+    Breast & 17 & 17 & 0 & 0 & own stratum \\
+    Pancreas & 16 & 16 & 0 & 1 & own stratum \\
+    Bladder/Urinary Tract & 11 & 11 & 0 & 0 & own stratum \\
+    Ovary/Fallopian Tube & 10 & 10 & 0 & 0 & own stratum \\
+    \addlinespace
+    Skin & 9 & 9 & 0 & 0 & pooled \\
+    Bone & 9 & 8 & 1 & 1 & pooled \\
+    Uterus & 9 & 8 & 1 & 0 & pooled \\
+    Pleura & 6 & 6 & 0 & 0 & pooled \\
+    Prostate & 5 & 5 & 0 & 1 & pooled \\
+    Kidney & 3 & 3 & 0 & 0 & pooled \\
+    Liver & 3 & 3 & 0 & 0 & pooled \\
+    Peripheral Nervous System & 3 & 3 & 1 & 0 & pooled \\
+    Soft Tissue & 3 & 3 & 0 & 0 & pooled \\
+    Thyroid & 3 & 3 & 0 & 0 & pooled \\
+    Biliary Tract & 1 & 1 & 0 & 0 & pooled \\
+    \midrule
+    \textbf{All} & \bfseries 241 & \bfseries 237 & \bfseries 7 & \bfseries 7 & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Observed mSF2 spans almost the whole possible interval, and tissue medians differ visibly
+(Figure~\ref{fig:cohort}b), which is why a tissue-only model is the appropriate baseline
+against which to judge expression features. Two of the three cell lines of the motivating
+study are present: MCF-7 (observed mSF2 0.52) and DU145 (0.71). They are shown as context
+only. V79 is a Chinese hamster line and has no counterpart in this human cohort.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_02_dataset_composition}
+  \caption[Composition and radiosensitivity of the analysed cohort]{Composition and
+    radiosensitivity of the analysed cohort (241 eligible records, 237 independent
+    biological components). (a)~Independent components per tissue (OncotreeLineage); the
+    dashed line marks the ten-component threshold above which a tissue forms its own
+    cross-validation stratum. (b)~Distribution of observed CLARIFi mSF2, the
+    literature-median clonogenic surviving fraction at 2~Gy, with one point per independent
+    component so that related cell lines count once; tissues with fewer than ten components
+    are pooled. Boxes show the median and interquartile range; whiskers extend to 1.5 times
+    the interquartile range. Open diamonds mark MCF-7 and DU145, two of the three lines of
+    the motivating \textit{Moringa} study, shown as context only: no statement about
+    \textit{Moringa} extracts or radioprotection is made or implied.}
+  \label{fig:cohort}
+\end{figure}
+
+\section{Model comparison}\label{sec:comparison}
+
+Table~\ref{tab:performance} and Figure~\ref{fig:performance} summarise the out-of-fold
+performance of the five prespecified models. Two results stand out.
+
+First, \textbf{expression features reduce the error, and the reduction is small}. Relative
+to the tissue-only baseline, M2 lowers the mean absolute error by $\Delta\mathrm{MAE} =
+0.00383$ mSF2 units (Equation~\ref{eq:dmae}), or 2.85\% of the baseline MAE, and it has the
+lower error in \textbf{nine of ten} cross-validation repeats; the exception, repeat~7,
+favours M1 by 0.0024 (Table~\ref{tab:s1}). The proliferation-adjusted sensitivity
+comparison agrees in direction and size: M2P improves on M1P by 0.00387 and is better in
+all ten repeats.
+
+Second, \textbf{no model predicts well}. Out-of-sample $R^2$ ranges from $-0.018$ to
+$+0.013$, so every model is approximately as accurate as predicting the cohort mean, and
+the tissue-only model is marginally \emph{worse} than the global mean on both MAE and
+$R^2$.
+
+\begin{table}[tbp]
+  \caption[Model comparison]{Out-of-fold performance of the five prespecified models.
+    MAE, RMSE and changes in MAE are in mSF2 units; all values are component-weighted and
+    averaged over ten repeats of grouped five-fold cross-validation. \enquote{Change vs M1}
+    and \enquote{Change vs M0} are the reductions in MAE relative to those models (positive
+    means a lower error); the paired $\Delta$MAE is the primary estimand of
+    Equation~\ref{eq:dmae}, computed against M1 for M2 and against M1P for M2P.
+    Descriptive only: superiority was not formally assessed. Source:
+    \path{results/tables/primary_v1/publication_v1/table_2_model_comparison.csv}.}
+  \label{tab:performance}
+  \footnotesize\setlength{\tabcolsep}{3.2pt}
+  \begin{tabular}{@{}l
+      S[table-format=1.6]S[table-format=1.6]S[table-format=-1.6]
+      S[table-format=-1.2]S[table-format=1.2]
+      S[table-format=-1.6]S[table-format=-1.2]S[table-format=-1.6]
+      S[table-format=1.6]c@{}}
+    \toprule
+    \thead{Model} & {\thead{MAE}} & {\thead{RMSE}} & {\thead{$R^2_{\mathrm{oos}}$}}
+      & {\thead{Slope}} & {\thead{Int.}}
+      & {\thead{Change}} & {\thead{\%}} & {\thead{Change}}
+      & {\thead{Paired}} & \thead{Repeats} \\
+    & & & & \multicolumn{2}{c}{\thead{calibration}} & \multicolumn{2}{c}{\thead{vs M1}}
+      & {\thead{vs M0}} & {\thead{$\Delta$MAE}} & \thead{favouring} \\
+    \midrule
+    M0  & 0.133624 & 0.170755 & -0.009497 & -4.00 & 2.92 & 0.000605 & 0.45 & 0.000000 & {\na} & \na \\
+    M1  & 0.134228 & 0.171494 & -0.018275 & -1.21 & 1.29 & 0.000000 & 0.00 & -0.000605 & {\na} & \na \\
+    M1P & 0.134259 & 0.171304 & -0.016026 & -0.05 & 0.61 & -0.000031 & -0.02 & -0.000636 & {\na} & \na \\
+    \textbf{M2} & \bfseries 0.130397 & \bfseries 0.169115 & \bfseries 0.009347 & 0.65 & 0.21
+        & 0.003832 & 2.85 & 0.003227 & \bfseries 0.003832 & 9/10 \\
+    M2P & 0.130388 & 0.168841 & 0.012822 & 0.63 & 0.22 & 0.003840 & 2.86 & 0.003235 & 0.003871 & 10/10 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_03_model_performance}
+  \caption[Out-of-fold predictive performance of the five models]{Out-of-fold predictive
+    performance of the five prespecified models (M0 global mean, M1 tissue only, M1P tissue
+    and proliferation, M2 tissue and 50 Hallmark expression scores, M2P tissue,
+    proliferation and expression). (a)~Component-weighted mean absolute error in mSF2
+    units, with bars starting at zero. (b)~Out-of-sample $R^2$, where zero corresponds to
+    predicting the cohort mean; every model lies close to zero. (c)~Paired difference in
+    MAE in each of the ten cross-validation repeats for the primary comparison (M2 against
+    M1) and the proliferation-adjusted comparison (M2P against M1P); positive values favour
+    the richer model, the thick bar is the mean over repeats, and the upper axis expresses
+    the difference as a percentage of MAE(M1). Repeats re-split the same 237 components, so
+    their spread shows split-to-split variability, not sampling uncertainty; no interval is
+    shown because no interval method was validated for this design.}
+  \label{fig:performance}
+\end{figure}
+
+\paragraph{Reconciliation of the reported difference.}
+Three saved files report the primary difference, and they agree exactly once the estimand
+is named (Table~\ref{tab:reconciliation}). The first three entries are the same quantity
+computed in three ways. The record-weighted value differs by $1.5\times10^{-5}$, 0.4\% of
+the estimate; it is not a discrepancy but a different weighting, which gives components with
+several records more influence. The protocol specifies the component-weighted estimate, and
+that value is used throughout. The relative figure of 2.85\% is $0.0038317/0.1342282$.
+
+\begin{table}[tbp]
+  \caption{The primary difference as recorded in three saved output files.}
+  \label{tab:reconciliation}
+  \footnotesize
+  \begin{tabular}{@{}L{0.37\linewidth}S[table-format=1.16]L{0.37\linewidth}@{}}
+    \toprule
+    \thead{Source} & {\thead{Value}} & \thead{Estimand} \\
+    \midrule
+    \path{comparisons.csv}, \path{delta_mae} & 0.0038316558867076
+      & Paired, component-weighted, mean over repeats (primary) \\
+    \path{model_metrics.csv}, MAE(M1)$\,-\,$MAE(M2) & 0.0038316558867076
+      & Difference of the two component-weighted MAEs \\
+    \path{per_repeat_delta_mae.csv}, mean of 10 repeats & 0.0038316558867076
+      & Mean of the ten per-repeat values \\
+    \path{comparisons.csv}, \path{record_weighted_delta_mae} & 0.0038170756763974
+      & Paired, record-weighted (each of 241 records weighted equally) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{What the comparison establishes.}
+The improvement is a descriptive estimate. Superiority was \emph{not} formally assessed: the
+coverage simulation that would have validated an interval method was deferred
+(Section~\ref{sec:deviation}), so no interval or $p$-value is reported. No negative-control
+draws were run, so the gain cannot be placed against a permuted-outcome or random-gene-set
+reference. Repeated cross-validation is not external validation: the ten repeats re-split
+the same 237 components, so their spread measures split-to-split variability rather than
+sampling uncertainty, and says nothing about behaviour on an independent cohort.
+
+\section{Why out-of-sample $R^2$ stays near zero}\label{sec:shrinkage}
+
+Figure~\ref{fig:prediction} shows the mechanism directly. Predictions from M1 and M2 occupy a
+narrow band close to the cohort mean, while the observations span almost the entire
+interval. The models are therefore less miscalibrated than uninformative: they shrink
+heavily towards the mean because the features support little more. The calibration slopes
+agree with this reading, moving from $-4.00$ for M0 and $-1.21$ for M1 to 0.65 for M2 and
+0.63 for M2P (Table~\ref{tab:performance}); the strongly negative slopes of M0 and M1 are an
+artefact of their predictions being nearly constant within a tissue
+(Section~\ref{sec:correction}).
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_04_prediction_behaviour}
+  \caption[Why the out-of-sample $R^2$ stays near zero]{Why the out-of-sample $R^2$ stays
+    near zero. (a,~b)~Observed against out-of-fold predicted mSF2 for the tissue-only model
+    M1 and the tissue-plus-expression model M2. Each point is one independent biological
+    component (records of a component averaged; each prediction already averaged over the
+    ten repeats). The dashed line is the identity, and both axes span the full range of the
+    endpoint. (c)~Empirical cumulative distributions of the observed values and of the
+    predictions of both models. The predictions occupy a narrow band near the cohort mean
+    while the observations span almost the whole interval: the behaviour of a model with
+    little usable signal rather than of a miscalibrated one. No trend line is fitted.}
+  \label{fig:prediction}
+\end{figure}
+
+\section{Tissue-level and repeat-level behaviour}\label{sec:tissue}
+
+Across the nine well-supported tissues, M2 achieves the lower error in \textbf{eight}
+(Table~\ref{tab:tissue}; Figure~\ref{fig:tissue}). The largest improvements are in
+Ovary/Fallopian Tube (0.0112), Breast (0.0084) and Head and Neck (0.0075). The exception is
+instructive: in \textbf{Pancreas, M2 is worse by 0.0110}, nearly three times the size of the
+pooled gain. A pooled improvement of this size is therefore not uniform across tissues, and
+it would be misleading to present it as a general property of the model. Estimates for
+tissues with fewer than ten components are shown in Table~\ref{tab:tissue} for completeness
+but are unstable and are not interpreted.
+
+Prediction stability across repeats (Figure~\ref{fig:s-variability}) is higher for the
+tissue-only models, whose prediction is a shrunken tissue mean, than for the expression
+models, as expected.
+
+\begin{table}[tbp]
+  \caption[Tissue-specific performance]{Component-weighted out-of-fold MAE by tissue
+    (mSF2 units) and the difference $\Delta\mathrm{MAE}=\mathrm{MAE(M1)}-\mathrm{MAE(M2)}$;
+    positive values mean the expression model had the lower error. Tissues below the rule
+    have fewer than ten components; their estimates are descriptive only and unstable.
+    Source: \path{results/tables/primary_v1/publication_v1/table_3_tissue_performance.csv}.}
+  \label{tab:tissue}
+  \small
+  \begin{tabular}{@{}l S[table-format=2.0] S[table-format=1.4] S[table-format=1.4]
+      S[table-format=1.4] S[table-format=-1.4] l@{}}
+    \toprule
+    \thead{Tissue} & {\thead{Components}} & {\thead{MAE M0}} & {\thead{MAE M1}}
+      & {\thead{MAE M2}} & {\thead{$\Delta$MAE}} & \thead{Direction} \\
+    \midrule
+    Lung & 46 & 0.1251 & 0.1258 & 0.1249 & 0.0009 & M2 lower \\
+    CNS/Brain & 23 & 0.1558 & 0.1580 & 0.1538 & 0.0042 & M2 lower \\
+    Esophagus/Stomach & 23 & 0.1252 & 0.1279 & 0.1277 & 0.0002 & M2 lower \\
+    Bowel & 21 & 0.1512 & 0.1511 & 0.1471 & 0.0040 & M2 lower \\
+    Head and Neck & 18 & 0.0756 & 0.0720 & 0.0645 & 0.0075 & M2 lower \\
+    Breast & 17 & 0.1051 & 0.1050 & 0.0966 & 0.0084 & M2 lower \\
+    Pancreas & 16 & 0.0921 & 0.0934 & 0.1044 & -0.0110 & \textbf{M2 higher} \\
+    Bladder/Urinary Tract & 11 & 0.1252 & 0.1255 & 0.1202 & 0.0053 & M2 lower \\
+    Ovary/Fallopian Tube & 10 & 0.2216 & 0.2272 & 0.2160 & 0.0112 & M2 lower \\
+    \midrule
+    Skin & 9 & 0.1601 & 0.1630 & 0.1653 & -0.0023 & M2 higher \\
+    Bone & 8 & 0.1287 & 0.1317 & 0.1290 & 0.0027 & M2 lower \\
+    Uterus & 8 & 0.1866 & 0.1791 & 0.1484 & 0.0308 & M2 lower \\
+    Pleura & 6 & 0.1855 & 0.1802 & 0.1788 & 0.0014 & M2 lower \\
+    Prostate & 5 & 0.1078 & 0.1102 & 0.0828 & 0.0275 & M2 lower \\
+    Kidney & 3 & 0.1627 & 0.1674 & 0.1666 & 0.0008 & M2 lower \\
+    Liver & 3 & 0.0430 & 0.0435 & 0.0696 & -0.0261 & M2 higher \\
+    Peripheral Nervous System & 3 & 0.2041 & 0.2036 & 0.1985 & 0.0051 & M2 lower \\
+    Soft Tissue & 3 & 0.1117 & 0.1109 & 0.1255 & -0.0146 & M2 higher \\
+    Thyroid & 3 & 0.1556 & 0.1576 & 0.1306 & 0.0270 & M2 lower \\
+    Biliary Tract & 1 & 0.4168 & 0.4146 & 0.3728 & 0.0418 & M2 lower \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_05_tissue_performance}
+  \caption[Performance by tissue of origin]{Performance by tissue of origin for the nine
+    tissues with at least ten independent components; the number of components is given
+    beside each tissue name. (a)~Component-weighted out-of-fold MAE of each model, in mSF2
+    units; lighter cells are lower error. (b)~The difference MAE(M1)$\,-\,$MAE(M2) for the
+    same tissues in the same order; positive values (blue) mean the expression model had
+    the lower error. Differences are small relative to the errors themselves and
+    descriptive only: they come from one cross-validated run and no per-tissue inference
+    was performed.}
+  \label{fig:tissue}
+\end{figure}
+
+\section{A reporting correction}\label{sec:correction}
+
+The first version of the within-tissue Spearman analysis reported strongly negative rank
+correlations for M1 in all nine larger tissues. Inspection of the code established the
+cause. Every fitted M1 predicts a single value per tissue, the shrunken training-fold tissue
+mean, so a held-out line's pooled out-of-fold prediction is effectively the mean of the
+\emph{other} lines of its tissue, which falls as the line's own value rises. This is a
+leave-fold-out mean artefact, not a biological finding, and for M0 and M1 the statistic
+measures no within-tissue ranking at all. The corrected table (Table~\ref{tab:s4}) reports
+the statistic as undefined wherever a model's prediction is constant within a tissue, and
+its defined values carry an explicit downward-bias caveat. The original pooled within-tissue
+correlations are not interpreted anywhere in this report; the first version is retained
+unchanged for audit.

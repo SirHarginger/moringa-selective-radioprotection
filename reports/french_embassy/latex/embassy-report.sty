@@ -1,0 +1,194 @@
+% embassy-report.sty -- house style of the French Embassy scientific project report.
+% Presentation only; the scientific content is in chapters/, tables/ and appendices/.
+% Engine: LuaLaTeX (fontspec, unicode-math, microtype font expansion).
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{embassy-report}[2026/10/22 House style for the project report]
+
+\RequirePackage{iftex}
+\RequireLuaTeX % stop early, with a clear message, under pdfLaTeX or XeLaTeX
+
+% ---------------------------------------------------------------- language and fonts
+\RequirePackage[british]{babel}
+\RequirePackage{amsmath}
+\RequirePackage{fontspec}
+\RequirePackage{unicode-math}
+% Rare glyphs absent from Libertine are taken from DejaVu instead of being dropped.
+\directlua{luaotfload.add_fallback("reportfallback",
+  {"DejaVu Serif:mode=node;", "DejaVu Sans:mode=node;"})}
+\setmainfont{Linux Libertine O}[
+  Ligatures=TeX, Numbers={Proportional,Lining},
+  RawFeature={fallback=reportfallback}]
+\setsansfont{Linux Biolinum O}[
+  Ligatures=TeX, Numbers={Proportional,Lining},
+  RawFeature={fallback=reportfallback}]
+\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+\setmathfont{TeX Gyre Pagella Math}[Scale=MatchUppercase]
+\tracinglostchars=3 % a character missing from every font is an error, not a blank
+\RequirePackage[protrusion=true,expansion=true,tracking=false]{microtype}
+\linespread{1.08}
+\emergencystretch=1.5em
+\RequirePackage{csquotes}
+\RequirePackage[version=4]{mhchem}
+
+% ------------------------------------------------------------------- page geometry
+\RequirePackage[a4paper,top=27mm,bottom=30mm,left=26mm,right=26mm,
+  headheight=15pt,headsep=9mm,footskip=12mm]{geometry}
+
+% --------------------------------------------------------------------------- colour
+\RequirePackage{xcolor}
+\definecolor{reportnavy}{HTML}{1F3A5F}
+\definecolor{reportgrey}{HTML}{5B6573}
+\definecolor{reportrule}{HTML}{AEB8C4}
+\definecolor{reportpale}{HTML}{EEF2F6}
+
+% ------------------------------------------------------------------------ headings
+\setkomafont{disposition}{\normalfont\sffamily\bfseries\color{reportnavy}}
+\setkomafont{chapter}{\huge}
+\setkomafont{section}{\Large}
+\setkomafont{subsection}{\large}
+\setkomafont{subsubsection}{\normalsize}
+\setkomafont{paragraph}{\normalfont\sffamily\bfseries\color{reportnavy}}
+\RedeclareSectionCommand[beforeskip=0pt,afterskip=1.8\baselineskip]{chapter}
+\RedeclareSectionCommand[beforeskip=-2.2ex plus -0.6ex minus -0.2ex,
+  afterskip=1ex plus 0.2ex]{section}
+\RedeclareSectionCommand[beforeskip=-1.8ex plus -0.5ex minus -0.2ex,
+  afterskip=0.7ex plus 0.2ex]{subsection}
+\renewcommand*{\chapterformat}{%
+  {\color{reportgrey}\thechapter}\enskip
+  {\color{reportrule}\rule[-0.15em]{0.9pt}{0.95em}}\enskip}
+\renewcommand*{\chapterlinesformat}[3]{%
+  \@hangfrom{#2}{#3}\par\nobreak\vspace{0.9ex}%
+  {\color{reportrule}\rule{\linewidth}{0.5pt}}}
+\setcounter{secnumdepth}{\subsectionnumdepth}
+\setcounter{tocdepth}{\sectiontocdepth}
+
+% ------------------------------------------------------------- headers and footers
+\RequirePackage[automark,headsepline=0.4pt]{scrlayer-scrpage}
+\setkomafont{pageheadfoot}{\normalfont\sffamily\footnotesize\color{reportgrey}}
+\setkomafont{pagenumber}{\normalfont\sffamily\footnotesize\color{reportnavy}}
+\addtokomafont{headsepline}{\color{reportrule}}
+\clearpairofpagestyles
+\automark[chapter]{chapter}
+\ohead{\leftmark}
+\ifoot{From \textit{Moringa oleifera} radiobiology to explainable machine learning}
+\ofoot*{\pagemark}
+\pagestyle{scrheadings}
+\renewcommand*{\chaptermarkformat}{\thechapter\enskip}
+
+% --------------------------------------------------------------------- paragraphs
+\RequirePackage{enumitem}
+\setlist{itemsep=0.25ex,topsep=0.6ex,parsep=0.2ex}
+\setlist[enumerate]{leftmargin=2.2em}
+
+% -------------------------------------------------------------------------- floats
+\RequirePackage{graphicx}
+\graphicspath{{figures/}}
+\newcommand{\ReportFigureMaxHeight}{0.56\textheight}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.5}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.72}
+\setcounter{topnumber}{2}
+\setcounter{totalnumber}{3}
+\setlength{\floatsep}{14pt plus 4pt minus 2pt}
+\setlength{\textfloatsep}{16pt plus 4pt minus 4pt}
+% Figures and tables are numbered through the report (1, 2, ...); the appendices use
+% S1, S2, ... (see \reportappendix).
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+\RequirePackage{caption}
+\DeclareCaptionLabelFormat{reportlabel}{\textcolor{reportnavy}{\sffamily\bfseries #1~#2}}
+\captionsetup{font={small},labelformat=reportlabel,labelsep=period,
+  justification=justified,singlelinecheck=false,skip=6pt,margin=0pt}
+\captionsetup[figure]{position=bottom}
+\captionsetup[table]{position=top,skip=4pt}
+
+% -------------------------------------------------------------------------- tables
+\RequirePackage{array,booktabs,longtable,pdflscape,multirow}
+\RequirePackage[group-digits=integer,group-separator={,},group-minimum-digits=5]{siunitx}
+% siunitx v3: numbers in the text font (Libertine), keeping bold where requested.
+\sisetup{mode=text, reset-text-series=false, text-series-to-math=true,
+  table-number-alignment=center}
+\setlength{\LTpre}{6pt}
+\setlength{\LTpost}{4pt}
+\AtBeginDocument{\setlength{\LTcapwidth}{\textwidth}}
+\setlength{\aboverulesep}{0.3ex}
+\setlength{\belowrulesep}{0.5ex}
+\renewcommand{\arraystretch}{1.12}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcommand{\thead}[1]{{\sffamily\bfseries\color{reportnavy}#1}}
+\newcommand{\tcont}[1]{{\sffamily\itshape\color{reportgrey}#1}}
+\newcommand{\na}{{\color{reportgrey}—}}
+\newcommand{\tablenote}[1]{%
+  \par\vspace{3pt}{\footnotesize\raggedright
+  \textcolor{reportnavy}{\sffamily\bfseries Note.}\ #1\par}\vspace{8pt}}
+% Tabular figures inside every table so that decimals line up.
+\AtBeginEnvironment{tabular}{\addfontfeatures{Numbers={Monospaced,Lining}}}
+\AtBeginEnvironment{longtable}{\addfontfeatures{Numbers={Monospaced,Lining}}}
+
+% ------------------------------------------------------- code, paths, DOIs, links
+\RequirePackage{xurl}
+\DeclareUrlCommand\path{\urlstyle{tt}}
+\newcommand{\doilink}[1]{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+
+% ------------------------------------------------------------------- boxed messages
+\RequirePackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{keybox}[1][]{enhanced,breakable,colback=reportpale,colframe=reportnavy,
+  boxrule=0pt,leftrule=2.5pt,arc=0pt,left=8pt,right=8pt,top=6pt,bottom=6pt,
+  fonttitle=\sffamily\bfseries,coltitle=reportnavy,attach title to upper={\ },#1}
+
+% ----------------------------------------------------------------------- bibliography
+\RequirePackage[backend=biber,style=authoryear-comp,maxcitenames=2,mincitenames=1,
+  maxbibnames=99,giveninits=true,uniquename=false,uniquelist=false,dashed=false,
+  doi=true,url=false,isbn=false,eprint=false,date=year,sorting=nyt]{biblatex}
+% The `note` fields of references.bib are internal verification records; not printed.
+\DeclareSourcemap{\maps[datatype=bibtex]{\map{
+  \step[fieldset=note,null]
+  \step[fieldset=pmid,null]}}}
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+\DeclareFieldFormat[article,misc]{title}{#1}
+\DeclareFieldFormat{pages}{#1}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+\renewbibmacro*{in:}{}
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}\printfield{number}\setunit{\addcomma\space}\printfield{eid}}
+\setlength{\bibitemsep}{0.45\baselineskip}
+\setlength{\bibhang}{1.4em}
+\renewcommand*{\bibfont}{\small}
+\providecommand{\textalpha}{α}
+\providecommand{\textbeta}{β}
+\providecommand{\textkappa}{κ}
+
+% ------------------------------------------------------------------------ hyperlinks
+\RequirePackage{hyperref}
+\RequirePackage{bookmark}
+\hypersetup{colorlinks=true,linkcolor=reportnavy,citecolor=reportnavy,
+  urlcolor=reportnavy,bookmarksnumbered=true,bookmarksopen=true,
+  bookmarksopenlevel=0,pdflang=en-GB,pdfdisplaydoctitle=true}
+
+% ------------------------------------------------------------------ lists of contents
+\DeclareTOCStyleEntries[dynnumwidth=true]{tocline}{figure,table}
+\DeclareTOCStyleEntry[beforeskip=0.9em plus 1pt]{tocline}{chapter}
+\setkomafont{chapterentry}{\sffamily\bfseries\color{reportnavy}}
+
+% ------------------------------------------------------------------------ appendices
+% Appendix sections are lettered; supplementary figures and tables are S1, S2, ...
+\newcommand{\reportappendix}{%
+  \appendix
+  \addchap{Appendices}%
+  \setcounter{section}{0}%
+  \renewcommand{\thesection}{\Alph{section}}%
+  \renewcommand{\theHsection}{appendix.\Alph{section}}%
+  \renewcommand*{\sectionformat}{Appendix~\thesection\enskip}%
+  \setcounter{figure}{0}%
+  \renewcommand{\thefigure}{S\arabic{figure}}%
+  \renewcommand{\theHfigure}{S\arabic{figure}}%
+  \setcounter{table}{0}%
+  \renewcommand{\thetable}{S\arabic{table}}%
+  \renewcommand{\theHtable}{S\arabic{table}}%
+}
+
+\endinput

@@ -1,0 +1,59 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(*python* *)",
+      "Bash(*jupyter*)",
+      "Bash(*Rscript*)",
+      "Bash(*papermill*)",
+      "Bash(*snakemake*)",
+      "Bash(*dvc repro*)",
+      "Edit(/data/raw/**)",
+      "Edit(/.claude/**)",
+      "Edit(/.git/**)",
+      "Edit(/.venv/**)",
+      "Edit(~/.claude/settings.json)",
+      "Edit(~/.claude/settings.local.json)",
+      "Edit(~/.gitconfig)",
+      "Edit(~/.config/git/**)"
+    ],
+    "ask": [
+      "Edit(/.gitignore)",
+      "Edit(/data/manifests/**)",
+      "Edit(/pyproject.toml)",
+      "Edit(**/ruff.toml)",
+      "Edit(**/.ruff.toml)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session_note.py"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block_model_execution.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/block_model_execution.py"
+          }
+        ]
+      }
+    ]
+  }
+}

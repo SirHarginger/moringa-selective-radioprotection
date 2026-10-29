@@ -19,11 +19,14 @@ figures:
     slug: delta_mae
     kind: effect_forest
     inputs: {comparisons: comparisons.csv}
-    options: {method: component_bootstrap}   # set to the adopted method after the simulation
+    # Descriptive-only route (D04.06): no validated interval, so point estimates only.
+    # After a completed simulation, set method to the adopted interval method.
+    options: {method: none}
     caption: >
-      Paired component-weighted dMAE (positive: richer model better) with 90% intervals
-      (method stated on the axis). n = components. Estimation only; no claim of
-      biological or clinical meaningfulness.
+      Paired component-weighted dMAE (positive: richer model better), point estimates
+      averaged over cross-validation repeats. n = components. No interval is shown because
+      no interval method was validated by simulation; superiority was not formally
+      assessed. Estimation only; no claim of biological or clinical meaningfulness.
   - id: fig_03
     slug: tissue_errors
     kind: tissue_errors
@@ -38,14 +41,7 @@ figures:
     options: {comparison: "primary: tissue+expression vs tissue"}
     caption: >
       dMAE of each cross-validation repeat (split variability, not sampling uncertainty).
-  - id: fig_s02
-    slug: gene_set_stability
-    kind: stability_vs_null
-    inputs: {tests: explainability/gene_set_tests.csv}
-    caption: >
-      Mean grouped permutation importance of Hallmark scores; dark bars only where
-      attribution is permitted (primary gain shown and BH q = 0.05 against both nulls).
-      Associations in-model, hypothesis-generating.
+  # fig_s02 (gene-set stability) needs the explainability tables: configs/figures_explainability.yaml
   - id: fig_s03
     slug: moringa_context_lines
     kind: supplementary_case_lines

@@ -1,0 +1,124 @@
+# NEGATIVE-CONTROL RUN (D05.06). Identical to configs/experiment.yaml in every scientific
+# respect except `run_id` and `controls`. Nothing in results/models/primary_v1 is touched.
+#
+# WHY THIS RUN EXISTS. The primary run completed with zero negative-control draws, so
+# `gene_set_tests.csv` holds no p-values, `attribution_permitted` is false for every gene
+# set, the stability gate is infeasible, and no pathway can exceed tier C. Controls are the
+# single missing ingredient that is both scientifically decisive and computationally
+# affordable: the deferred coverage simulation is not.
+#
+# WHAT A CONTROL DRAW IS. For each draw the pipeline refits M1 and M2 (permuted-outcome
+# null) or M2 on matched random gene sets (random-set null) on REPEAT 0 ONLY, five outer
+# folds, using the same splits, seeds, grids and nested tuning as the real fits. Tasks per
+# draw: 2 x 5 = 10 for `permuted_outcome`, 1 x 5 = 5 for `random_gene_sets`.
+#
+# COST, measured rather than guessed. The primary run computed 250 tasks in about 9.4
+# minutes of wall-clock time with 6 workers (results/models/primary_v1: session started
+# 00:30:21 UTC, run_status updated 00:39:45 UTC), i.e. about 2.3 s per task at 6 workers.
+# At 1000 draws of each null this run is 250 real + 15,000 control tasks, so roughly
+#   15,000 x 2.3 s  =  about 9.5 hours
+# as a lower bound. Control tasks are M1 and M2 only, and M2 is among the most expensive
+# models in the primary mix (36 grid points x 5 inner folds), so the honest planning range
+# is about 10-20 hours at 6 workers. Checkpointing is per task and write-once, so the run
+# can be stopped and resumed without losing work.
+#
+# WHAT IT UNLOCKS, AND WHAT IT DOES NOT.
+#   * Unlocks: a permuted-outcome null distribution for the paired delta-MAE, so the
+#     observed 0.00383 can be compared against what the pipeline produces when expression
+#     cannot carry signal; and per-gene-set p-values against both nulls with BH adjustment,
+#     replacing the current NaN column.
+#   * Does NOT unlock tier A or B on its own. The pathway gate requires BOTH >= 1000 null
+#     draws AND a formally shown prediction gain (a one-sided 95% lower bound above zero).
+#     The lower bound needs the interval method the deferred coverage simulation was to
+#     validate, so `primary_gain_shown` stays false and tiers stay capped at C unless the
+#     investigator first records a protocol amendment adopting the permutation test below
+#     as the inferential route. Read docs/robustness_plan.md before changing `inference`.
+#
+# The 250 real tasks are recomputed here (about 9 minutes) rather than reused from
+# primary_v1, deliberately: this run must be self-contained, primary_v1 must stay
+# byte-frozen, and identical real predictions are then a reproducibility check, which
+# `scripts/verify_run_consistency.py` performs (check 7).
+schema_version: 1
+run_id: controls_v1
+
+inputs:
+  qc_dir: results/tables/phase_01/identifier_qc
+  qc_sha256:
+    eligibility.csv: 2b820626c5321b8a1ab152e1fd08e839e059f451fbe6d45cad393b760423495c
+    components.csv: 3c310374df8c5631675674c90c44d2094b41511e0846315eaca7541d01a7f6da
+    summary.json: b09e74eca4fce81ac2a8e897f8083f5fd57ebf71f8d01f2b07327c735a7ff402
+  clarifi: data/raw/CLARIFi.csv
+  clarifi_manifest: data/manifests/clarifi__v1_0.yaml
+  expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
+  gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+  gene_sets_sha256: f22066af72e215ccb7b89d88e492c07e1eef17534c2ca7b0f9902cfecbbdd8e9
+
+population: primary           # 241 records / 237 components, unchanged
+population_options:
+  min_components_per_tissue: 10
+  stranded_ids: [ACH-000095, ACH-000337, ACH-000455, ACH-000468, ACH-000979, ACH-001001, ACH-001061]
+
+scales: [raw]
+tier: within
+models: [M0, M1, M1P, M2, M2P]   # unchanged, so the real tasks reproduce primary_v1
+
+grids:
+  M0: {}
+  M1:
+    alpha: [100.0, 10.0, 1.0, 0.1]
+  M1P:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.5]
+  M2:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.9, 0.5, 0.1]
+  M2P:
+    alpha: [0.1, 0.01, 0.001]
+    baseline__alpha: [0.1, 0.01, 0.001]
+    baseline__baseline__alpha: [100.0, 10.0, 1.0, 0.1]
+    l1_ratio: [0.9, 0.5, 0.1]
+  M2X:
+    alpha: [0.1, 0.01, 0.001]
+    l1_ratio: [0.9, 0.5, 0.1]
+  M3:
+    min_samples_leaf: [10, 5]
+    max_features: [0.33, 1.0]
+
+validation:
+  k_outer: 5
+  k_inner: 5
+  repeats: 10                 # identical to primary_v1, so splits.parquet is identical
+
+seeds:
+  base_seed: 20261021         # identical, so control draw seeds are reproducible
+
+fit:
+  component_weighting: true
+
+predictions:
+  clip_raw_to_unit_interval: true
+
+# THE ONLY SCIENTIFIC CHANGE IN THIS FILE.
+# 1000 is the protocol's `min_null_draws`, so this is the smallest value that satisfies the
+# gate's draw requirement. Reduce it only knowingly: at 200 draws the minimum attainable
+# p-value is 1/201, the draw gate is NOT met, and no tier can move, so a reduced run buys a
+# descriptive null reference only. Raising it to 1999 (the protocol's upper option) roughly
+# doubles the compute for a finer p-value grid.
+controls:
+  permuted_outcome: 1000
+  random_gene_sets: 1000
+
+inference:
+  # UNCHANGED from the primary run on purpose. Having null draws does not by itself create
+  # a validated interval method, and this file must not silently turn a descriptive result
+  # into an inferential one. Adopting the permutation route requires a recorded amendment
+  # (docs/robustness_plan.md section 2, docs/protocol_amendments.md).
+  method: not_assessable
+  alpha_one_sided: 0.05
+  bh_q: 0.05
+  decision_file: null
+  decision_sha256: null
+
+output_dir: results/models

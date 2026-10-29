@@ -1,0 +1,302 @@
+\chapter{\textit{Moringa} compound evidence and candidate prioritisation}\label{ch:compounds}
+
+\section{Verified constituents of \textit{Moringa oleifera} seed and leaf}\label{sec:constituents}
+
+Curation produced a provenance-carrying inventory of \textit{M.~oleifera} seed and leaf
+constituents drawn from primary analytical studies, with the extraction solvent,
+identification method, DOI verification route and reading depth of each report recorded
+(Table~\ref{tab:c1}). Three findings are substantive in themselves.
+
+\paragraph{Only one constituent is confirmed in the solvent the original study used.}
+\textcite{abdelsayed2021jfda} isolated \textbf{niazimicin}, a thiocarbamate glycoside, from
+the \textbf{seed methylene-chloride fraction}, confirmed its structure by HRMS, UV, IR, EI-MS
+and one- and two-dimensional NMR, and quantified it by validated UPLC-MS/MS in both the seed
+and the leaf \ce{CH2Cl2} fractions. The same study did \emph{not} detect niazirin or
+glucomoringin there. The only other dichloromethane-specific identifications are GC-MS
+spectral-library matches in leaf DCM material, read at abstract level:
+4-hydroxyphenylacetonitrile and methyl 4-hydroxyphenylacetate \parencite{mohdfisall2021},
+and palmitic acid and \textit{cis}-vaccenic acid \parencite{khandelwal2019}. The latter
+appeared in a journal indexed in neither PubMed nor Europe PMC, its full compound list could
+not be accessed, and electron-impact library matching cannot distinguish the $\Delta^{9}$
+and $\Delta^{11}$ C18:1 isomers without authentic standards.
+
+\paragraph{The identification of several widely cited \enquote{Moringa compounds} is weaker
+than their reputation.} Free quercetin and kaempferol rest only on tentative LC-HRMS
+dereplication without authentic standards and may form by hydrolysis of the abundant
+glycosides during extraction; the forms that primary analytical work actually establishes in
+leaf are the \textbf{glycosides} isoquercitrin, astragalin and rutin. Under the prespecified
+rules the tentative aglycone reports still count as primary seed or leaf reports, so
+quercetin and kaempferol \emph{are} assessable, but only in the weakest identification band
+($D_1=1$). The pharmacokinetic caution applies in both directions: aglycone evidence may not
+be transferred to a glycoside, or the reverse, without explicit justification. Benzyl
+isothiocyanate is \textbf{not} a documented seed or leaf constituent: its precursor, benzyl
+glucosinolate, is reported in \emph{roots}, while seed and leaf carry the
+rhamnosyloxy-benzyl glucosinolate instead. Gallic acid and caffeic acid yielded no primary
+report in \textit{M.~oleifera} seed or leaf and do not appear in the inventory.
+
+\paragraph{Identifier hygiene was not a formality.} Four public records returned by a name
+search are wrong or ambiguous for this purpose, and using them would have propagated an
+error: a mis-structured carbamate record (\ce{C16H23NO8}, with the ethoxy group on the
+sugar); a \enquote{niaziminin A} record whose structure is not the thiocarbamate; a
+niazimicin record without stereochemistry; and glucomoringin, for which every available
+record is a potassium salt with a different stereo-InChIKey and none could be matched to the
+natural structure. The glucomoringin identifier remains \textbf{unresolved}.
+
+\section{The candidate shortlist}\label{sec:shortlist}
+
+The evidence linking these constituents to radiation-response biology was curated
+separately, from primary studies of purified compounds only (Table~\ref{tab:c2}), and the
+prespecified score of Equation~\ref{eq:priority} was then applied
+(Table~\ref{tab:ranking}; Figures~\ref{fig:priority} and~\ref{fig:evidence-map}).
+\textbf{Eighteen compounds entered the ranked shortlist and five reached tier~A}; three
+further constituents scored below the tier-C threshold and were not ranked, and benzyl
+isothiocyanate was not assessable. The written justification of every point is given in
+Table~\ref{tab:c3reasons}.
+
+\begin{table}[tbp]
+  \caption[Candidate ranking]{Candidate ranking of documented \textit{M.~oleifera} seed and
+    leaf constituents under the prespecified four-dimension score (Equation~\ref{eq:priority};
+    $D_1$ identity 0--2, $D_2$ radiation biology 0--3, $D_3$ independent sources 0--2, $D_4$
+    feasibility 0--1). Extraction evidence is shown beside the score and is not part of it.
+    Rows follow the ranking file. Every tier is exploratory and hypothesis-generating.
+    Source: \path{results/tables/primary_v1/compounds_v1/table_c3_candidate_ranking.csv}.}
+  \label{tab:ranking}
+  \footnotesize\setlength{\tabcolsep}{3.4pt}
+  \begin{tabular}{@{}r L{0.235\linewidth} l l c c c c c L{0.10\linewidth} L{0.15\linewidth}@{}}
+    \toprule
+    \thead{Rank} & \thead{Compound} & \thead{Part} & \thead{Extraction}
+      & \thead{$D_1$} & \thead{$D_2$} & \thead{$D_3$} & \thead{$D_4$} & \thead{Total}
+      & \thead{Tier} & \thead{Liability} \\
+    \midrule
+    1 & $\alpha$-Tocopherol & both & other solvent & 2 & 3 & 2 & 1 & 8 & \textbf{A} & \na \\
+    2 & Chlorogenic acid & leaf & other solvent & 1 & 3 & 2 & 1 & 7 & \textbf{C} (capped from A)
+      & protects tumour cells (CGA-01) \\
+    3 & Kaempferol & both & indirect & 1 & 3 & 2 & 1 & 7 & \textbf{A} & \na \\
+    4 & Quercetin & both & indirect & 1 & 3 & 2 & 1 & 7 & \textbf{A} & \na \\
+    5 & Rutin & leaf & other solvent & 1 & 3 & 2 & 1 & 7 & \textbf{A} & \na \\
+    6 & $\beta$-Sitosterol & seed & other solvent & 1 & 3 & 2 & 1 & 7 & \textbf{A} & \na \\
+    \na & Benzyl isothiocyanate & other & indirect & 0 & 3 & 2 & 1 & 6 & not assessable & \na \\
+    7 & Niazirin & both & other solvent & 2 & 1 & 2 & 1 & 6 & B & \na \\
+    8 & Oleic acid & seed & other solvent & 1 & 2 & 1 & 1 & 5 & B & \na \\
+    9 & Astragalin & leaf & other solvent & 1 & 1 & 2 & 1 & 5 & C (capped from B)
+      & genotoxic (AST-01) \\
+    10 & Moringin & both & other solvent & 1 & 1 & 2 & 1 & 5 & B & \na \\
+    11 & Phytol & leaf & other solvent & 1 & 1 & 2 & 1 & 5 & B & \na \\
+    12 & Glucomoringin & both & other solvent & 2 & 0 & 2 & 0 & 4 & C & \na \\
+    13 & Niazimicin & both & \textbf{DCM} & 2 & 0 & 2 & 0 & 4 & C & \na \\
+    14 & Acetylated moringin\textsuperscript{a} & leaf & other solvent & 2 & 0 & 1 & 0 & 3 & C & \na \\
+    15 & Niaziminin & leaf & other solvent & 2 & 0 & 1 & 0 & 3 & C & \na \\
+    16 & \textit{O}-Ethyl rhamnosyloxybenzyl carbamate\textsuperscript{b} & seed & other solvent
+      & 2 & 0 & 1 & 0 & 3 & C & \na \\
+    17 & Isoquercitrin & leaf & other solvent & 1 & 0 & 1 & 0 & 2 & C & \na \\
+    18 & Palmitic acid & both & \textbf{DCM} & 1 & 0 & 1 & 0 & 2 & C & \na \\
+    \na & 4-Hydroxyphenylacetonitrile & both & \textbf{DCM} & 1 & 0 & 0 & 0 & 1 & not prioritised & \na \\
+    \na & Methyl 4-hydroxyphenylacetate & leaf & \textbf{DCM} & 1 & 0 & 0 & 0 & 1 & not prioritised & \na \\
+    \na & \textit{cis}-Vaccenic acid & leaf & \textbf{DCM} & 1 & 0 & 0 & 0 & 1 & not prioritised & \na \\
+    \bottomrule
+  \end{tabular}
+  \tablenote{Extraction: \textbf{DCM}, identified in a dichloromethane extract or fraction of
+    seed or leaf; other solvent, identified in seed or leaf with another solvent; indirect,
+    identification indirect or unconfirmed. For benzyl isothiocyanate the plant part is
+    \enquote{other} because its only \textit{Moringa} report concerns its precursor in roots.
+    \textsuperscript{a}\,4-[(4$'$-\textit{O}-Acetyl-$\alpha$-L-rhamnosyloxy)benzyl]
+    isothiocyanate. \textsuperscript{b}\,\textit{O}-Ethyl-4-($\alpha$-L-rhamnosyloxy)benzyl
+    carbamate.}
+\end{table}
+
+Three features of the ranking matter more than the order itself.
+
+\paragraph{The liability cap did real work.} Chlorogenic acid scored 7 of 8, equal to four
+tier-A compounds, and is nevertheless held at tier~C because one primary study reports that
+it \emph{protects hepatocellular carcinoma cells} from radiation. A score alone would have
+promoted it; the prespecified cap prevented that.
+
+\paragraph{The exclusion rule did real work.} Benzyl isothiocyanate scored 6 on biology and
+sources and is still \emph{not assessable}, because it has no primary report as a seed or leaf
+constituent. It cannot be ranked however strong its radiation evidence is.
+
+\paragraph{The mismatch exposed by the curation is visible in the ranking.} Niazimicin holds
+the only full identity score among compounds confirmed in a dichloromethane fraction
+($D_1=2$) and scores \emph{zero} on radiation biology, so it sits at tier~C. Moringin, the
+signature \textit{Moringa} isothiocyanate, reaches only tier~B. Four of the five tier-A
+compounds hold $D_1=1$, a spectral-library or dereplication match, and none of the five has
+been found in a dichloromethane extract.
+
+\section{What the published biological evidence shows}\label{sec:biology}
+
+The curated evidence establishes the following.
+\begin{itemize}
+  \item \textbf{Moringin, the isothiocyanate most characteristic of \textit{Moringa}, has no
+    ionising-radiation study.} Exhaustive searching found no primary study combining
+    moringin or glucomoringin with ionising radiation. Its evidence is confined to work
+    without radiation: pro-apoptotic effects involving p53, CDKN1A, BAX and caspases in
+    neuroblastoma cells \parencite{cirmi2019}, G2/M arrest in prostate cancer cells
+    \parencite{abdkarim2023}, NRF2 activation in a motor-neuron model
+    \parencite{gugliandolo2024}, and NF-$\kappa$B inhibition with a myeloma xenograft
+    \parencite{brunelli2010}. Because chemical-class analogy earns no points, moringin gains
+    nothing from the benzyl isothiocyanate radiation literature, and that analogy is
+    treated as an untested hypothesis.
+  \item \textbf{The best-evidenced radiation candidates are not \textit{Moringa}-specific.}
+    $\beta$-Sitosterol has normal-tissue radioprotection evidence from two independent
+    groups \parencite{li2007,elbakary2026}, as does rutin \parencite{patil2017,thabet2018},
+    although one research group contributes to both compounds' evidence;
+    $\alpha$-tocopherol has a rat crypt-microcolony clonogenic result
+    \parencite{felemovicius1995} and a randomised controlled trial in radiation mucositis
+    \parencite{ferreira2004}. All three are documented in \textit{Moringa} seed or leaf, but
+    \textbf{none has been found in a dichloromethane extract}, which is why the extraction
+    evidence is shown beside the score rather than within it.
+  \item \textbf{One candidate carries an explicit liability.} Chlorogenic acid has
+    normal-tissue protection evidence in bone marrow \parencite{abraham1993} and testis
+    \parencite{abedpour2022}, but \textcite{yin2022} report that it \emph{protects
+    hepatocellular carcinoma cells} from radiation through NRF2 and conclude that it could
+    hinder radiotherapy. Under the prespecified rule this caps its tier at C. Astragalin is
+    capped for a related reason: its only DNA-damage-relevant primary signal is
+    \emph{pro-genotoxic} \parencite{saito2012}, and the one astragalin \enquote{radiation}
+    paper concerns UVB, which is not ionising radiation.
+  \item \textbf{An informative negative was retained.} Membrane oleate enrichment did
+    \textbf{not} alter the clonogenic radiosensitivity of human lymphoid cells
+    \parencite{george1983}. This direct clonogenic test argues against prioritising oleic
+    acid despite its abundance in seed oil.
+\end{itemize}
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{fig_08_compound_priority}
+  \caption[Evidence-based prioritisation of \textit{Moringa} seed and leaf
+    constituents]{Evidence-based prioritisation of documented \textit{Moringa oleifera} seed
+    and leaf constituents for future experimental work. (a)~Points awarded in each of the
+    four prespecified dimensions (numbers are points; shading is the fraction of the
+    dimension's maximum), beside the extraction-specific evidence: identified in a
+    dichloromethane extract or fraction of seed or leaf (dark), in seed or leaf with another
+    solvent (light), or only indirectly (white). (b)~Total priority score out of eight,
+    coloured by tier. The extraction column is kept outside the score because the original
+    study used dichloromethane extracts whose composition was never measured. The scoring
+    rules were fixed before any score was computed; every tier, including A, is
+    hypothesis-generating, and no tier asserts radioprotection, radiosensitisation, potency
+    or any effect of the original extracts. Two systematic names are shortened in the
+    figure (see the note to Table~\ref{tab:ranking}).}
+  \label{fig:priority}
+\end{figure}
+
+\paragraph{Reading Figure~\ref{fig:priority}.} Down the extraction column and across the
+four dimensions, the \textit{Moringa}-specific compounds with the darkest identity cell ---
+niazimicin, glucomoringin, niazirin, niaziminin, the acetylated isothiocyanate and the
+carbamate glycoside, all with a structurally confirmed presence in seed or leaf --- are
+precisely those whose radiation-biology cell is empty or nearly so. The one compound with
+full scores for both identity and radiation biology is $\alpha$-tocopherol, a ubiquitous
+plant metabolite that has not been found in a dichloromethane extract; the other four
+tier-A compounds carry only one identity point. Panel~(b) shows the effect of the liability
+rule: chlorogenic acid's total of 7 equals that of four tier-A compounds, yet its bar is
+coloured as tier~C. A reader comparing bar lengths alone would place it among the leaders;
+the prespecified cap prevents that, and the figure shows the discrepancy rather than hiding
+it.
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\linewidth,height=0.62\textheight,keepaspectratio]{fig_09_compound_evidence_map}
+  \caption[What the published evidence links each shortlisted compound to]{What the
+    published evidence links each shortlisted compound to. (a)~Radiation-response processes
+    for which a primary study of the purified compound exists: symbol size is the number of
+    independent research groups, and colour distinguishes studies using ionising radiation
+    from studies of the same process without radiation. Compounds are in priority order. An
+    empty row means that no qualifying primary study was located, which is a gap in the
+    literature, not evidence of no effect. (b)~Number of genes measured in a published
+    experiment on the compound that are also members of a Hallmark gene set ranked by the
+    exploratory explainability analysis (Table~\ref{tab:c4}); blank cells mean no overlap was
+    recorded. An overlap marks a point where a compound and a model-highlighted gene set
+    touch the same genes. It is a hypothesis to be tested, not evidence that the compound
+    modifies the gene set, the pathway or clonogenic SF2, and the gene-set ranking itself is
+    capped at tier~C. Reported directions of effect are given in Table~\ref{tab:c2} and are
+    never merged.}
+  \label{fig:evidence-map}
+\end{figure}
+
+\paragraph{Reading Figure~\ref{fig:evidence-map}.} Attributed compound by compound, the
+biological evidence is thin. Only a minority of cells in panel~(a) are filled, and several
+shortlisted compounds have no ionising-radiation evidence on their row: moringin, the most
+\textit{Moringa}-characteristic candidate, appears only in the non-radiation colour, and
+niazimicin has no scored row at all because its one biological study dosed an extract
+fraction rather than the purified compound. Panel~(b) is deliberately sparse. Only 25
+compound-by-gene-set overlaps were recorded (Table~\ref{tab:c4}), 23 for shortlisted
+compounds and two for benzyl isothiocyanate, which is not assessable and is not shown. They
+are small: 14 involve a single gene and 9 involve two, and the largest are moringin with the
+p53 pathway (three genes: BAX, CDKN1A, TP53) and quercetin with the p53 pathway (five genes:
+BAX, CDKN1A, DDIT3, TGFB1, TP53). These overlaps are the thinnest kind of link in the
+project, and they mark where a hypothesis could be formed, not where an effect has been
+shown.
+
+\section{What a tier means, and what it does not}\label{sec:tier-meaning}
+
+A tier records \textbf{the state of the published evidence about a compound}, assembled under
+rules fixed before any score was computed (Table~\ref{tab:tier-meaning}). It is not a measure
+of radioprotection. Tier~A means \enquote{best documented}, not \enquote{most likely to
+work}. Four of the five tier-A compounds are ubiquitous plant metabolites whose radiation
+evidence comes entirely from outside \textit{Moringa} research, and the direction of that
+evidence differs between them: quercetin and kaempferol have \emph{radiosensitisation}
+evidence in tumour cells as well as normal-tissue protection, whereas $\beta$-sitosterol and
+rutin have normal-tissue protection only. Radioprotection and radiosensitisation are
+opposite effects and are never merged (Table~\ref{tab:c2}).
+
+\begin{table}[tbp]
+  \caption{What a compound tier does and does not say.}\label{tab:tier-meaning}
+  \small
+  \begin{tabular}{@{}L{0.47\linewidth}L{0.47\linewidth}@{}}
+    \toprule
+    \thead{A tier does say} & \thead{A tier does not say} \\
+    \midrule
+    Primary studies of the purified compound exist, with the stated independence
+      & That the compound protects or sensitises anything \\
+    The compound is documented in \textit{Moringa} seed or leaf at the stated
+      identification strength & That it was present in the extracts of the original study \\
+    Published work connects it to a radiation-response process
+      & That it modifies clonogenic survival, the endpoint modelled here \\
+    A follow-up experiment can be specified from the record
+      & That such an experiment would succeed \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Realistic first-stage experimental priorities}\label{sec:first-stage}
+
+The ranking answers the question \enquote{what is best documented?}. A first experiment has to
+answer a narrower question, so the two orderings differ --- without any score being changed.
+Three questions can be separated.
+
+\paragraph{Is any plausibly active compound present in the extracts that were tested?}
+This is the project's largest gap and the cheapest to close. The priority candidates are
+\textbf{niazimicin} (tier~C, the only compound with a confirmed structural identification in
+both the seed and the leaf dichloromethane fractions) and \textbf{moringin} (tier~B, the
+signature \textit{Moringa} isothiocyanate). Neither has any ionising-radiation study, so
+neither can be offered as a protection candidate; they are priorities for
+\textbf{analytical characterisation of the original extracts}, followed by a first radiation
+screen if they are found.
+
+\paragraph{Does a compound with existing radiation evidence act on the endpoint modelled
+here?} \textbf{$\alpha$-Tocopherol} is the strongest first-stage candidate: it is the only
+tier-A compound with a full identity score, and the only compound in the evidence base whose
+normal-tissue protection evidence includes a \emph{clonogenic} endpoint (rat intestinal crypt
+survival), alongside a randomised trial in radiation mucositis. \textbf{$\beta$-Sitosterol} follows,
+with normal-tissue protection reported by two independent groups. Both must be tested in
+matched normal and tumour cells, because neither has a tumour arm.
+
+\paragraph{Which candidates should not lead?} \textbf{Chlorogenic acid} should not be a
+first-stage protection candidate despite its score: the tumour-protection finding makes it a
+cautionary compound in a radiotherapy context. \textbf{Astragalin} is capped for a related
+reason, its only DNA-damage-relevant evidence being pro-genotoxic. \textbf{Oleic acid} has a
+direct clonogenic test showing \emph{no} effect on radiosensitivity, so it is informative but
+not a candidate. Quercetin, kaempferol and rutin are scientifically interesting but
+second-stage: their \textit{Moringa} identity rests on tentative dereplication, and the
+aglycone--glycoside pharmacokinetic question would have to be settled first.
+
+\begin{keybox}[title={A defensible first-stage programme.}]
+Characterise the original extracts (niazimicin, moringin), and test $\alpha$-tocopherol and
+$\beta$-sitosterol on clonogenic survival in matched normal and tumour cells over a dose
+range. This uses the tiers as summaries of evidence, not as predictions, and leaves every
+score exactly as computed.
+\end{keybox}
+
+The scientific shape of this module's result is therefore a \textbf{mismatch}, and it is its
+most useful output: the compound with the best claim to being present in the tested extracts
+has no radiation biology, and the compounds with radiation biology have no confirmed presence
+in those extracts. Neither gap can be closed by further literature work; both can be closed by
+the experiments proposed in Chapter~\ref{ch:recommendations}.

@@ -1,0 +1,56 @@
+\chapter{Limitations}\label{ch:limitations}
+
+\begin{enumerate}
+  \item \textbf{Predictive performance is weak.} Out-of-sample $R^2$ lies between $-0.018$ and
+    $+0.013$ for every model. No model in this study predicts clonogenic radiosensitivity
+    usefully, and the pipeline should not be presented as a working predictor.
+  \item \textbf{The improvement is small and was not formally tested.} $\Delta\mathrm{MAE}=
+    0.00383$ mSF2 units (2.85\%). No interval, $p$-value or formal superiority assessment
+    exists, because the coverage simulation that would have validated an interval method was
+    deferred.
+  \item \textbf{No negative controls were run.} Zero permuted-outcome and zero random-gene-set
+    draws were completed, so the gain cannot be compared with a null reference, gene-set
+    attribution is not permitted and the stability gate cannot be evaluated.
+  \item \textbf{There is no external validation.} The ten repeats re-split the same 237
+    components; repeated cross-validation measures split-to-split variability, not
+    generalisation.
+  \item \textbf{The improvement is not uniform, and transfer to unseen tissues is
+    conditional.} In Pancreas, M2 is worse than M1 by 0.0110, nearly three times the pooled
+    gain; in the leave-one-tissue-out analysis the expression-only model lost to the global
+    mean when Pancreas ($-0.0142$) or Esophagus/Stomach ($-0.0030$) was held out.
+  \item \textbf{The size of the advantage depends on the outcome scale}, and magnitudes on
+    the neglog and logit scales are in transformed units that cannot be compared directly
+    with the raw-scale estimate.
+  \item \textbf{One outcome source with aggregated labels.} CLARIFi mSF2 is a literature
+    median across laboratories, dose rates and protocols, with one value per line, so per-line
+    assay variability cannot be estimated; the dataset is also licensed for non-commercial use
+    only.
+  \item \textbf{A small, imbalanced sample.} There are 237 components; eleven of the 20
+    tissues have fewer than ten, and one has a single component.
+  \item \textbf{Pathway rankings are exploratory and only moderately stable.} Mean Kendall
+    $\tau$ is 0.225 and mean top-10 Jaccard 0.391; importance magnitudes are the size of the
+    whole predictive gain; correlated sets share importance; no tier exceeds C.
+  \item \textbf{Cell-line discrepancies are dominated by shrinkage.} Large residuals occur
+    mostly at extreme observed values and are review signals, not biological findings;
+    measured lines are not independent validation samples.
+  \item \textbf{No compound has been shown to be present in the original extracts.} The
+    extracts were never analysed; most compounds are documented with other solvents; and
+    several DCM identifications are spectral-library matches from inaccessible full texts,
+    one in a journal indexed in neither PubMed nor Europe PMC.
+  \item \textbf{The most \textit{Moringa}-specific candidate has no radiation evidence.} No
+    primary study has combined purified moringin or glucomoringin with ionising radiation.
+  \item \textbf{Compound evidence is largely abstract-level.} Radiation doses, concentrations
+    and some cell-line identities are missing from several records and must be recovered from
+    the full texts; the glucomoringin identifier remains ambiguous; the erratum to
+    \textcite{abedpour2022} has not been read; and because the journal that published
+    \textcite{yin2022} had a large contemporaneous retraction wave, that article's status must
+    be re-checked (no retraction notice was found on 22 October 2026).
+  \item \textbf{Group independence is lower than paper counts suggest.} Shared senior authors
+    and a shared compound supplier link several studies; the scoring counts research groups
+    once, but the effective number of independent sources remains small.
+  \item \textbf{The within-tissue ranking statistic is unusable for the simpler models.} It is
+    undefined where predictions are constant within a tissue and biased downward elsewhere.
+  \item \textbf{No causal or mechanistic claim is supported.} Association, explanation of a
+    fitted model, causation and experimentally demonstrated protection are four different
+    things, and only the first two are in evidence here.
+\end{enumerate}

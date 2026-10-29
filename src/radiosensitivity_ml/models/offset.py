@@ -36,6 +36,16 @@ class OffsetModel(RegressorMixin, BaseEstimator):
         self.l1_ratio = l1_ratio
         self.random_state = random_state
 
+    def residual_model(self) -> ElasticNet:
+        """Unfitted residual model with this estimator's parameters.
+
+        The single definition used by ``fit`` and by the cached inner-loop tuning
+        (``models.run.inner_errors_cached``), so both always fit the same model.
+        """
+        return ElasticNet(
+            alpha=self.alpha, l1_ratio=self.l1_ratio, random_state=self.random_state, max_iter=10000
+        )
+
     def fit(self, X: pd.DataFrame, y: pd.Series, sample_weight: np.ndarray | None = None):
         y = np.asarray(y, dtype=float)
         self.baseline_ = clone(self.baseline).fit(X, y, sample_weight=sample_weight)
@@ -44,9 +54,7 @@ class OffsetModel(RegressorMixin, BaseEstimator):
         scores = self.scorer_.transform(X)
         self.scaler_ = StandardScaler().fit(scores)
         self.feature_names_ = list(scores.columns)
-        self.enet_ = ElasticNet(
-            alpha=self.alpha, l1_ratio=self.l1_ratio, random_state=self.random_state, max_iter=10000
-        )
+        self.enet_ = self.residual_model()
         self.enet_.fit(self.scaler_.transform(scores), residual, sample_weight=sample_weight)
         return self
 

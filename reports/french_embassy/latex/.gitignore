@@ -1,0 +1,3 @@
+# Build products of build.sh; regenerated on every build.
+build/
+generated/

@@ -4,7 +4,7 @@
 # Sidecars record data_provenance: conceptual_diagram. Write-once: bump `version` to
 # regenerate. Results-dependent figures stay in configs/figures.yaml.
 output_dir: figures/generated
-version: 2                 # v2: fig_s04b percentile wording (ties never raise a percentile)
+version: 3                 # v3: fig_04 shows the deferred simulation (D04.06); v2 kept
 dpi: 600                   # line art (docs/figure_standards.md §7)
 formats: [pdf, svg, png]
 triage_config: configs/triage.yaml   # fig_s04 is drawn from these frozen thresholds
@@ -16,12 +16,13 @@ diagrams:
       Study workflow. Public sources (CLARIFi literature-median clonogenic SF2 at 2 Gy,
       DepMap 24Q4 RNA-seq expression, Cellosaurus identity records and MSigDB Hallmark
       gene sets) pass an identifier QC that groups related cell lines into relationship
-      components. After protocol freeze, a coverage simulation on synthetic outcomes
-      selects the interval method and the number of cross-validation repeats; the split
-      table is frozen before the outcome is loaded. Models are fitted by nested grouped
-      cross-validation with all tuning and scaling inside training folds. The single
-      confirmatory comparison is the paired component-weighted ΔMAE of tissue +
-      expression (M2) versus tissue only (M1). Explainability and triage rankings are
+      components. The planned coverage simulation was deferred (deadline deviation
+      D04.06): inference is descriptive only, superiority was not formally assessed, and
+      the investigator set R = 10 cross-validation repeats; the split table is frozen
+      before the outcome is loaded. Models are fitted by nested grouped
+      cross-validation with all tuning and scaling inside training folds. The prespecified
+      primary comparison is the paired component-weighted ΔMAE of tissue + expression
+      (M2) versus tissue only (M1), reported descriptively. Explainability and triage rankings are
       secondary and hypothesis-generating. Conceptual diagram; no data shown.
   - id: fig_s04
     slug: triage_decision_rules

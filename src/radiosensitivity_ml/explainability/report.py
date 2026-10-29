@@ -13,6 +13,11 @@ Requires the evaluation folder of the same run and config (``evaluation_record.j
 from __future__ import annotations
 
 import json
+import os
+import time
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import UTC, datetime
 from pathlib import Path
 
 import joblib
@@ -23,7 +28,8 @@ from radiosensitivity_ml.data.provenance import write_json, write_once_folder
 from radiosensitivity_ml.explainability import stability as st
 from radiosensitivity_ml.features.gene_sets import GeneSetScorer
 from radiosensitivity_ml.models import checkpoints as ck
-from radiosensitivity_ml.models.run import ExperimentInputs, prepare_inputs
+from radiosensitivity_ml.models.run import ExperimentInputs, code_sha256, prepare_inputs
+from radiosensitivity_ml.parallel import execute_tasks, thread_settings
 
 DESCRIPTIVE_MODELS = ("M2P", "M3")
 
@@ -55,6 +61,45 @@ def matching_tasks(
     return out
 
 
+@dataclass(frozen=True)
+class ImportanceContext:
+    """What an importance task needs (sent once to each worker; read-only)."""
+
+    tasks_dir: Path
+    features: pd.DataFrame
+    n_repeats: int
+    base_seed: int
+
+
+def importance_task(
+    context: ImportanceContext, task: tuple[str, int, int, str]
+) -> dict[str, float]:
+    """Grouped permutation importance of one saved task on its OUTER-TEST rows only.
+
+    Pure: depends only on the saved model, its saved held-out predictions and the task's
+    own seed; nothing is refitted.
+    """
+    key = task[0]
+    folder = context.tasks_dir / key
+    predictions = pd.read_parquet(folder / "predictions.parquet")
+    fitted = joblib.load(folder / "model.joblib")
+    rows = predictions["row_number"].to_numpy()
+    series = st.permutation_importance(
+        fitted,
+        context.features.loc[rows],
+        predictions["y_true"].to_numpy(),
+        predictions["component_id"].to_numpy(),
+        context.n_repeats,
+        ck.stable_int(context.base_seed, "importance", key),
+    )
+    return {str(name): float(value) for name, value in series.items()}
+
+
+def column_name(task: tuple[str, int, int, str]) -> str:
+    _, repeat, fold, variant = task
+    return f"{variant}|r{repeat}|f{fold}"
+
+
 def task_importances(
     store: ck.RunStore,
     inputs: ExperimentInputs,
@@ -62,22 +107,99 @@ def task_importances(
     n_repeats: int,
     base_seed: int,
 ) -> pd.DataFrame:
-    """Importance per feature (rows) for each listed completed task (columns)."""
-    columns = {}
-    for key, repeat, fold, variant in tasks:
-        folder = store.tasks_dir / key
-        predictions = pd.read_parquet(folder / "predictions.parquet")
-        fitted = joblib.load(folder / "model.joblib")
-        rows = predictions["row_number"].to_numpy()
-        columns[f"{variant}|r{repeat}|f{fold}"] = st.permutation_importance(
-            fitted,
-            inputs.features.loc[rows],
-            predictions["y_true"].to_numpy(),
-            predictions["component_id"].to_numpy(),
-            n_repeats,
-            ck.stable_int(base_seed, "importance", key),
-        )
-    return pd.DataFrame(columns)
+    """Importance per feature (rows) for each listed completed task (columns); serial,
+    no checkpoints (reference for ``checkpointed_importances``)."""
+    context = ImportanceContext(store.tasks_dir, inputs.features, n_repeats, base_seed)
+    return pd.DataFrame(
+        {column_name(t): pd.Series(importance_task(context, t), name="importance") for t in tasks}
+    )
+
+
+def checkpoint_identity(
+    store: ck.RunStore, key: str, n_repeats: int, base_seed: int
+) -> dict[str, object]:
+    """Everything that determines a task's importance (verified before reuse)."""
+    record = json.loads((store.tasks_dir / key / "task_record.json").read_text(encoding="utf-8"))
+    return {
+        "task_key": key,
+        "n_repeats": n_repeats,
+        "seed": ck.stable_int(base_seed, "importance", key),
+        "model_sha256": record["sha256"]["model.joblib"],
+    }
+
+
+def checkpointed_importances(
+    store: ck.RunStore,
+    inputs: ExperimentInputs,
+    tasks: list[tuple[str, int, int, str]],
+    n_repeats: int,
+    base_seed: int,
+    checkpoint_dir: Path,
+    workers: int = 1,
+    log: Callable[[str], None] = print,
+) -> dict[str, pd.Series]:
+    """Importance of every task (by key), computed in ``workers`` processes.
+
+    Each finished task is written by THIS process as an atomic JSON checkpoint holding its
+    identity (task key, permutations, seed, SHA-256 of the saved model). On a later call a
+    matching checkpoint is reused; a mismatching or unreadable one is moved to
+    ``_rejected/`` and recomputed. Results are always read back from the checkpoints in
+    task order, so they do not depend on the worker count or completion order.
+    """
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    identities = {t[0]: checkpoint_identity(store, t[0], n_repeats, base_seed) for t in tasks}
+
+    def path(key: str) -> Path:
+        return checkpoint_dir / f"{key}_p{n_repeats}.json"
+
+    def valid(key: str) -> bool:
+        try:
+            stored = json.loads(path(key).read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return False
+        same = all(stored.get(k) == v for k, v in identities[key].items())
+        return same and isinstance(stored.get("importance"), dict)
+
+    todo, reused, rejected = [], 0, 0
+    for task in tasks:
+        if path(task[0]).exists():
+            if valid(task[0]):
+                reused += 1
+                continue
+            rejected_dir = checkpoint_dir / "_rejected"
+            rejected_dir.mkdir(exist_ok=True)
+            stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
+            os.replace(path(task[0]), rejected_dir / f"{path(task[0]).name}.{stamp}")
+            rejected += 1
+        todo.append(task)
+
+    def handle(task: tuple[str, int, int, str], value: dict[str, float], seconds: float) -> None:
+        record = {**identities[task[0]], "importance": value}
+        ck.atomic_write_text(path(task[0]), json.dumps(record))
+        log(f"importance {column_name(task)} ({task[0]}) {seconds:.1f}s")
+
+    log(f"importance: {len(todo)} to compute, {reused} reused, {rejected} rejected")
+    started = time.monotonic()
+    context = ImportanceContext(store.tasks_dir, inputs.features, n_repeats, base_seed)
+    execute_tasks(todo, importance_task, context, workers, handle)  # type: ignore[arg-type]
+    with (checkpoint_dir / "sessions.jsonl").open("a", encoding="utf-8") as handle_file:
+        session = {
+            "ended_utc": datetime.now(UTC).isoformat(),
+            "workers": workers,
+            "threads": thread_settings(),
+            "n_permutations": n_repeats,
+            "computed": len(todo),
+            "reused": reused,
+            "rejected": rejected,
+            "wall_clock_seconds": time.monotonic() - started,
+            "code_sha256": code_sha256(),
+        }
+        handle_file.write(json.dumps(session, sort_keys=True) + "\n")
+    out = {}
+    for task in tasks:
+        stored = json.loads(path(task[0]).read_text(encoding="utf-8"))
+        out[task[0]] = pd.Series(stored["importance"], name="importance")
+    return out
 
 
 def coefficient_signs(store: ck.RunStore, tasks: list[tuple[str, int, int, str]]) -> pd.DataFrame:
@@ -143,21 +265,45 @@ def per_draw(importance: pd.DataFrame, index: pd.Index, n_folds: int) -> pd.Data
 
 
 def explain_run(
-    config: ExperimentConfig, n_repeats: int = 20, tables_root: Path = Path("results/tables")
+    config: ExperimentConfig,
+    n_repeats: int = 20,
+    tables_root: Path = Path("results/tables"),
+    workers: int = 1,
+    log: Callable[[str], None] = print,
 ) -> Path:
-    """Compute importance, stability, sign consistency and null tests; returns the folder."""
+    """Compute importance, stability, sign consistency and null tests; returns the folder.
+
+    All importance tasks (real M2, control draws, descriptive models) run in one pass in
+    ``workers`` processes, checkpointed per task in
+    ``results/tables/<run_id>/explainability_checkpoints/`` so an interrupted call resumes;
+    the write-once output folder is built only after every task is done.
+    """
     tables_dir = tables_root / config.run_id
     evaluation = require_evaluation(tables_dir, config)
     store = ck.RunStore(config.output_dir / config.run_id)
     manifest = store.load_manifest()
     inputs = prepare_inputs(config, config.population_options)
+    families = {
+        ("M2", "real"): matching_tasks(manifest, "M2", "real"),
+        ("M2", "perm_"): matching_tasks(manifest, "M2", "perm_"),
+        ("M2", "randsets_"): matching_tasks(manifest, "M2", "randsets_"),
+        **{
+            (m, "real"): matching_tasks(manifest, m, "real")
+            for m in DESCRIPTIVE_MODELS
+            if m in config.models
+        },
+    }
+    unique = list({t[0]: t for tasks in families.values() for t in tasks}.values())
+    computed = checkpointed_importances(
+        store, inputs, unique, n_repeats, config.base_seed,
+        tables_dir / "explainability_checkpoints", workers, log,
+    )  # fmt: skip
 
     def importances(model_id: str, prefix: str) -> pd.DataFrame:
-        tasks = matching_tasks(manifest, model_id, prefix)
-        return task_importances(store, inputs, tasks, n_repeats, config.base_seed)
+        return pd.DataFrame({column_name(t): computed[t[0]] for t in families[(model_id, prefix)]})
 
-    real_tasks = matching_tasks(manifest, "M2", "real")
-    real = task_importances(store, inputs, real_tasks, n_repeats, config.base_seed)
+    real_tasks = families[("M2", "real")]
+    real = importances("M2", "real")
     if real.empty:
         raise ck.CheckpointError("no completed real M2 tasks to explain")
     first_repeat = real[[c for c in real.columns if "|r0|" in c]]

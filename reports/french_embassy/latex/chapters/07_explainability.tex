@@ -1,0 +1,112 @@
+\chapter{Explainability and pathway prioritisation}\label{ch:explainability}
+
+\section{Gene-set importance}\label{sec:importance}
+
+All 50 fits of M2 completed and were analysed. Ranked by mean held-out permutation importance
+(Equation~\ref{eq:importance}; Figure~\ref{fig:importance}a; Table~\ref{tab:s2}), the leading
+gene set is \textbf{HALLMARK\_P53\_PATHWAY}, with mean importance 0.00343 mSF2 units,
+importance above zero in 90\% of fits, sign consistency 0.92 and a predominantly negative
+coefficient. It is followed by COMPLEMENT (0.00118), OXIDATIVE\_PHOSPHORYLATION (0.00107),
+UV\_RESPONSE\_UP (0.00100), MYC\_TARGETS\_V2, KRAS\_SIGNALING\_UP and UV\_RESPONSE\_DN.
+
+Three observations matter more than the ranking itself.
+\begin{itemize}
+  \item \textbf{The magnitudes are tiny.} The largest mean importance, 0.0034 mSF2 units, is
+    of the same order as the entire predictive gain, so the ranking describes a very small
+    effect.
+  \item \textbf{Stability is modest.} Across the 50 fits, the mean Kendall $\tau$ between
+    importance rankings is 0.225, the mean rank-biased overlap 0.518 and the mean top-10
+    Jaccard index 0.391: the same gene sets do not reliably appear at the top of every fit.
+  \item \textbf{Correlated sets share signal.} Several ranked sets are correlated with
+    another set at $\lvert\rho\rvert\ge0.80$ (Figure~\ref{fig:s-correlation}), including
+    COMPLEMENT with APOPTOSIS and MYC\_TARGETS\_V2 with MYC\_TARGETS\_V1, so importance may
+    be shared or exchanged between them rather than attributable to one.
+\end{itemize}
+
+Equally important is what the ranking does \emph{not} contain. \textbf{DNA repair, G2M
+checkpoint and hypoxia, the pathways a radiobiologist would expect, were not prioritised}:
+G2M checkpoint ranked 13th with importance above zero in only 8\% of fits, hypoxia 10th with
+10\%, and DNA repair 47th. Reporting this guards against presenting a familiar
+radiation-response narrative that the data do not support.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_06_gene_set_importance}
+  \caption[Exploratory importance of the Hallmark gene-set scores in M2]{Exploratory
+    importance of the Hallmark gene-set scores in the expression model M2. (a)~The fifteen
+    highest-ranked gene sets. Grey points are the grouped permutation importance in each of
+    the fifty model fits (ten repeats by five folds), computed on held-out rows only as the
+    increase in component-weighted MAE when a score is permuted across components; diamonds
+    are the means over fits, coloured by the prespecified tier. The spread across fits is
+    split-to-split variability, not a confidence interval. (b)~The two tier-C criteria for
+    all fifty gene sets: the share of fits with importance above zero and the share of fits
+    in which the set received a non-zero coefficient; the shaded corner satisfies both
+    thresholds (dashed lines at 0.50). Tiers A and B were unreachable by design. Shares are
+    proportions of overlapping cross-validation fits, not probabilities. The rankings
+    describe one fitted model family on one dataset; they are not validated biomarkers,
+    causal mechanisms, radiation-response pathways or molecular effect sizes.}
+  \label{fig:importance}
+\end{figure}
+
+\section{The pathway shortlist}\label{sec:pathway-shortlist}
+
+Seven of the 50 gene sets reached \textbf{tier~C} and 43 were not prioritised; \textbf{no set
+reached tier A or B}, because both require a formally demonstrated prediction gain and at
+least 1,000 negative-control draws, and the run has neither (Figure~\ref{fig:importance}b).
+The gene-set tests record zero completed draws of both the permuted-outcome and the
+random-gene-set nulls, so attribution is not permitted and the stability gate cannot be
+evaluated.
+
+The shortlist has a precise meaning. Its members are the gene-set scores whose permutation
+importance was positive in at least half of the cross-validation fits and which received a
+non-zero coefficient in at least half, within one model family on one dataset. It is not a
+gene-level finding, a validated biomarker, a causal mechanism, a radiation-response pathway
+or a molecular effect size, and it is not evidence that modulating any of these pathways
+would change radiosensitivity.
+
+\section{Cell lines the model reproduces least well}\label{sec:discrepancies}
+
+Of the 241 measured lines, 12 reached discrepancy tier~A, nine tier~B and 27 tier~C; 193 were
+not prioritised (Figure~\ref{fig:discrepancies}; Table~\ref{tab:s3}). The highest-ranked
+discrepancies are dominated by lines with extreme observed values --- HT-144 (observed 0.08,
+predicted 0.59 under M2), KNS-42 (0.125 against 0.60), HEC-1-B (0.97 against 0.56) and
+D283~Med (0.18 against 0.58) --- which is the shrinkage of Figure~\ref{fig:prediction} seen one line at a time
+rather than a set of biologically unusual cell lines.
+
+The triage separates possible explanations. Several tier A and B lines carry technical flags
+(small tissue group, related lines in the cohort, a Cellosaurus problem flag on a relative)
+and are routed to technical review first; the remainder are labelled as unexplained
+discrepancies requiring follow-up. Because the tier thresholds are cohort percentiles, a
+roughly fixed fraction of lines is always flagged: a flag means \enquote{relatively large in
+this cohort}, not \enquote{abnormal}.
+
+Of the two context lines from the motivating study, \textbf{MCF-7 was not prioritised}: its
+held-out errors lie within the bulk of the cohort (observed 0.52 against 0.574 under M1 and
+0.534 under M2). \textbf{DU145 reached tier~C} with four technical flags --- stranded RNA
+profile, small tissue group, unstable prediction across repeats and strong model
+disagreement --- and was observed at 0.71 against predictions of 0.580 under M1 and 0.650
+under M2. Both tiers were assigned by the same rule as for every other line. No individual
+prediction error is evidence of radioprotection, radiosensitisation or any causal mechanism,
+and lines selected for extreme residuals are expected to agree better on re-measurement even
+if nothing is wrong, through regression to the mean.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_07_cell_line_discrepancies}
+  \caption[Cell lines whose radiosensitivity the model reproduces least well]{Cell lines whose
+    measured radiosensitivity the model reproduces least well. (a)~Residual (observed minus
+    predicted mSF2 under M2, predictions averaged over repeats) against the observed value
+    for every measured line, coloured by prespecified discrepancy tier; triangles mark lines
+    with at least one technical flag. The strong dependence of the residual on the observed
+    value is shrinkage: because the models predict close to the cohort mean, lines with
+    extreme measured values necessarily have the largest residuals. Circled points are MCF-7
+    and DU145, labelled for their relevance to the motivating study; their tiers are not
+    altered. (b)~Flags recorded for the tier A and B lines, in rank order, separating flags
+    about prediction behaviour (instability across repeats, disagreement between M1 and M2)
+    from flags about the data or cell-line identity (stranded RNA profile, related lines in
+    the cohort, a Cellosaurus problem flag on a relative, small tissue group). These are
+    measured lines used in model development, not independent validation samples; a large
+    residual is a signal to re-check identity, provenance and the original measurement, not
+    evidence of unusual radiobiology.}
+  \label{fig:discrepancies}
+\end{figure}

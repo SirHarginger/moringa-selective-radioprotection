@@ -1,0 +1,13 @@
+# Publication tables (scripts/make_publication_tables.py). Derived from saved outputs only.
+# Write-once: bump `version` to regenerate. D04.07.
+experiment_config: configs/experiment.yaml
+triage_config: configs/triage.yaml
+tables_root: results/tables          # writes <tables_root>/<run_id>/publication_v<N>/ (core)
+                                     # and <tables_root>/<run_id>/publication_triage_v<N>/
+version: 1
+min_components: 10                   # tissue support threshold (as in evaluation and figures)
+# Contextual lines of the motivating Moringa study: labelled only, tiers never changed.
+context_lines: {ACH-000019: MCF-7, ACH-000979: DU145}
+# Cell-line names (DepMap 24Q4 Model.csv, verified against the folder's SHA256SUMS)
+depmap_model_table: data/raw/depmap/24q4/Model.csv
+depmap_checksums: data/raw/depmap/24q4/SHA256SUMS

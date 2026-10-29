@@ -1,0 +1,132 @@
+\chapter{Implementation, challenges and deliverables}\label{ch:implementation}
+
+\section{Challenges and how they were addressed}
+
+\paragraph{An incomplete source manuscript.} Printed page~3 and pages 7--12 of the original
+manuscript are missing, removing the extraction and culture methods, the end of the
+discussion, the conclusions and the references; authors, venue and DOI are absent, and no
+published version was found. In the manuscript's own figures the 0~Gy and 2~Gy series cannot
+be distinguished in the greyscale scan. The response was a labelled page-by-page extraction
+that marks every absent item as not stated, with no reconstruction and no use of point values
+read from the figures.
+
+\paragraph{Endpoint confusion as a standing risk.} The central scientific hazard of the
+project is to treat proliferation, viability and clonogenic survival as interchangeable.
+Endpoints are therefore separated in the data model, the documentation and the figure rules;
+a dedicated comparison of PEF with SF2 is recorded; and a project rule forbids placing
+different endpoints on one axis.
+
+\paragraph{Dataset harmonisation and licensing.} Four resources with different identifier
+namespaces, release cycles and licences had to be joined, and the outcome dataset is licensed
+for non-commercial use only. Each source has a manifest with checksums and access dates, the
+loaders verify checksums, and licences are recorded explicitly. The identity of the Hallmark
+gene-set file with the official release remains to be confirmed.
+
+\paragraph{Cell-line identity and relatedness.} Names are ambiguous, and relatedness is the
+most dangerous leakage route in this design. Matching used stable identifiers only;
+Cellosaurus hierarchy and origin links merged 241 records into 237 components; problem flags
+on relatives were recorded and surfaced in the triage; and the identifier, component and
+split code was audited for leakage.
+
+\paragraph{A small sample against many features.} With 237 independent components only modest
+model complexity is supportable. Simple scikit-learn baselines were used before anything more
+complex, within a prespecified ladder of five models with nested tuning, and the random forest
+was confined to an explicitly post-hoc exploratory configuration.
+
+\paragraph{Computational cost.} The validation plan required a coverage simulation to choose an
+interval method before any inference. The first pilot took about 24--25 minutes per replicate
+on one core, which made $9\times500$ replicates impractical within the available time. A
+static review found redundant work in the inner tuning loop: the gene-set scorer, the score
+scaler and the validation scores were being refitted for each of the 36 grid points in each of
+five inner folds, although they depend only on the fold rows, and the baseline ridge was
+refitted per grid point although it depends only on its own penalty. A caching rewrite was
+designed to be bit-identical (same operations in the same order), with the original loop kept
+as the reference implementation for every model to which the cache does not apply. Bounded
+multiprocessing was added (spawn context, atomic write-once checkpoints written by the parent
+process only, one BLAS thread per worker), sized to the investigator's machine (six physical
+cores, twelve threads, about 31~GiB of memory). Even so, the full simulation could not be
+completed before the deadline.
+
+\section{The protocol deviation}\label{sec:deviation}
+
+The deviation was written into the decision log \textbf{before} the primary run produced a
+single result, which is what makes it a deviation rather than a rationalisation. Its terms
+are: the inference method is set to \enquote{not assessable}; no interval or $p$-value is
+written; the number of repeats is fixed at ten; the negative controls are left at zero draws;
+and, as a consequence, gene-set attribution can never be permitted and the pathway tiers stay
+capped. The deviation is reflected in the results, the figures and the limitations, and the
+simulation infrastructure remains in the repository ready to run (Table~\ref{tab:unexecuted}).
+
+\begin{table}[tbp]
+  \caption{Analyses implemented and tested but not executed.}\label{tab:unexecuted}
+  \small
+  \begin{tabular}{@{}L{0.24\linewidth}L{0.33\linewidth}L{0.36\linewidth}@{}}
+    \toprule
+    \thead{Analysis} & \thead{Command} & \thead{Status} \\
+    \midrule
+    Negative controls, 1,000 draws of each null
+      & \path{scripts/run_model.py} with \path{configs/experiment_controls.yaml}
+      & Configuration ready, cost measured at about 10--20~h; \textbf{not executed}. Tiers A
+        and B stay closed and no gene-set $p$-value exists until it is run. \\
+    Coverage simulation (interval method) & \path{scripts/run_interval_simulation.py}
+      & Infrastructure ready; \textbf{deferred} by the recorded protocol deviation. \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{A presentation error found and corrected.} The first version of the within-tissue
+Spearman statistic was strongly negative for the tissue-only models. Rather than report a
+striking number, the code was inspected, the leave-fold-out mean artefact identified, and a
+corrected table written that marks the statistic undefined where a model's prediction is
+constant within a tissue (Section~\ref{sec:correction}; Table~\ref{tab:s4}). The first version
+was kept unchanged for audit and is not interpreted --- a clear example of the write-once
+discipline doing its job.
+
+\paragraph{Uncertainty in the correspondence between compounds and extracts.} The original
+extracts were never chemically characterised, and the published dichloromethane-extract
+literature is thin, partly inaccessible and partly based on library matches. The response was
+a three-level extraction category per compound, kept outside the score; verbatim solvent
+wording stored for every report; the exclusion of speculation as evidence (one paper's
+\enquote{possibly yes} for chlorogenic acid in a leaf \ce{CH2Cl2} extract); and a note of a
+citation error in a 2026 paper, in which a statement about an Indian DCM extract cites an
+unrelated soil-chemistry reference.
+
+\paragraph{Abstract-level evidence extraction.} Many full texts were paywalled or could not be
+retrieved, so radiation doses, concentrations and even cell-line identities are missing from
+several records. Every such gap is recorded as \enquote{not stated} together with the reading
+depth, and the gaps are listed as items to close before publication rather than filled by
+inference.
+
+\section{Deliverables}\label{sec:deliverables}
+
+The project delivered the following outputs.
+\begin{enumerate}
+  \item A labelled extraction of the original manuscript, with every absent item marked and
+    checked against the page images.
+  \item A provenance-tracked analysis dataset of 241 records and 237 independent components
+    from 20 tissues, with checksum-verified inputs and a recorded quality-control pass.
+  \item The primary benchmark: 250/250 model-fold tasks for five prespecified models in ten
+    repeats of grouped, nested five-fold cross-validation, with saved out-of-fold predictions,
+    metrics, per-repeat differences and a run record.
+  \item The explainability analysis: held-out permutation importance for all 50 fits of M2,
+    coefficient sign consistency, gene-set score correlations and rank-stability statistics.
+  \item Pathway and cell-line triage under enforced prespecified gates: seven tier-C gene
+    sets and no tier A or B; 12, 9 and 27 cell lines in tiers A, B and C.
+  \item Publication tables derived only from saved outputs, including the corrected
+    within-tissue ranking analysis with the superseded version retained for audit.
+  \item A curated, fully referenced compound evidence base (constituent inventory and primary
+    radiation-biology evidence), with every DOI verified against Europe PMC or Crossref and
+    every identifier against PubChem.
+  \item The prespecified compound-prioritisation protocol, its tested implementation and the
+    resulting ranking: 18 compounds ranked, 5 in tier~A, with the liability cap and the
+    not-assessable rule both binding.
+  \item Three completed robustness analyses --- the M3 random forest (200/200 tasks),
+    leave-one-tissue-out (18/18) and outcome-scale sensitivity (400/400) --- each reported as
+    it came out, including where it weakened the primary reading, and M3 explainability kept
+    separate from the primary analysis.
+  \item Eleven report figures as 600~dpi PNG and vector PDF with provenance records, and this
+    report.
+\end{enumerate}
+All model fitting, prediction, explainability and analysis were executed by the
+investigator; the automated assistant prepared code, configuration, documentation and this
+report, and ran no scientific computation.

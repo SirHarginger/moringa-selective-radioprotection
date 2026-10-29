@@ -1,0 +1,64 @@
+% cover.tex -- cover page and document-information page. Layout only: every text field
+% comes from report.md (generated/metadata.tex) or from build.sh (generated/buildinfo.tex).
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[reportnavy] (current page.north west) rectangle
+      ([yshift=-17mm]current page.north east);
+    \node[anchor=west,text=white,font=\sffamily\small]
+      at ([xshift=26mm,yshift=-8.5mm]current page.north west)
+      {\addfontfeatures{LetterSpace=10}\MakeUppercase{\ReportSubtitle}};
+    \fill[reportnavy] (current page.south west) rectangle
+      ([yshift=5mm]current page.south east);
+  \end{tikzpicture}%
+  \vspace*{36mm}
+
+  \begin{flushleft}
+    {\bfseries\color{reportnavy}\fontsize{26}{32}\selectfont\ReportTitleMain\par}
+    \vspace{8mm}
+    {\color{reportnavy}\rule{0.32\linewidth}{1.2pt}}\par
+    \vspace{8mm}
+    {\fontsize{15.5}{21}\selectfont\color{reportgrey}\ReportTitleSub\par}
+  \end{flushleft}
+
+  \vfill
+
+  \begin{minipage}[b]{0.7\linewidth}
+    \ReportAuthors
+  \end{minipage}
+
+  \vspace{12mm}
+  {\color{reportrule}\rule{\linewidth}{0.5pt}}\par\vspace{2mm}
+  {\sffamily\small\color{reportgrey}\ReportDate\par}
+\end{titlepage}
+
+% ------------------------------------------------------------ document information
+\thispagestyle{empty}
+\vspace*{\fill}
+\begingroup\small
+\noindent{\sffamily\bfseries\color{reportnavy}Document information}\par\smallskip
+\noindent\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.27\linewidth}
+                          >{\raggedright\arraybackslash}p{0.69\linewidth}@{}}
+  \toprule
+  Title & \ReportTitleMain: \ReportTitleSub \\
+  Document type & \ReportSubtitle \\
+  Date of the report text & \ReportDate \\
+  Authoritative source & \reportpath{reports/french_embassy/report.md}\newline
+    SHA-256 \BuildSourceSHA \\
+  Bibliography & \reportpath{reports/french_embassy/references.bib}\newline
+    SHA-256 \BuildBibSHA \\
+  Figures & \BuildFigureCount{} vector PDF figures listed in
+    \reportpath{figure_manifest.csv} \\
+  Result tables & \BuildTableCount{} tables read from the CSV files listed in
+    \reportpath{table_manifest.csv} (Appendix~\ref{app-h}) \\
+  Typeset & LuaLaTeX via \reportpath{latex/build.sh}, pandoc \BuildPandocVersion;
+    source date \BuildDate \\
+  Repository state & commit \BuildCommit, \BuildTreeState \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+\noindent This PDF is generated. Its text is the Markdown report named above; its figures
+and tables are the saved project outputs, inserted unchanged. Checksums of every input
+are listed in Appendix~\ref{app-i}.
+\par\endgroup
+\clearpage

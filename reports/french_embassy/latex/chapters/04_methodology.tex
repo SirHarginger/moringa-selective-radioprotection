@@ -1,0 +1,249 @@
+\chapter{Methodology}\label{ch:methods}
+
+\section{The original experimental record}
+
+The \textit{Moringa} manuscript was read page by page, and every extracted item was labelled
+as a measured result, an authors' interpretation, this project's commentary, or not stated;
+nothing absent was reconstructed. A radiobiology review checked every extracted item against
+the page images. Internal inconsistencies were recorded as printed rather than silently
+corrected: the extract concentration appears as 25--50~µg/mL in the abstract, 30--50~mg/mL
+in the results and above 20~µg/mL in the discussion; V79 is described variously as hamster,
+murine and rodent; and the tabulated integrated areas are all positive although the plotted
+optical-density changes are mostly negative for the two carcinoma lines, which cannot be
+reconciled without the missing pages or the raw data.
+
+\section{Data acquisition, harmonisation and eligibility}
+
+Outcome, expression, identity and pathway resources were acquired under recorded
+provenance, parsed into separate per-endpoint tables and harmonised on DepMap identifiers.
+Download code was written only after each source had been verified; raw files are
+immutable, no value was invented or silently imputed, and missingness is documented.
+
+Cell lines were matched by stable identifiers, never by name. Cellosaurus supplied
+accessions, synonyms, problem flags, and the hierarchy and origin links used to detect
+relatedness. A record was eligible if it had a usable clonogenic SF2 value, a matched
+baseline expression profile and a resolved identity, which gave \textbf{241 eligible
+records} from 20 tissues.
+
+\section{Endpoint and features}\label{sec:endpoint}
+
+The single primary endpoint is \textbf{CLARIFi mSF2}, the median of the literature-reported
+clonogenic surviving fractions at 2~Gy for a cell line, analysed on its raw scale.
+Predictions are clipped to $[0,1]$ by a prespecified rule; outcomes are never clipped.
+Crystal-violet proliferation, cell viability, ATP-based integral survival and differential
+expression are kept strictly separate from clonogenic SF2 throughout the project.
+
+Three kinds of feature were used: tissue of origin (OncotreeLineage, one-hot encoded over
+fixed categories), an optional proliferation covariate, and 50 Hallmark gene-set scores
+computed from baseline expression (DepMap $\log_2(\mathrm{TPM}+1)$ values of protein-coding
+genes). Within each training fold, every gene $g$ is standardised with the mean $\mu_g$ and
+standard deviation $\sigma_g$ of the training rows only, and the score of set $S$ for cell
+line $i$ is the mean standardised expression of its member genes present in the matrix,
+\begin{equation}
+  s_{iS} \;=\; \frac{1}{|S^{\ast}|}\sum_{g\in S^{\ast}} \frac{x_{ig}-\mu_g}{\sigma_g},
+  \qquad S^{\ast} = S \cap \{\text{measured genes}\}.
+  \label{eq:score}
+\end{equation}
+The proliferation covariate is the combined score of the E2F-targets and G2M-checkpoint
+sets.
+
+\section{Grouping and cross-validation}\label{sec:cv}
+
+Records of cell lines related by identity (isogenic derivatives, sublines, documented
+relatedness) were merged into \textbf{237 independent biological components}; seven
+components contain more than one record. Every split is grouped by component, so related
+lines can never fall on both sides of a train/test boundary. Splits are stratified by
+tissue: the nine tissues with at least ten components each form their own stratum and the
+remaining eleven are pooled.
+
+Validation used \textbf{ten repeats of five-fold cross-validation} with an inner five-fold
+loop for hyperparameter selection. All preprocessing, scaling, gene-set scoring and tuning
+took place \textbf{inside training folds only}. Each record $i$ belonging to component
+$c(i)$ carries the weight
+\begin{equation}
+  w_i \;=\; \frac{1}{n_{c(i)}},
+  \label{eq:weights}
+\end{equation}
+where $n_c$ is the number of records of component $c$, in every fit and every inner score,
+so that a component with several records counts once. The base random seed (20261021) and
+all grids are recorded in the experiment configuration. A dedicated leakage audit covered
+identifier handling, component construction and split construction.
+
+\section{Models}\label{sec:models}
+
+Five models were prespecified, from simple to rich (Table~\ref{tab:models}), and simple
+scikit-learn estimators were used before any more complex architecture. M1 is a ridge
+regression on the fixed tissue categories with an unpenalised intercept, which shrinks each
+tissue mean towards the overall mean. M2 is an \emph{offset model}: within each training
+fold it first fits M1 and then an elastic net to the M1 residuals using the standardised
+gene-set scores $\tilde{\mathbf{s}}_i$,
+\begin{equation}
+  \hat{y}_i^{\,\mathrm{M2}} \;=\; \hat{y}_i^{\,\mathrm{M1}} + \beta_0 +
+     \tilde{\mathbf{s}}_i^{\top}\boldsymbol{\beta},
+  \qquad
+  \hat{\boldsymbol{\beta}} = \arg\min_{\beta_0,\boldsymbol{\beta}}
+     \frac{\sum_i w_i\bigl(r_i-\beta_0-\tilde{\mathbf{s}}_i^{\top}\boldsymbol{\beta}\bigr)^2}
+          {2\sum_i w_i}
+     + \alpha\rho\,\lVert\boldsymbol{\beta}\rVert_1
+     + \frac{\alpha(1-\rho)}{2}\lVert\boldsymbol{\beta}\rVert_2^2 ,
+  \label{eq:offset}
+\end{equation}
+with $r_i = y_i-\hat{y}_i^{\,\mathrm{M1}}$. Because M2 contains M1 as an offset, the
+comparison of the two asks specifically what expression adds beyond tissue. M1P and M2P are
+the corresponding models with the proliferation covariate added to the baseline; M2P uses
+the remaining 48 Hallmark scores in its residual model. The inner loop searched
+$\alpha\in\{0.1, 0.01, 0.001\}$, $\rho\in\{0.9, 0.5, 0.1\}$ and the baseline ridge penalty
+$\in\{100, 10, 1, 0.1\}$, 36 combinations for M2.
+
+\begin{table}[tbp]
+  \caption{The five prespecified models of the primary benchmark.}\label{tab:models}
+  \small
+  \begin{tabular}{@{}l L{0.50\linewidth} L{0.30\linewidth}@{}}
+    \toprule
+    \thead{Model} & \thead{Features} & \thead{Role} \\
+    \midrule
+    M0 & None (training-set mean) & Floor \\
+    M1 & Tissue of origin & Primary comparator \\
+    M1P & Tissue and proliferation score & Sensitivity comparator \\
+    \textbf{M2} & \textbf{Tissue and 50 Hallmark expression scores} & \textbf{Primary model} \\
+    M2P & Tissue, proliferation and the other 48 Hallmark scores & Sensitivity model \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Two further models were configured for the exploratory layer
+(Chapter~\ref{ch:robustness}): M2X, an elastic net on the 50 scores with the global mean as
+offset and no tissue information, used only for the leave-one-tissue-out analysis; and M3,
+a random forest on one-hot tissue and the 50 scores. M3 was added after the primary results
+had been seen and therefore cannot replace M2 as the primary benchmark, whatever its score.
+
+\section{Performance measures and the primary estimand}\label{sec:metrics}
+
+For a repeat $r$ with out-of-fold predictions $\hat{y}_{ir}$, the component-weighted error
+measures are
+\begin{align}
+  \mathrm{MAE}_r &= \frac{\sum_i w_i\,\lvert y_i-\hat{y}_{ir}\rvert}{\sum_i w_i}, &
+  \mathrm{RMSE}_r &= \Biggl(\frac{\sum_i w_i\,(y_i-\hat{y}_{ir})^2}{\sum_i w_i}\Biggr)^{1/2},
+  \label{eq:mae}\\
+  R^2_{\mathrm{oos},r} &= 1-\frac{\sum_i w_i\,(y_i-\hat{y}_{ir})^2}
+                                  {\sum_i w_i\,(y_i-\bar{y}_w)^2}, &
+  \bar{y}_w &= \frac{\sum_i w_i y_i}{\sum_i w_i},
+  \label{eq:r2}
+\end{align}
+and each reported value is the mean over the $R=10$ repeats. $R^2_{\mathrm{oos}}=0$
+therefore corresponds to predicting the cohort mean, and negative values are worse than
+that. Calibration slope and intercept come from a weighted regression of observed on
+predicted values.
+
+The primary estimand is the paired, component-weighted difference in mean absolute error
+between M1 and M2. With the record-level difference
+$d_{ir}=\lvert y_i-\hat{y}^{\,\mathrm{M1}}_{ir}\rvert-\lvert y_i-\hat{y}^{\,\mathrm{M2}}_{ir}\rvert$,
+the component means $D_{cr}=n_c^{-1}\sum_{i\in c} d_{ir}$ and the $C=237$ components,
+\begin{equation}
+  \Delta\mathrm{MAE} \;=\; \frac{1}{R}\sum_{r=1}^{R}\,\frac{1}{C}\sum_{c=1}^{C} D_{cr},
+  \label{eq:dmae}
+\end{equation}
+so a positive value favours the richer model. MAE, RMSE and $R^2_{\mathrm{oos}}$ are
+reported for every model, and no metric was chosen after the results were seen.
+
+\section{Explainability}\label{sec:explain-methods}
+
+For each of the 50 real-data fits of M2 (ten repeats by five folds), grouped permutation
+importance was computed on the \emph{outer-test rows only}, using the saved model, with 20
+permutations per feature; nothing was refitted. For gene set $S$ in fit $f$,
+\begin{equation}
+  I_{S,f} \;=\; \frac{1}{20}\sum_{p=1}^{20}
+     \Bigl[\mathrm{MAE}_f\bigl(\text{score } S \text{ permuted across components, draw } p\bigr)
+           -\mathrm{MAE}_f\Bigr],
+  \label{eq:importance}
+\end{equation}
+the increase in component-weighted held-out error, in mSF2 units, when the information in
+that score is destroyed. Coefficient sign consistency across fits and the Spearman
+correlation between gene-set scores were also computed, so that shared signal between
+correlated sets is visible rather than hidden.
+
+\section{Pathway prioritisation}\label{sec:pathway-methods}
+
+Gene sets were assigned to tiers by rules frozen before the run. \emph{Tier~C} requires that
+importance exceeded zero in at least half the fits and that the share of fits with a zero
+coefficient was at most 0.50. \emph{Tier~B} additionally requires sign consistency and a
+positive-importance share of at least 0.75 and significance against the permuted-outcome
+null; \emph{tier~A} requires both at least 0.90 and significance against both null models.
+\textbf{Both higher tiers also require a formally demonstrated prediction gain and at least
+1,000 completed draws of each null.} Neither exists in this run, so tiers A and B were
+unreachable by construction, and the rules were not altered to produce a more impressive
+ranking. Scores correlated at $\lvert\rho\rvert\ge 0.80$ are flagged as sharing signal.
+
+\section{Cell-line triage}\label{sec:triage-methods}
+
+Each measured line was characterised by the absolute error of its repeat-averaged
+out-of-fold prediction under M1 and M2, the spread of its prediction across repeats, and
+the disagreement between the two models, each expressed as a cohort percentile (the share
+of lines with a strictly smaller value, plus one, divided by the number of lines). A line
+reaches \emph{tier~A} when its error is at or above the 95th percentile under both models,
+\emph{tier~B} at or above the 90th percentile under both, and \emph{tier~C} at or above the
+90th percentile under either. Technical flags --- stranded RNA profile, related lines in the
+cohort, a Cellosaurus problem flag on a relative, a small tissue group, unstable prediction
+and strong model disagreement --- are recorded separately from the tier, so that a large
+residual caused by a data or identity problem is never presented as a biological
+discrepancy.
+
+\section{Curation of \textit{Moringa} constituent evidence}\label{sec:curation-methods}
+
+Constituents and their biology were curated by literature search and reading only, into two
+validated evidence files. Only \emph{primary} studies count, so a review citing an earlier
+study is never independent confirmation. Only studies of the \textbf{purified compound} can
+score; a study that dosed an extract is recorded with its score contribution disabled. Only
+\emph{ionising} radiation qualifies as radiation evidence, which excludes the large UV
+photoprotection literature. Nanoparticle and metal-conjugate formulations are excluded
+because the carrier confounds the compound, and chemically distinct derivatives are never
+credited to the parent compound. The \textbf{extraction solvent of every report is recorded
+verbatim}, and each compound is classified as documented in a dichloromethane extract,
+documented in seed or leaf with another solvent, or indirect and unconfirmed. Every DOI was
+verified against Europe PMC or Crossref and every identifier against PubChem, with the
+verification route and reading depth stored per record.
+
+\section{Candidate scoring and tiers}\label{sec:scoring}
+
+Each compound receives four integer scores, fixed before any score was computed:
+\begin{equation}
+  T \;=\; \underbrace{D_1}_{0\text{--}2}+\underbrace{D_2}_{0\text{--}3}
+         +\underbrace{D_3}_{0\text{--}2}+\underbrace{D_4}_{0\text{--}1}\;\in\{0,\dots,8\},
+  \label{eq:priority}
+\end{equation}
+where $D_1$ is the strength of verified \textit{Moringa} constituent evidence (2 if at least
+one primary seed or leaf report has structural confirmation by isolation and NMR or by a
+reference standard; 1 if identification rests on a spectral-library match or is not stated;
+0 if no primary seed or leaf report exists); $D_2$ the relevance to radiation-response
+biology (3 for ionising-radiation evidence from at least two independent research groups,
+2 from one group, 1 if only a relevant process was modulated without radiation); $D_3$
+independent source support (2 for at least three distinct research groups across both
+evidence files, 1 for two); and $D_4$ feasibility of follow-up (1 if the identifier is
+verified and at least one scored study reports a usable concentration or dose). Research
+groups are counted once across both evidence files, so repeated work from one laboratory is
+one source, and \textbf{chemical-class analogy earns no points}.
+
+The tiers are A ($T\ge 6$, $D_1\ge 1$, $D_2\ge 2$), B ($T\ge 4$, $D_1\ge 1$, $D_2\ge 1$) and C
+($T\ge 2$, $D_1\ge 1$); compounds below these thresholds are not prioritised. Two safeguards
+override the score. A compound with no primary \textit{Moringa} identification ($D_1=0$) is
+\emph{not assessable} and never enters the shortlist. Evidence that a compound protects
+\emph{tumour} cells from radiation, or is itself genotoxic, is a liability that is displayed
+and caps the tier at C. Extraction-specific evidence is reported beside the score and never
+folded into it.
+
+Model-associated pathways, literature-supported processes and their overlap are kept apart.
+An overlap between the genes a published experiment measured and the members of a
+model-ranked gene set marks a hypothesis to be tested; it is not evidence that the compound
+modifies the gene set, the pathway or clonogenic SF2.
+
+\section{Reproducibility and quality assurance}\label{sec:repro}
+
+The codebase uses Python~3.11 or later with a \path{src/} layout, type hints, small pure
+functions and YAML configuration with recorded seeds and no machine-specific paths. Every
+analytical output carries a run record with the git commit and a flag for uncommitted
+changes, configuration and file checksums, package versions and UTC timestamps, and
+analysis runs refuse to start from an uncommitted working tree. Result folders and figures
+are write-once, so a published number cannot be silently overwritten. Specialist reviews
+covering radiobiology, radiogenomic data curation, machine-learning methodology, statistics,
+software architecture, reproducibility, figure design and literature were recorded at each
+decision point in the project's decision log, together with any unresolved disagreement.

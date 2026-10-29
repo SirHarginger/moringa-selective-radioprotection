@@ -1,0 +1,127 @@
+\chapter{Introduction and scientific background}\label{ch:introduction}
+
+\section{Cellular responses to ionising radiation}
+
+Ionising radiation kills cells mainly by damaging DNA, and the DNA double-strand break is
+the lesion most closely tied to loss of reproductive capacity. The reference measure of how
+much radiation a cell population survives is the \emph{clonogenic assay}, which counts the
+cells that retain unlimited proliferative capacity and form colonies after irradiation
+\parencite{puck1956}. For a dose $D$, the surviving fraction is the plating efficiency of
+irradiated cells relative to that of unirradiated controls,
+\begin{equation}
+  \mathrm{SF}(D) \;=\; \frac{N_{\text{colonies}}(D)\,/\,N_{\text{seeded}}(D)}
+                             {N_{\text{colonies}}(0)\,/\,N_{\text{seeded}}(0)} .
+  \label{eq:sf}
+\end{equation}
+The surviving fraction at 2~Gy (SF2) is the most widely used single summary, because 2~Gy
+is the conventional daily fraction in radiotherapy and because SF2 has been associated with
+clinical outcome in some settings \parencite{fertil1981,west1993}.
+
+Cell lines differ substantially and reproducibly in intrinsic radiosensitivity, and these
+differences are only partly explained by tissue of origin \parencite{yard2016}. The
+determinants include DNA damage response and repair capacity, cell-cycle checkpoint
+control, proliferation rate, apoptotic propensity, oxygenation and redox state. Each of
+these processes leaves a transcriptional footprint, which is why prediction from gene
+expression is plausible in principle.
+
+\section{The \textit{Moringa oleifera} experimental motivation}\label{sec:moringa-study}
+
+The motivating study is an unpublished manuscript, \enquote{Dichloromethane seed and leaf
+extracts of \textit{Moringa oleifera} (Lam) enhance proliferation in irradiated rodent
+fibroblasts \textit{in vitro}}. The scanned copy available to the project is incomplete:
+printed pages 1, 2, 4, 5, 6, 13, 14 and 15 are present, while page~3 and pages 7--12 are
+missing. The plant material and extraction methods, the end of the discussion, the
+conclusions and the reference list therefore cannot be read; authors, venue, date and DOI
+are not shown, and no published version was located. No missing method, result or
+conclusion has been reconstructed in this report.
+
+The available pages document the following design. Crude DCM seed and leaf extracts were
+reconstituted in phosphate-buffered saline, sterile-filtered and applied at
+0--100~µg/mL to V79 (described as apparently normal Chinese hamster lung fibroblasts),
+DU145 (human prostate cancer) and MCF-7 (human mammary adenocarcinoma). For each cell line
+and extract, one plate was left unirradiated and a second received 2~Gy of X-rays at
+1~Gy/min. Adherent biomass was measured 72~h later by crystal-violet optical density at
+590~nm, with dose-matched untreated controls subtracted. The authors integrated the change
+in optical density over extract concentration, giving an area $A_D$ at each dose $D$, and
+reported a \emph{proliferation enhancement factor}
+\begin{equation}
+  \mathrm{PEF} \;=\; \frac{A_{2\,\mathrm{Gy}}}{A_{0\,\mathrm{Gy}}} .
+  \label{eq:pef}
+\end{equation}
+For the seed extract, PEF exceeded 1 in all three lines (V79 1.25, DU145 1.12, MCF-7 1.16).
+For the leaf extract, PEF was 1.26 in V79, 0.90 in DU145 and 0.99 in MCF-7.
+
+Four cautions follow directly from the design, and they constrain everything that follows.
+\begin{enumerate}
+  \item \textbf{PEF is not SF2.} PEF is a ratio of integrated extract-versus-control
+    differences in 72-hour biomass measured with the extract present; SF2 is a surviving
+    fraction of untreated cells measured over one to three weeks of colony growth. The two
+    are never equated, pooled or plotted on one axis in this project.
+  \item \textbf{\enquote{Enhancement} denotes two different quantities in the manuscript.}
+    By PEF the seed extract enhanced all three lines; by growth relative to untreated
+    control only V79 increased, while the two carcinoma lines showed no change or reduced
+    growth. The discussion's statement about the fibroblasts refers to the second quantity,
+    the results' statement about all lines to the first.
+  \item \textbf{The normal-versus-malignant comparison is confounded.} The only apparently
+    normal line is also the only non-human line, so species, tissue of origin, phenotype
+    and malignancy vary together. Only the leaf extract shows a normal/malignant difference
+    in PEF.
+  \item \textbf{The design cannot support a selectivity claim.} There is a single non-zero
+    dose and no dose--response; the replicates are technical wells rather than independent
+    biological repeats; dose is confounded with plate; and no vehicle or cell-free
+    interference control is described. The available pages contain no clonogenic,
+    cytotoxicity, apoptosis, DNA-damage or migration assay, no normal human cell line and
+    no mechanistic experiment.
+\end{enumerate}
+The \textit{Moringa} measurements are therefore used as \emph{biological motivation only}.
+They are never used as training, calibration or validation data, and no claim of selective
+phytochemical radioprotection is made anywhere in this report.
+
+\section{Why cellular radiosensitivity is hard to predict}
+
+Published attempts to predict cell-line radiosensitivity from expression have performed
+poorly under honest evaluation. The most directly relevant prior work, RadSigBench,
+re-fitted seven published radiosensitivity signatures and benchmarked them against
+resampled random gene sets, reporting a mean out-of-sample $R^2$ of 0.01 on CCLE data and
+0.00 on NCI-60, with the published signatures performing no better than random gene sets
+\parencite{oconnor2022}. This is the single most important prior for the present work: it
+sets the expectation that the signal is weak, so a near-zero $R^2$ here is a replication
+rather than a surprise.
+
+Three difficulties recur. The first is \emph{sample size}: panels with reliable clonogenic
+data number in the hundreds, against tens of thousands of candidate molecular features. The
+second is \emph{label noise}: literature-aggregated SF2 values combine laboratories, dose
+rates and protocols, and an audit of 1,672 radiobiology papers found that 30.5\% did not
+report replicates and 32.3\% did not report dose rate \parencite{oike2020}. The third is
+\emph{leakage through relatedness}: isogenic derivatives, sublines and cross-contaminated
+lines share molecular profiles, so a split that separates records rather than biological
+entities inflates apparent performance.
+
+\section{The case for public radiogenomic data}
+
+A three-line extract experiment cannot address intrinsic radiosensitivity across cell
+types, but public resources can. CLARIFi aggregates literature clonogenic radiosensitivity
+\parencite{clarifi2024}; DepMap provides harmonised baseline expression for the same lines
+\parencite{depmap24q4}; Cellosaurus provides authoritative identity, problem flags and
+relatedness \parencite{bairoch2018}; and the MSigDB Hallmark collection provides 50 compact,
+interpretable pathway summaries \parencite{liberzon2015}. Together they allow a properly
+grouped, prespecified benchmark on a defensible endpoint.
+
+\section{The value and the limits of interpretable machine learning}
+
+Interpretable models matter here for two reasons: a pathway-level summary is biologically
+meaningful, and feature attributions can be examined for stability. Attribution, however,
+has hard limits. Permutation importance describes a \emph{fitted model}, not biology;
+correlated features share or exchange importance; and the size of an importance is not a
+molecular effect size. Attribution is only as trustworthy as the prediction it explains,
+which is why every pathway statement in this report is capped at an exploratory tier while
+the prediction gain remains small and unvalidated.
+
+\section{Rationale for prioritising candidate compounds}
+
+The original study raises a question that the machine-learning benchmark alone cannot
+answer: if cells differ in radiation response, and some of that difference is reflected in
+pathway activity, which \textit{Moringa} constituents are worth testing? The answer has to be
+built compound by compound from independently published chemistry and biology, with the
+extraction solvent tracked explicitly, because the extracts used in the original study were
+never chemically characterised.

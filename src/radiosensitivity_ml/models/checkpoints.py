@@ -238,12 +238,14 @@ class RunStore:
         os.replace(self.task_dir(task), target)
         return target
 
-    def record_failure(self, task: Task, exc: BaseException) -> None:
+    def record_failure(self, task: Task, exc: BaseException, trace: str | None = None) -> None:
+        """Append a failure; ``trace`` is the traceback text of an error raised elsewhere
+        (a worker process), otherwise the exception being handled here is used."""
         line = {
             "utc": datetime.now(UTC).isoformat(),
             "task": asdict(task),
             "error": f"{type(exc).__name__}: {exc}",
-            "traceback": traceback.format_exc(),
+            "traceback": traceback.format_exc() if trace is None else trace,
         }
         with self.failures_path.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(line) + "\n")

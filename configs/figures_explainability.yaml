@@ -1,0 +1,16 @@
+# Figures that need the explainability tables (run_explainability.py first). Kept apart
+# from configs/figures.yaml so the primary figures never wait for explainability (D04.06).
+tables_dir: results/tables/primary_v1
+output_dir: figures/generated
+version: 1
+dpi: 300
+formats: [pdf, svg, png]
+figures:
+  - id: fig_s02
+    slug: gene_set_stability
+    kind: stability_vs_null
+    inputs: {tests: explainability/gene_set_tests.csv}
+    caption: >
+      Mean grouped permutation importance of Hallmark scores; dark bars only where
+      attribution is permitted (primary gain shown and BH q = 0.05 against both nulls).
+      Associations in-model, hypothesis-generating.

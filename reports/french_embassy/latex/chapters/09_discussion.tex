@@ -1,0 +1,148 @@
+\chapter{Discussion}\label{ch:discussion}
+
+\section{What the modest improvement means}
+
+Expression features reduced the error of a tissue-only baseline by 2.85\%, consistently in
+direction (nine of ten repeats) but small in size and not uniform across tissues, with
+Pancreas moving in the opposite direction by nearly three times the pooled gain. The
+defensible interpretation is that \textbf{baseline Hallmark pathway activity carries a small
+amount of information about intrinsic radiosensitivity beyond tissue of origin --- on this
+endpoint, in this cohort and under this model family}. This is not a demonstration that
+expression predicts radiosensitivity usefully, and it is not a validated effect: no interval,
+no $p$-value, no negative control and no external cohort stand behind it.
+
+The robustness analyses sharpen this reading rather than soften it. The advantage survives a
+change of model family only in diminished form, since the random forest gains less (0.00275
+against 0.00383). On transformed outcome scales it keeps its direction but nearly disappears
+on the neglog scale; a result whose size depends so strongly on the choice of transformation
+is small enough to be shaped by it. The one encouraging result, the leave-one-tissue-out
+$R^2$ of $+0.031$ for expression alone, comes from an easier comparison on a different design,
+and it reverses for two of the nine well-supported tissues (Pancreas $-0.0142$,
+Esophagus/Stomach $-0.0030$). Pancreas is unfavourable in both the primary and the
+leave-one-tissue-out analyses, so the tissue-level picture, and not only the pooled gain,
+must be part of any statement about generalisation.
+
+Three further cautions apply. The comparison is nested (M2 contains M1 as an offset), so the
+errors of the two models are strongly correlated and the paired difference, while the right
+statistic, is a narrow one. Repeated cross-validation re-splits one fixed set of components
+and cannot estimate generalisation to new cohorts. And the baseline itself is weak: M1 is
+marginally worse than the global mean on MAE, which indicates that tissue of origin, as
+encoded here, contributes little once shrinkage is taken into account.
+
+\section{Why out-of-sample $R^2$ remains low}
+
+Figure~\ref{fig:prediction} shows predictions compressed near the cohort mean against
+observations that span the whole interval. Several causes act together and cannot be
+separated with these data. The \textbf{label} is a literature median that aggregates
+laboratories, dose rates and protocols, and the field's own reporting audit found a third of
+papers omitting replicates or dose rate \parencite{oike2020}; CLARIFi supplies one median per
+line, so per-line assay variability cannot even be estimated. The \textbf{sample} is small
+(237 independent components) and tissue-imbalanced. The \textbf{features} are 50 coarse
+pathway summaries of baseline expression, which may simply not encode the determinants of
+radiation response; intrinsic radiosensitivity may depend on dynamic, post-irradiation
+responses that a baseline profile cannot capture. And the \textbf{design is strict}: grouping
+by relatedness and confining all preprocessing to training folds remove the two most common
+sources of inflated performance.
+
+This near-zero $R^2$ closely reproduces RadSigBench, which reported mean out-of-sample $R^2$
+of 0.01 and 0.00 for seven published signatures and found them no better than random gene
+sets \parencite{oconnor2022}. \textbf{Agreement with the strongest prior negative result is a
+substantive finding, not a failure}: it indicates that the pipeline measures what it claims
+to measure, and it is evidence against the more optimistic claims of the signature
+literature.
+
+\section{The value and uncertainty of expression-derived pathways}
+
+The pathway ranking is best read as a description of a weak fitted model. Its magnitudes are
+of the same order as the whole predictive gain, its rank stability across fits is modest
+(mean Kendall $\tau$ 0.225, mean top-10 Jaccard 0.391), and correlated gene sets share or
+exchange importance. The appearance of HALLMARK\_P53\_PATHWAY at the top is biologically
+\emph{plausible}, since p53 governs the damage response, cell-cycle arrest and apoptosis, and
+its predominantly negative coefficient is consistent with higher p53-pathway activity
+accompanying lower survival. Plausibility is, however, precisely the trap: without a
+demonstrated prediction gain and without negative controls, a plausible ranking cannot be
+distinguished from a coincidence, and the absence of DNA repair, G2M checkpoint and hypoxia
+from the shortlist shows that the ranking is not simply recovering textbook radiobiology. The
+ranking is therefore reported as capped, exploratory and hypothesis-generating, and no
+mechanistic conclusion is drawn from it.
+
+\section{How the original \textit{Moringa} findings motivate further work}
+
+The original study's lasting contribution is a \emph{question} rather than a measurement this
+project could use: the post-irradiation proliferative response to a plant extract differed
+between cell types, most clearly for the leaf extract (PEF 1.26 in V79 against 0.90 and 0.99
+in the two carcinoma lines). The computational work formalises the general version of that
+question on a valid endpoint and with proper grouping, and finds the molecular signal weak.
+This does not contradict the original observation, because the endpoints differ: a 72-hour
+biomass ratio measured with extract present is not intrinsic clonogenic survival. The
+original observation also remains confounded, since the only apparently normal line is the
+only non-human one. What the project adds is a defensible framework in which the question can
+be asked properly, together with an explicit statement of the experiments needed to answer it.
+
+\section{What compound prioritisation adds, and why the candidates remain hypotheses}
+
+The compound module turns an open-ended phytochemical literature into an auditable evidence
+trail: compound $\rightarrow$ documented presence in seed or leaf with a named solvent
+$\rightarrow$ primary experimental association with a radiation-response process
+$\rightarrow$ the genes actually measured. Its practical value lies as much in what it
+\emph{excludes} as in what it ranks. It removes benzyl isothiocyanate (a root, not a seed or
+leaf, constituent), gallic and caffeic acid (no primary \textit{Moringa} report), a UVB
+literature that is not radiation evidence, carrier-confounded nanoparticle studies and a
+retracted paper; it places the free flavonol aglycones in the weakest identification band
+rather than excluding them, as their tentative dereplication warrants; and it flags the
+tumour-protection liability of chlorogenic acid, which a naive \enquote{antioxidants are
+radioprotectors} reading would have turned into a selling point.
+
+The candidates remain hypotheses for specific reasons. No compound has been shown to be
+present in the extracts that were tested, because those extracts were never analysed.
+Moringin, the most \textit{Moringa}-specific candidate, has no radiation study at all. The
+compounds that do have radiation evidence were mostly tested at concentrations or doses whose
+relevance to an extract is unknown, several at levels well above plausible dietary exposure,
+and many abstracts omit the radiation dose or the concentration. An antioxidant is not
+thereby a radioprotector; a compound that reduces tumour-cell viability does not thereby
+protect normal tissue; and a high priority score reflects the state of the published
+evidence, not a predicted experimental outcome.
+
+The link to the machine-learning results is deliberately kept weak, because the evidence for
+it is weak. With the gene-set ranking capped at tier~C, the compound prioritisation rests on
+external biological evidence, and any overlap between a compound's measured genes and a
+ranked gene set is reported as a hypothesis. \textbf{Nothing in this report claims that a
+prioritised pathway and a prioritised compound together imply an effect on clonogenic SF2.}
+
+\section{Separating supported results from plausible explanations}
+
+Table~\ref{tab:supported} separates what the saved outputs support from explanations that are
+plausible but not established. The left-hand column is the evidential content of this report;
+the right-hand column is the agenda for future work.
+
+\begin{table}[tbp]
+  \caption{Results supported by the saved outputs, separated from plausible explanations
+    that are not established.}\label{tab:supported}
+  \small
+  \begin{tabular}{@{}L{0.47\linewidth}L{0.47\linewidth}@{}}
+    \toprule
+    \thead{Supported by the outputs} & \thead{Plausible, not established} \\
+    \midrule
+    $\Delta$MAE $=0.00383$ (2.85\%); M2 better in nine of ten repeats
+      & That expression features would improve prediction in an independent cohort \\
+    Out-of-sample $R^2$ near zero for all five models
+      & That richer features or more data would raise it materially \\
+    M2 lower error in eight of nine well-supported tissues, worse in Pancreas
+      & That tissue-specific differences reflect tissue-specific biology \\
+    Expression-only transfer to unseen tissues: $R^2=+0.031$, negative for Pancreas and
+      Esophagus/Stomach & That expression generalises to tissues absent from training \\
+    Advantage keeps its direction on three outcome scales but nearly vanishes on one
+      & That the raw-scale magnitude is the \enquote{true} size of the effect \\
+    Seven gene sets meet the tier-C criteria; the p53 pathway ranks first
+      & That the p53 pathway influences radiosensitivity in these lines \\
+    Importance rank stability is modest across fits
+      & That a larger sample would stabilise the ranking \\
+    Niazimicin is confirmed in seed and leaf DCM fractions
+      & That it was present in the original study's extracts \\
+    Moringin has no published ionising-radiation study
+      & That it would behave like benzyl isothiocyanate under radiation \\
+    Chlorogenic acid protected hepatocellular carcinoma cells from radiation in one study
+      & That it would protect human tumours during radiotherapy \\
+    \bottomrule
+  \end{tabular}
+\end{table}

@@ -23,6 +23,7 @@ import pandas as pd
 from scipy import stats
 
 from radiosensitivity_ml.evaluation.metrics import weighted_mae
+from radiosensitivity_ml.models.offset import OffsetModel
 
 
 def component_permutation(components: np.ndarray, rng: np.random.Generator) -> np.ndarray:
@@ -46,20 +47,35 @@ def permutation_importance(
     n_repeats: int,
     seed: int,
 ) -> pd.Series:
-    """Mean increase in component-weighted MAE when one feature is permuted by component."""
+    """Mean increase in component-weighted MAE when one feature is permuted by component.
+
+    For an OffsetModel the baseline prediction does not depend on the permuted scores, so
+    it is computed once and reused: ``baseline + enet.predict(features)`` is exactly the
+    expression of ``OffsetModel.predict_from_features`` (same operations, same order), so
+    the importances are bit-identical to recomputing it for every permutation.
+    """
     rng = np.random.default_rng(seed)
     sizes = pd.Series(components).map(pd.Series(components).value_counts()).to_numpy()
     weights = 1.0 / sizes
     features = model.features(X)  # type: ignore[attr-defined]
-    base = weighted_mae(y, model.predict_from_features(X, features), weights)  # type: ignore[attr-defined]
+    if isinstance(model, OffsetModel):
+        offset = model.baseline_.predict(X)
+
+        def predict(values: np.ndarray) -> np.ndarray:
+            return offset + model.enet_.predict(values)
+    else:
+
+        def predict(values: np.ndarray) -> np.ndarray:
+            return model.predict_from_features(X, values)  # type: ignore[attr-defined]
+
+    base = weighted_mae(y, predict(features), weights)
     out = {}
     for j, name in enumerate(model.feature_names_):  # type: ignore[attr-defined]
         increases = []
         for _ in range(n_repeats):
             permuted = features.copy()
             permuted[:, j] = features[component_permutation(components, rng), j]
-            pred = model.predict_from_features(X, permuted)  # type: ignore[attr-defined]
-            increases.append(weighted_mae(y, pred, weights) - base)
+            increases.append(weighted_mae(y, predict(permuted), weights) - base)
         out[name] = float(np.mean(increases))
     return pd.Series(out, name="importance")
 

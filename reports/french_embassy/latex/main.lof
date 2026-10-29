@@ -1,0 +1,29 @@
+\babel@toc {british}{}\relax 
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1}{\ignorespaces Structure of the project}}{5}{figure.caption.14}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2}{\ignorespaces Composition and radiosensitivity of the analysed cohort}}{15}{figure.caption.20}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Out-of-fold predictive performance of the five models}}{16}{figure.caption.22}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Why the out-of-sample $R^2$ stays near zero}}{17}{figure.caption.26}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Performance by tissue of origin}}{19}{figure.caption.28}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6}{\ignorespaces Exploratory importance of the Hallmark gene-set scores in M2}}{24}{figure.caption.37}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Cell lines whose radiosensitivity the model reproduces least well}}{25}{figure.caption.38}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {8}{\ignorespaces Evidence-based prioritisation of \textit {Moringa} seed and leaf constituents}}{30}{figure.caption.46}%
+\contentsline {figure}{\numberline {9}{\ignorespaces What the published evidence links each shortlisted compound to}}{31}{figure.caption.48}%
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\def \@chapapp {\appendixname }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {S1}{\ignorespaces Stability of out-of-fold predictions across repeats}}{47}{figure.caption.78}%
+\contentsline {figure}{\numberline {S2}{\ignorespaces Correlation between the scores of the tier-C gene sets and related sets}}{47}{figure.caption.79}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

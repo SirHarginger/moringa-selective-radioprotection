@@ -7,6 +7,11 @@ M1, raw scale) receives a verdict, and only with an adopted interval method whos
 decision file matches the config: "gain shown" (one-sided LB > 0) or "no gain shown".
 Every other comparison, scale and population is descriptive. Biological or clinical
 meaningfulness is never claimed.
+
+Descriptive-only route (``inference.method: not_assessable``, D04.06): no simulation
+decision exists, so no interval column is written (candidate intervals are unvalidated)
+and the primary comparison reads "superiority not formally assessed". Estimates,
+per-repeat values and metrics are reported as usual.
 """
 
 from __future__ import annotations
@@ -27,11 +32,13 @@ COMPARISONS = (
     ("primary: tissue+expression vs tissue", "M2", "M1"),
     ("S1: beyond tissue+proliferation", "M2P", "M1P"),
     ("S3: random forest vs tissue", "M3", "M1"),
+    ("exploratory: random forest vs global mean", "M3", "M0"),
     ("tier b: expression-only vs global mean", "M2X", "M0"),
 )
 
 
 PRIMARY = ("M2", "M1", "raw")
+NOT_ASSESSED = "descriptive only: superiority not formally assessed"
 
 
 class EvaluationError(ValueError):
@@ -96,7 +103,7 @@ def verdict(interval: iv.Interval | None, primary: bool) -> str:
     if not primary:
         return "descriptive (not a confirmatory comparison)"
     if interval is None:
-        return "descriptive only (no interval method adopted)"
+        return NOT_ASSESSED
     if interval.lower > 0:
         return "gain shown (one-sided LB > 0)"
     return "no gain shown"
@@ -105,9 +112,13 @@ def verdict(interval: iv.Interval | None, primary: bool) -> str:
 def compare(
     predictions: pd.DataFrame, config: ExperimentConfig
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """One row per (comparison, scale): estimate, intervals, verdict; plus per-repeat values."""
+    """One row per (comparison, scale): estimate, intervals, verdict; plus per-repeat values.
+
+    With ``not_assessable`` no interval column is written (none is validated).
+    """
     rows, repeats = [], []
     present = set(predictions["model_id"])
+    write_intervals = config.interval_method != "not_assessable"
     for label, a, b in COMPARISONS:
         if not {a, b} <= present:
             continue
@@ -136,7 +147,7 @@ def compare(
                 "adopted_method": config.interval_method,
                 "verdict": verdict(adopted, is_primary),
             }
-            for name, interval in candidates.items():
+            for name, interval in candidates.items() if write_intervals else ():
                 row[f"{name}_lower"] = interval.lower
                 row[f"{name}_upper"] = interval.upper
             rows.append(row)
@@ -226,6 +237,12 @@ def evaluate_run(config: ExperimentConfig, tables_root: Path = Path("results/tab
                 "run_id": config.run_id,
                 "config_sha256": config.sha256,
                 "interval_method": config.interval_method,
+                "inference_status": (
+                    "superiority not formally assessed (descriptive only; no simulation-"
+                    "adopted interval; D04.06)"
+                    if decision is None
+                    else "simulation-adopted interval"
+                ),
                 "decision_file": None if decision is None else str(config.decision_file),
                 "decision_sha256": config.decision_sha256,
                 "alpha_one_sided": config.alpha_one_sided,

@@ -1,0 +1,46 @@
+\chapter{Conclusions}\label{ch:conclusion}
+
+This project set out to connect an unpublished \textit{Moringa oleifera} irradiation study to
+a defensible computational investigation of cellular radiosensitivity, and to use the result
+to identify compounds worth testing.
+
+\paragraph{What was established.} A reproducible, provenance-tracked pipeline links public
+clonogenic radiosensitivity data to baseline expression for 237 independent biological
+components, with cell-line relatedness handled correctly and all preprocessing confined to
+training folds. Within that design, pathway-level expression features reduce the error of a
+tissue-only baseline by 0.00383 mSF2 units (2.85\%), consistently in direction across nine of
+ten cross-validation repeats but small, non-uniform across tissues and unvalidated by any
+formal test. Overall predictive power is weak: out-of-sample $R^2$ is near zero for every
+model, closely reproducing the strongest published negative benchmark in the field.
+
+Three further analyses of the same cohort tested how robust that advantage is. A random
+forest did worse than the linear offset model; on transformed outcome scales the advantage
+kept its direction but nearly vanished on one; and an expression-only model transferred to
+unseen tissues with the only clearly positive out-of-sample $R^2$ of the project, but lost to
+the global mean when Pancreas or Esophagus/Stomach was held out.
+
+The compound module produced a curated, fully referenced evidence base on \textit{Moringa}
+constituents in which the extraction solvent is tracked explicitly, and a shortlist of 18
+candidates with 5 in tier~A, in which the prespecified liability cap and the not-assessable
+rule both visibly bound. It established that niazimicin is the only constituent confirmed in a
+dichloromethane fraction of seed and leaf, and that moringin, the isothiocyanate most
+characteristic of the plant, has no published ionising-radiation study at all.
+
+\paragraph{What remains hypothetical.} Everything downstream of the prediction. The pathway
+ranking is capped at an exploratory tier because no prediction gain was formally shown and no
+negative controls were run. The cell-line discrepancies are review signals dominated by
+shrinkage. No compound has been shown to be present in the extracts that were tested, no
+compound has been shown in this work to modify clonogenic survival, and no claim of selective
+radioprotection is made or supported. The candidate tiers describe the state of the published
+evidence, not expected experimental outcomes.
+
+\paragraph{Contribution.} The project's contribution is methodological and evidential rather
+than predictive: a transparent framework; an honest, negative-leaning benchmark that agrees
+with the best prior work; the correction of its own earlier artefact; an explicit record of a
+deadline-driven protocol deviation; and a traceable path from the original radiobiology to a
+small set of experiments that would settle the question. Its most valuable single output may
+be the mismatch revealed by the compound curation --- the compound present in the right
+solvent has no radiation data, and the compounds with radiation data were never found in that
+solvent --- because it turns a diffuse phytochemical question into two specific and feasible
+experiments: characterise the original extracts, and test the best-documented candidates on
+clonogenic survival in matched normal and tumour cells.

@@ -127,34 +127,43 @@ def observed_vs_predicted(oof: pd.DataFrame, models: Sequence[str] = ("M1", "M2"
     return fig
 
 
+NO_INTERVAL = "none"
+
+
 def effect_forest(comparisons: pd.DataFrame, method: str) -> plt.Figure:
-    """dMAE point estimates with the interval of the given method, one row per analysis."""
-    columns = [
-        "comparison",
-        "scale",
-        "delta_mae",
-        f"{method}_lower",
-        f"{method}_upper",
-        "n_components",
-    ]
+    """dMAE point estimates with the interval of the given method, one row per analysis.
+
+    ``method: none`` (descriptive-only route, D04.06) draws point estimates only: no
+    interval is validated, so none is shown.
+    """
+    with_interval = method != NO_INTERVAL
+    columns = ["comparison", "scale", "delta_mae", "n_components"]
+    if with_interval:
+        columns += [f"{method}_lower", f"{method}_upper"]
     require(comparisons, columns, "comparisons")
     table = comparisons.reset_index(drop=True)
     fig, ax = plt.subplots(figsize=(5.0, 0.35 * len(table) + 1.0))
     for i, row in table.iterrows():
-        ax.errorbar(
-            row["delta_mae"], i,
-            xerr=[[row["delta_mae"] - row[f"{method}_lower"]], [row[f"{method}_upper"] - row["delta_mae"]]],
-            fmt="o", color=OKABE_ITO["vermillion"], ms=4, capsize=2, lw=1,
-        )  # fmt: skip
+        if with_interval:
+            ax.errorbar(
+                row["delta_mae"], i,
+                xerr=[[row["delta_mae"] - row[f"{method}_lower"]], [row[f"{method}_upper"] - row["delta_mae"]]],
+                fmt="o", color=OKABE_ITO["vermillion"], ms=4, capsize=2, lw=1,
+            )  # fmt: skip
+        else:
+            ax.plot(row["delta_mae"], i, "o", color=OKABE_ITO["vermillion"], ms=4)
     ax.axvline(0, color="0.4", lw=0.8)
     ax.set_yticks(range(len(table)))
     ax.set_yticklabels(
         [f"{r.comparison} [{r.scale}] (n = {r.n_components})" for r in table.itertuples()]
     )
     ax.invert_yaxis()
-    ax.set_xlabel(
-        f"Paired component-weighted ΔMAE (>0: richer model better)\n90% interval: {method}"
+    note = (
+        f"90% interval: {method}"
+        if with_interval
+        else "point estimates; no interval (superiority not formally assessed)"
     )
+    ax.set_xlabel(f"Paired component-weighted ΔMAE (>0: richer model better)\n{note}")
     return fig
 
 

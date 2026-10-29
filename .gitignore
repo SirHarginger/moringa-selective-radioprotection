@@ -33,6 +33,8 @@ results/models/*
 results/logs/*
 results/simulation/
 results/triage/
+# Third-party agent files kept locally for review only (licences not assessed)
+.claude/vendor-review/
 
 # Keep result directories
 !results/tables/.gitkeep
@@ -71,6 +73,18 @@ dist/
 # Rendered figures (outputs only; specs in figures/specs/ stay tracked)
 figures/generated/*
 !figures/generated/.gitkeep
+
+# --- Added 2026-10-22 (D05.02): split report-figure output layout ---
+# Rendered report figures and their provenance sidecars are outputs, like the version-1
+# and version-2 figures above. The figure index is regenerated with them.
+figures/png/
+figures/pdf/
+figures/metadata/
+
+# Built report documents (the report source and its manifests stay tracked)
+reports/**/outputs/
+# Third-party citation style, downloaded on demand by build.sh (own licence)
+reports/**/apa.csl
 
 # LaTeX build artefacts (sources stay tracked)
 *.aux

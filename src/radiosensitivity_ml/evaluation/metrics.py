@@ -148,6 +148,76 @@ def tissue_errors(predictions: pd.DataFrame, scale: str, min_components: int = 1
     return out[out["n_components"] >= min_components]
 
 
+SPEARMAN_ARTIFACT = (
+    "pooled out-of-fold predictions contain each fold's training tissue mean, which is "
+    "lower when the held-out line's own value is high (leave-fold-out mean artifact); "
+    "rho is biased downward and is not a pure within-tissue ranking accuracy"
+)
+
+
+def within_tissue_spearman_v2(
+    predictions: pd.DataFrame,
+    oof: pd.DataFrame,
+    min_components: int = 10,
+    tolerance: float = 1e-12,
+) -> pd.DataFrame:
+    """Within-tissue Spearman of observed vs repeat-averaged prediction, honestly labelled.
+
+    Corrects the version-1 table (``within_tissue_spearman``), which reported a number
+    for every model:
+    - unit: one point per COMPONENT (records of a relationship component averaged), not
+      per record;
+    - a model whose prediction is CONSTANT within a tissue in every fitted model (M0 and
+      the tissue-only M1: one value per tissue per fold) has no within-tissue ranking; the
+      spread of its pooled out-of-fold predictions comes only from which lines were held
+      out together, so rho is reported as undefined (NaN), not as a number;
+    - fewer than ``min_components`` components, or tied observed/predicted values
+      throughout: undefined;
+    - every defined value carries the artifact caveat (``SPEARMAN_ARTIFACT``).
+    ``predictions``: task-level out-of-fold predictions (raw, real); ``oof``: the
+    evaluation's repeat-averaged table. Predictions are read, never recomputed.
+    """
+    sub = predictions[(predictions["scale"] == "raw") & (predictions["variant"] == "real")]
+    per_fit = sub.groupby(["model_id", "repeat", "outer_fold", "lineage"])["y_pred"].agg(
+        spread=lambda s: float(s.max() - s.min()), size="size"
+    )
+    summary = per_fit.groupby(["model_id", "lineage"]).agg(
+        spread=("spread", "max"), size=("size", "max")
+    )
+    # constancy is only observable where some fitted model predicted >= 2 lines of the tissue
+    constant = (summary["spread"] <= tolerance) & (summary["size"] >= 2)
+    rows = []
+    for (model, lineage), part in oof.groupby(["model_id", "lineage"]):
+        comp = part.groupby("component_id").agg(
+            y_true=("y_true", "mean"), y_pred=("y_pred", "mean")
+        )
+        row = {
+            "model_id": model,
+            "lineage": lineage,
+            "n_components": len(comp),
+            "n_records": len(part),
+            "spearman_rho": float("nan"),
+        }
+        if len(comp) < min_components:
+            row["status"] = f"not reported: fewer than {min_components} components"
+        elif bool(constant.get((model, lineage), False)):
+            row["status"] = (
+                "undefined: prediction constant within this tissue in every fitted model "
+                "(no within-tissue ranking)"
+            )
+        elif comp["y_pred"].nunique() < 2 or comp["y_true"].nunique() < 2:
+            row["status"] = "undefined: all values tied"
+        else:
+            row["spearman_rho"] = float(stats.spearmanr(comp["y_true"], comp["y_pred"]).statistic)
+            row["status"] = "defined (see caveat)"
+        row["caveat"] = SPEARMAN_ARTIFACT if row["status"].startswith("defined") else ""
+        rows.append(row)
+    columns = [
+        "model_id", "lineage", "n_components", "n_records", "spearman_rho", "status", "caveat",
+    ]  # fmt: skip
+    return pd.DataFrame(rows, columns=columns)
+
+
 def within_tissue_spearman(oof: pd.DataFrame, model: str, min_components: int = 10) -> pd.DataFrame:
     """Spearman correlation of observed vs repeat-averaged prediction within lineages."""
     rows = []

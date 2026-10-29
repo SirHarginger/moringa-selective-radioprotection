@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import time
+import traceback
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -26,6 +28,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from sklearn.base import clone
+from sklearn.preprocessing import StandardScaler
 
 from radiosensitivity_ml.config import ExperimentConfig
 from radiosensitivity_ml.data import analysis_table as at
@@ -40,7 +43,9 @@ from radiosensitivity_ml.features.gene_sets import (
     random_gene_set_collection,
 )
 from radiosensitivity_ml.models import checkpoints as ck
+from radiosensitivity_ml.models.offset import OffsetModel
 from radiosensitivity_ml.models.registry import build_model, grid_points
+from radiosensitivity_ml.parallel import check_workers, execute_tasks, thread_settings
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 CONTROL_MODELS = {"perm": ("M1", "M2"), "randsets": ("M2",)}
@@ -239,22 +244,20 @@ def control_seed(base_seed: int, variant: str) -> int:
     return ck.stable_int(base_seed, "control", variant)
 
 
-def tune_and_fit(
+def inner_errors_reference(
     model: object,
-    grid: Mapping[str, list],
+    points: list[dict[str, object]],
     X: pd.DataFrame,
     y: np.ndarray,
     weights: np.ndarray,
     inner_fold: np.ndarray,
-    clip: bool = False,
-) -> tuple[object, dict[str, object], list[dict[str, object]]]:
-    """Choose parameters by grouped inner CV (weighted MAE), then refit on all rows.
-
-    ``clip`` applies the same raw-scale prediction clip as the outer evaluation.
-    """
-    scores = []
-    best, best_error = None, np.inf
-    for params in grid_points(grid):
+    clip: bool,
+) -> list[float]:
+    """Mean inner-fold weighted MAE per grid point, refitting the whole estimator for
+    every point and fold (the original implementation, kept as the independent reference
+    for ``inner_errors_cached`` and used for every non-offset model)."""
+    means = []
+    for params in points:
         errors = []
         for k in sorted(set(inner_fold)):
             train, valid = inner_fold != k, inner_fold == k
@@ -264,7 +267,98 @@ def tune_and_fit(
             if clip:
                 predicted = np.clip(predicted, 0.0, 1.0)
             errors.append(weighted_mae(y[valid], predicted, weights[valid]))
-        mean_error = float(np.mean(errors))
+        means.append(float(np.mean(errors)))
+    return means
+
+
+RESIDUAL_GRID_KEYS = frozenset({"alpha", "l1_ratio"})
+BASELINE_PREFIX = "baseline__"
+
+
+def cacheable(model: object, grid: Mapping[str, list]) -> bool:
+    """True for an OffsetModel whose grid varies only the residual model and the baseline
+    (then the gene-set scorer and score scaler do not depend on the grid point)."""
+    return isinstance(model, OffsetModel) and all(
+        key in RESIDUAL_GRID_KEYS or key.startswith(BASELINE_PREFIX) for key in grid
+    )
+
+
+def inner_errors_cached(
+    model: OffsetModel,
+    points: list[dict[str, object]],
+    X: pd.DataFrame,
+    y: np.ndarray,
+    weights: np.ndarray,
+    inner_fold: np.ndarray,
+    clip: bool,
+) -> list[float]:
+    """The numbers of ``inner_errors_reference`` for an OffsetModel, without refitting
+    what does not depend on the grid point.
+
+    Per inner fold (training rows only, as in ``OffsetModel.fit``): the gene-set scorer,
+    the score scaler and the scaled training and validation scores are computed once; the
+    baseline is fitted once per distinct ``baseline__*`` setting; the residual ElasticNet
+    is fitted for every grid point. Every step is the same call on the same values, with
+    the same order of floating-point operations, as ``OffsetModel.fit`` and ``predict``,
+    so the results are bit-identical. Arrays are copied before each fit so that every fit
+    receives the values the reference path would give it, even if an estimator modified
+    its inputs in place.
+    """
+    errors: list[list[float]] = [[] for _ in points]
+    for k in sorted(set(inner_fold)):
+        train, valid = inner_fold != k, inner_fold == k
+        X_train, X_valid = X.loc[train], X.loc[valid]
+        y_train, w_train = np.asarray(y[train], dtype=float), weights[train]
+        scorer = clone(model.scorer).fit(X_train)
+        scores = scorer.transform(X_train)
+        scaler = StandardScaler().fit(scores)
+        z_train = scaler.transform(scores)
+        z_valid = scaler.transform(scorer.transform(X_valid))
+        baselines: dict[tuple, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+        for i, params in enumerate(points):
+            estimator = clone(model).set_params(**params)
+            key = tuple(sorted((p, v) for p, v in params.items() if p.startswith(BASELINE_PREFIX)))
+            if key not in baselines:
+                y_fit, w_fit = y_train.copy(), w_train.copy()
+                baseline = clone(estimator.baseline).fit(X_train, y_fit, sample_weight=w_fit)
+                baselines[key] = (
+                    y_fit - baseline.predict(X_train),
+                    baseline.predict(X_valid),
+                    w_fit,
+                )
+            residual, baseline_valid, w_fit = baselines[key]
+            enet = estimator.residual_model().fit(
+                z_train.copy(), residual.copy(), sample_weight=w_fit.copy()
+            )
+            predicted = baseline_valid + enet.predict(z_valid)
+            if clip:
+                predicted = np.clip(predicted, 0.0, 1.0)
+            errors[i].append(weighted_mae(y[valid], predicted, weights[valid]))
+    return [float(np.mean(e)) for e in errors]
+
+
+def tune_and_fit(
+    model: object,
+    grid: Mapping[str, list],
+    X: pd.DataFrame,
+    y: np.ndarray,
+    weights: np.ndarray,
+    inner_fold: np.ndarray,
+    clip: bool = False,
+    cached: bool = True,
+) -> tuple[object, dict[str, object], list[dict[str, object]]]:
+    """Choose parameters by grouped inner CV (weighted MAE), then refit on all rows.
+
+    ``clip`` applies the same raw-scale prediction clip as the outer evaluation.
+    ``cached`` uses ``inner_errors_cached`` where it applies (same numbers, fewer fits);
+    ``cached=False`` forces the reference implementation (equivalence tests).
+    """
+    points = grid_points(grid)
+    inner = inner_errors_cached if cached and cacheable(model, grid) else inner_errors_reference
+    means = inner(model, points, X, y, weights, inner_fold, clip)  # type: ignore[arg-type]
+    scores = []
+    best, best_error = None, np.inf
+    for params, mean_error in zip(points, means, strict=True):
         scores.append({"params": params, "inner_weighted_mae": mean_error})
         if mean_error < best_error:  # strict: ties keep the earlier (more regularised) point
             best, best_error = params, mean_error
@@ -357,13 +451,50 @@ def unseen_columns(fitted: object) -> list[str]:
     return []
 
 
+class RemoteTaskError(RuntimeError):
+    """A task failed inside a worker process (message holds the original error)."""
+
+
+@dataclass(frozen=True)
+class TaskContext:
+    """Everything a task needs (sent once to each worker process; never written)."""
+
+    config: ExperimentConfig
+    inputs: ExperimentInputs
+    splits: pd.DataFrame
+    outcomes: Mapping[str, pd.Series]
+
+
+def run_model_task(context: TaskContext, item: tuple[int, ck.Task]) -> tuple[bool, object]:
+    """Fit one task (pure: depends only on the context and the task's own seed).
+
+    Returns (True, (predictions, fitted, details)) or (False, (error, traceback)), so a
+    failing task is recorded and the run continues, as in the serial runner.
+    """
+    _, task = item
+    try:
+        outcome = context.outcomes[task.scale]
+        return True, run_task(task, context.config, context.inputs, context.splits, outcome)
+    except Exception as exc:  # noqa: BLE001 - returned to the parent and recorded
+        return False, (f"{type(exc).__name__}: {exc}", traceback.format_exc())
+
+
 def run_experiment(
     config: ExperimentConfig,
     options: Mapping[str, object],
     resume: bool,
     log: Callable[[str], None] = print,
+    workers: int = 1,
 ) -> dict[str, int]:
-    """Create or resume a run; returns counts of reused, computed, rejected, failed tasks."""
+    """Create or resume a run; returns counts of reused, computed, rejected, failed tasks.
+
+    ``workers`` > 1 fits independent tasks (scale x model x repeat x outer fold x variant)
+    in a bounded process pool; each worker runs single-threaded BLAS, and the parent alone
+    writes task checkpoints (atomic). Every task is determined by its own seed, so results
+    do not depend on ``workers``, which is not part of the manifest and may change on
+    resume. Each session is appended to ``sessions.jsonl`` (workers, threads, wall clock).
+    """
+    check_workers(workers)
     store = ck.RunStore(config.output_dir / config.run_id)
     inputs = prepare_inputs(config, options)
     if resume:
@@ -407,6 +538,7 @@ def run_experiment(
 
     counts = {"reused": 0, "computed": 0, "rejected": 0, "failed": 0}
     write_status(store.root, "running", counts, len(tasks))
+    to_compute: list[tuple[int, ck.Task]] = []
     for number, task in enumerate(tasks, start=1):
         outcome = outcomes[task.scale]
         part = splits[(splits["repeat"] == task.repeat) & (splits["outer_fold"] == task.fold)]
@@ -421,25 +553,56 @@ def run_experiment(
                 continue
             log(f"rejected corrupted task {task.key} -> {store.reject(task)}")
             counts["rejected"] += 1
-        started = time.monotonic()
+        to_compute.append((number, task))
+
+    def handle(item: tuple[int, ck.Task], result: tuple[bool, object], elapsed: float) -> None:
+        number, task = item
+        ok, payload = result
         try:
-            predictions, fitted, details = run_task(task, config, inputs, splits, outcome)
-            store.write_task(task, predictions, fitted, details)
+            if not ok:
+                error, trace = payload  # type: ignore[misc]
+                raise RemoteTaskError(error)
+            store.write_task(task, *payload)  # type: ignore[misc]
             counts["computed"] += 1
             status = "done"
         except Exception as exc:  # noqa: BLE001 - recorded and reported; the run continues
-            store.record_failure(task, exc)
+            store.record_failure(task, exc, None if ok else trace)
             counts["failed"] += 1
-            status = f"FAILED ({type(exc).__name__}: {exc})"
-        elapsed = time.monotonic() - started
+            status = f"FAILED ({exc})"
         log(
             f"[{number}/{len(tasks)}] {task.scale} {task.model_id} r{task.repeat} f{task.fold} "
             f"{task.variant} {status} {elapsed:.1f}s"
         )
+
+    log(f"{len(to_compute)} task(s) to fit with {workers} worker(s)")
+    session = {"started_utc": datetime.now(UTC).isoformat(), "workers": workers}
+    started = time.monotonic()
+    context = TaskContext(config, inputs, splits, outcomes)
+    execute_tasks(to_compute, run_model_task, context, workers, handle)  # type: ignore[arg-type]
     complete = counts["failed"] == 0
     write_status(store.root, "complete" if complete else "incomplete", counts, len(tasks))
+    append_session(
+        store.root,
+        {
+            **session,
+            "ended_utc": datetime.now(UTC).isoformat(),
+            "wall_clock_seconds": time.monotonic() - started,
+            "logical_cores": os.cpu_count(),
+            "threads": thread_settings(),
+            "counts": dict(counts),
+            "environment": ck.environment_record(),
+            "code_sha256": code_sha256(),
+            "git": git_state(),
+        },
+    )
     log(json.dumps(counts))
     return counts
+
+
+def append_session(root: Path, record: Mapping[str, object]) -> None:
+    """Append one line per finished session to sessions.jsonl (provenance; parent only)."""
+    with (root / "sessions.jsonl").open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, sort_keys=True) + "\n")
 
 
 def check_scale_rows(path: Path, outcomes: Mapping[str, pd.Series], resume: bool) -> None:

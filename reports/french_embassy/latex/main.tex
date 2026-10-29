@@ -1,0 +1,56 @@
+% !TeX program = lualatex
+% =====================================================================================
+%  From Moringa oleifera Radiobiology to Explainable Machine Learning:
+%  Cellular Radiosensitivity Prediction and Evidence-Based Compound Prioritisation
+%
+%  Scientific project report (French Embassy). Final LaTeX edition.
+%  Compile with LuaLaTeX + Biber, e.g.  latexmk main.tex  (latexmkrc selects LuaLaTeX),
+%  or on Overleaf with the compiler set to LuaLaTeX. See README.md.
+% =====================================================================================
+\documentclass[11pt,a4paper,oneside,openany,parskip=half-,listof=totoc,
+  numbers=noendperiod,captions=tableheading]{scrbook}
+
+\usepackage{embassy-report}
+\usepackage{tikz}
+
+\addbibresource{references.bib}
+\hypersetup{
+  pdftitle={From Moringa oleifera Radiobiology to Explainable Machine Learning:
+    Cellular Radiosensitivity Prediction and Evidence-Based Compound Prioritisation},
+  pdfsubject={Scientific project report},
+  pdfkeywords={radiosensitivity, clonogenic survival, SF2, explainable machine learning,
+    radiogenomics, Moringa oleifera, compound prioritisation}}
+
+\begin{document}
+
+% ------------------------------------------------------------------- front matter
+\frontmatter
+\input{frontmatter/cover}
+\input{chapters/00_executive_summary}
+\tableofcontents
+\listoffigures
+\listoftables
+
+% -------------------------------------------------------------------- main matter
+\mainmatter
+\input{chapters/01_introduction}
+\input{chapters/02_aim_objectives}
+\input{chapters/03_data_sources}
+\input{chapters/04_methodology}
+\input{chapters/05_results_modelling}
+\input{chapters/06_robustness}
+\input{chapters/07_explainability}
+\input{chapters/08_compounds}
+\input{chapters/09_discussion}
+\input{chapters/10_implementation}
+\input{chapters/11_limitations}
+\input{chapters/12_recommendations}
+\input{chapters/13_conclusion}
+
+\printbibliography[heading=bibintoc,title={References}]
+
+% --------------------------------------------------------------------- appendices
+\reportappendix
+\input{appendices/appendices}
+
+\end{document}

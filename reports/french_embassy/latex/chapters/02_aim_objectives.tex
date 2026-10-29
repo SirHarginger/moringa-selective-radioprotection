@@ -1,0 +1,65 @@
+\chapter{Aim and objectives}\label{ch:aim}
+
+\paragraph{Aim.}
+To build a reproducible, auditable research pipeline that connects the original
+\textit{Moringa oleifera} irradiation study to a transparent, explainable benchmark of
+cellular radiosensitivity prediction on public radiogenomic data, and to use that benchmark,
+together with curated published evidence, to produce a traceable and explicitly exploratory
+shortlist of candidate constituents and a feasible strategy for their experimental
+validation.
+
+Figure~\ref{fig:workflow} shows the six stages of the project and the order in which they
+were carried out. Stages 1--5 are complete; stage 6 is a proposal.
+
+\begin{figure}[tbp]
+  \centering
+  \includegraphics[width=0.86\linewidth,height=\ReportFigureMaxHeight,keepaspectratio]{fig_01_project_workflow}
+  \caption[Structure of the project]{Structure of the project, from the original
+    \textit{Moringa oleifera} radiobiology investigation to the prioritisation of candidate
+    constituents for future experimental work. Box fills distinguish data sources,
+    computational steps, literature curation and proposed future work; they do not indicate
+    the strength of the evidence at each stage. The \textit{Moringa} measurements are
+    biological motivation only and are never used as training, calibration or validation
+    data, because crystal-violet proliferation under extract treatment and clonogenic
+    survival at 2~Gy are different endpoints. Stage 6 is a proposal, not completed work.}
+  \label{fig:workflow}
+\end{figure}
+
+Table~\ref{tab:objectives} lists the ten objectives and their status. Nine are complete.
+The validation of the primary comparison by a coverage simulation and negative controls
+(objective 9) was deferred by a protocol deviation recorded before any result existed
+(Section~\ref{sec:deviation}); three other robustness analyses were executed in its place
+(Chapter~\ref{ch:robustness}).
+
+\begin{table}[tbp]
+  \caption{Project objectives and their status.}\label{tab:objectives}
+  \small
+  \begin{tabular}{@{}r L{0.60\linewidth} L{0.30\linewidth}@{}}
+    \toprule
+    \thead{\#} & \thead{Objective} & \thead{Status} \\
+    \midrule
+    1 & Extract and document the original manuscript's methods and results, marking every
+        unreadable or absent item & Completed (Section~\ref{sec:moringa-study}) \\
+    2 & Assemble a provenance-tracked dataset linking clonogenic SF2 to baseline
+        expression, with cell-line identity and relatedness resolved
+      & Completed; 241 records, 237 components \\
+    3 & Prespecify and execute a grouped, nested cross-validated comparison of five models
+        on a single named endpoint & Completed; 250/250 model-fold tasks \\
+    4 & Quantify the predictive gain of expression beyond tissue of origin and report it
+        with its limitations & Completed; descriptive estimate \\
+    5 & Rank Hallmark gene-set scores by held-out permutation importance under
+        prespecified evidence gates & Completed; capped at tier~C \\
+    6 & Triage the cell lines whose measured radiosensitivity the model reproduces least
+        well, separating technical from biological explanations & Completed \\
+    7 & Curate \textit{M.~oleifera} seed and leaf constituents and their radiation-response
+        evidence from primary sources, tracking the extraction solvent
+      & Completed (Tables~\ref{tab:c1} and \ref{tab:c2}) \\
+    8 & Apply a transparent 0--8 point prioritisation fixed before computation and produce
+        the ranked shortlist & Completed; 18 ranked, 5 in tier~A \\
+    9 & Validate the comparison with a coverage simulation and negative controls
+      & Deferred by recorded protocol deviation \\
+    10 & Specify a feasible experimental validation strategy
+      & Completed as a proposal (Chapter~\ref{ch:recommendations}) \\
+    \bottomrule
+  \end{tabular}
+\end{table}

@@ -1,0 +1,22 @@
+# Provenance record for source manuscripts. PDFs are gitignored (redistribution not authorised).
+manuscripts:
+  - path: references/source_manuscripts/moringa_original.pdf
+    role: "Primary source for the original Moringa oleifera irradiation study (biological motivation only; not ML data)"
+    title_on_page_1: "Dichloromethane seed and leaf extracts of Moringa oleifera (Lam) enhance proliferation in irradiated rodent fibroblasts in vitro"
+    authors: null              # not shown on the supplied pages
+    journal_or_status: null    # not shown on the supplied pages (manuscript draft; publication status unknown)
+    doi: null
+    supplied_by: investigator
+    original_location: "~/Downloads/Scanned manuscript RAMSRI.pdf"   # copied unchanged on 2026-10-20 (MD5 identical)
+    copied_by: Claude Code
+    copy_date: "2026-10-20"
+    sha256: "7f644f55a2e1eca3cfd95ba48a74096cedf676bd3fac9910b5e6b8db8e870fb9"
+    md5: "1ae1f270e77fa1e14095be400adb6eea"
+    size_bytes: 8192004
+    format: "PDF 1.3, scanned page images (no text layer relied upon)"
+    pdf_pages: 8
+    printed_page_numbers: [1, 2, 4, 5, 6, 13, 14, 15]
+    missing_printed_pages: "3 and 7-12 (expected: methods for cell culture and extract preparation; end of discussion; references)"
+    legibility: "Text legible despite vertical scan streaks; 0 Gy and 2 Gy figure markers hard to distinguish in grayscale"
+    redistribution_allowed: false   # until the investigator confirms otherwise
+    notes: "Extraction and page-by-page record: docs/moringa_scientific_linkage.md"

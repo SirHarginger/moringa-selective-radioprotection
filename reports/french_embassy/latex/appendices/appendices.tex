@@ -1,0 +1,889 @@
+% Appendices. Supplementary tables and figures are numbered S1, S2, ... .
+
+% =====================================================================================
+\section{Supplementary results of the primary benchmark}\label{app:primary}
+
+\begin{table}[htbp]
+  \caption[$\Delta$MAE per cross-validation repeat]{Paired, component-weighted $\Delta$MAE
+    (mSF2 units) in each cross-validation repeat. Repeats re-split the same lines, so their
+    spread is split-to-split variability, not sampling uncertainty. Source:
+    \path{results/tables/primary_v1/publication_v1/table_s1_repeat_delta_mae.csv}.}
+  \label{tab:s1}
+  \small
+  \begin{tabular}{@{}l S[table-format=-1.6] S[table-format=1.6]@{}}
+    \toprule
+    \thead{Repeat} & {\thead{M2 vs M1 (primary)}} & {\thead{M2P vs M1P (sensitivity)}} \\
+    \midrule
+    1 & 0.006258 & 0.004976 \\
+    2 & 0.003042 & 0.003706 \\
+    3 & 0.005528 & 0.004016 \\
+    4 & 0.002201 & 0.002335 \\
+    5 & 0.002619 & 0.002303 \\
+    6 & 0.005018 & 0.004040 \\
+    7 & -0.002404 & 0.000379 \\
+    8 & 0.007638 & 0.007469 \\
+    9 & 0.005673 & 0.005690 \\
+    10 & 0.002742 & 0.003793 \\
+    \midrule
+    Mean (pooled estimate) & 0.003832 & 0.003871 \\
+    Repeats with $\Delta$MAE $>0$ & {9} & {10} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+  \caption[Within-tissue Spearman correlation (corrected version)]{Within-tissue Spearman
+    correlation between observed and pooled out-of-fold predicted mSF2, corrected version,
+    for the nine tissues with at least ten components (the eleven smaller tissues are not
+    reported). \emph{Undefined}: the prediction is constant within this tissue in every
+    fitted model, so there is no within-tissue ranking. Defined values are biased downward,
+    because pooled out-of-fold predictions contain each fold's training tissue mean, which is
+    lower when the held-out line's own value is high; they are descriptive only. Source:
+    \path{results/tables/primary_v1/publication_v1/within_tissue_spearman_v2.csv}.}
+  \label{tab:s4}
+  \small
+  \begin{tabular}{@{}l S[table-format=2.0] c c S[table-format=-1.3] S[table-format=-1.3]
+      S[table-format=-1.3]@{}}
+    \toprule
+    \thead{Tissue} & {\thead{Components}} & \thead{M0} & \thead{M1} & {\thead{M1P}}
+      & {\thead{M2}} & {\thead{M2P}} \\
+    \midrule
+    Bladder/Urinary Tract & 11 & \textit{undefined} & \textit{undefined} & -0.227 & 0.182 & 0.182 \\
+    Bowel & 21 & \textit{undefined} & \textit{undefined} & -0.263 & -0.035 & -0.047 \\
+    Breast & 17 & \textit{undefined} & \textit{undefined} & -0.507 & 0.252 & 0.223 \\
+    CNS/Brain & 23 & \textit{undefined} & \textit{undefined} & -0.046 & 0.333 & 0.333 \\
+    Esophagus/Stomach & 23 & \textit{undefined} & \textit{undefined} & -0.294 & -0.179 & -0.211 \\
+    Head and Neck & 18 & \textit{undefined} & \textit{undefined} & 0.252 & 0.153 & 0.159 \\
+    Lung & 46 & \textit{undefined} & \textit{undefined} & -0.118 & -0.038 & -0.032 \\
+    Ovary/Fallopian Tube & 10 & \textit{undefined} & \textit{undefined} & -0.709 & 0.200 & 0.200 \\
+    Pancreas & 16 & \textit{undefined} & \textit{undefined} & -0.156 & -0.262 & -0.274 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth,height=0.42\textheight,keepaspectratio]{fig_s01_prediction_variability}
+  \caption[Stability of out-of-fold predictions across repeats]{Stability of each cell line's
+    out-of-fold prediction across the ten cross-validation repeats, by model: the
+    distribution over records of the standard deviation of the prediction. Violins show the
+    kernel density over all 241 records with the quartiles marked. The quantity is
+    split-to-split variability of the prediction, not a prediction or confidence interval,
+    and it widens with the number of repeats. The expression models vary more between splits
+    than the tissue-only models, whose prediction is a shrunken tissue mean.}
+  \label{fig:s-variability}
+\end{figure}
+
+% =====================================================================================
+\section{Supplementary results of the explainability analysis}\label{app:explain}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.9\linewidth,height=0.5\textheight,keepaspectratio]{fig_s02_gene_set_correlation}
+  \caption[Correlation between the scores of the tier-C gene sets and related sets]{Spearman
+    correlation between the Hallmark gene-set scores of the tier-C sets and of every set
+    flagged as sharing signal with them (absolute correlation at least 0.80), computed over
+    the eligible cell lines from the expression features alone. Rows and columns follow the
+    triage rank order, with no clustering, so no grouping should be read as a biological
+    relationship. Correlated scores can share or exchange permutation importance, so
+    neighbouring sets in Figure~\ref{fig:importance} are not independent findings.}
+  \label{fig:s-correlation}
+\end{figure}
+
+\begingroup\footnotesize\setlength{\tabcolsep}{3.5pt}
+\begin{longtable}{@{}r l S[table-format=-1.3] S[table-format=1.3] S[table-format=1.2]
+    S[table-format=1.2] l S[table-format=1.2] l L{0.20\linewidth}@{}}
+  \caption[Exploratory Hallmark gene-set ranking]{Exploratory Hallmark gene-set ranking with
+    prespecified triage tiers (prefix \texttt{HALLMARK\_} omitted). Importance is the
+    increase in component-weighted held-out MAE when a score is permuted, averaged over the
+    50 fits of M2, in units of $10^{-3}$ mSF2. Shares are proportions of cross-validation fits,
+    not probabilities. Tiers A and B are closed (no formally shown gain; zero null draws);
+    negative-control evidence is not available for any set. A gene-set-level association
+    inside a predictive model is not a gene-level finding, a validated biomarker, a causal
+    mechanism or a radiation-response pathway. Source:
+    \path{results/tables/primary_v1/publication_triage_v1/table_s2_gene_set_ranking.csv}.}
+  \label{tab:s2}\\
+  \toprule
+  \thead{Rank} & \thead{Gene set} & {\thead{Mean imp.}} & {\thead{SD}}
+    & {\thead{Share $>0$}} & {\thead{Sign cons.}} & \thead{Sign} & {\thead{Share zero}}
+    & \thead{Tier} & \thead{Score correlated with} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{10}{@{}l}{\tcont{Table~\thetable\ (continued)}}\\
+  \toprule
+  \thead{Rank} & \thead{Gene set} & {\thead{Mean imp.}} & {\thead{SD}}
+    & {\thead{Share $>0$}} & {\thead{Sign cons.}} & \thead{Sign} & {\thead{Share zero}}
+    & \thead{Tier} & \thead{Score correlated with} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{10}{@{}r}{\tcont{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  1 & P53\_PATHWAY & 3.428 & 3.017 & 0.90 & 0.92 & negative & 0.08 & C & \na \\
+  2 & COMPLEMENT & 1.181 & 2.479 & 0.68 & 0.92 & positive & 0.08 & C & APOPTOSIS \\
+  3 & OXIDATIVE\_PHOSPHORYLATION & 1.070 & 1.639 & 0.74 & 0.86 & negative & 0.14 & C & \na \\
+  4 & UV\_RESPONSE\_UP & 1.000 & 2.159 & 0.68 & 0.76 & negative & 0.24 & C & PI3K\_AKT\_MTOR\_SIGNALING \\
+  5 & MYC\_TARGETS\_V2 & 0.638 & 1.150 & 0.64 & 0.88 & negative & 0.12 & C & MYC\_TARGETS\_V1 \\
+  6 & KRAS\_SIGNALING\_UP & 0.620 & 1.577 & 0.58 & 0.82 & positive & 0.18 & C & \na \\
+  7 & UV\_RESPONSE\_DN & 0.551 & 1.558 & 0.60 & 0.82 & positive & 0.18 & C & TGF\_BETA\_SIGNALING \\
+  \midrule
+  8 & EPITHELIAL\_MESENCHYMAL\_TRANSITION & 0.393 & 1.118 & 0.38 & 0.56 & positive & 0.44 & \na & \na \\
+  9 & NOTCH\_SIGNALING & 0.262 & 1.119 & 0.40 & 0.52 & negative & 0.48 & \na & \na \\
+  10 & HYPOXIA & 0.077 & 0.514 & 0.10 & 0.04 & negative & 0.96 & \na & UV\_RESPONSE\_DN \\
+  11 & INTERFERON\_ALPHA\_RESPONSE & 0.052 & 0.353 & 0.10 & 0.04 & negative & 0.96 & \na & INTERFERON\_GAMMA\_RESPONSE \\
+  12 & KRAS\_SIGNALING\_DN & 0.038 & 0.591 & 0.40 & 0.66 & negative & 0.34 & \na & \na \\
+  13 & G2M\_CHECKPOINT & 0.011 & 0.075 & 0.08 & 0.02 & positive & 0.98 & \na & E2F\_TARGETS \\
+  14 & ADIPOGENESIS & 0.003 & 0.051 & 0.12 & 0.10 & negative & 0.90 & \na & FATTY\_ACID\_METABOLISM \\
+  15 & TNFA\_SIGNALING\_VIA\_NFKB & 0.002 & 0.013 & 0.08 & 0.02 & negative & 0.98 & \na & INFLAMMATORY\_RESPONSE \\
+  16 & ANDROGEN\_RESPONSE & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & PROTEIN\_SECRETION \\
+  17 & APOPTOSIS & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & COMPLEMENT \\
+  18 & E2F\_TARGETS & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & G2M\_CHECKPOINT \\
+  19 & FATTY\_ACID\_METABOLISM & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & ADIPOGENESIS \\
+  20 & GLYCOLYSIS & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & PROTEIN\_SECRETION \\
+  21 & HEME\_METABOLISM & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & PROTEIN\_SECRETION \\
+  22 & IL2\_STAT5\_SIGNALING & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & APOPTOSIS \\
+  23 & IL6\_JAK\_STAT3\_SIGNALING & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & INFLAMMATORY\_RESPONSE \\
+  24 & INTERFERON\_GAMMA\_RESPONSE & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & INTERFERON\_ALPHA\_RESPONSE \\
+  25 & MITOTIC\_SPINDLE & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & G2M\_CHECKPOINT \\
+  26 & MTORC1\_SIGNALING & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & UNFOLDED\_PROTEIN\_RESPONSE \\
+  27 & MYC\_TARGETS\_V1 & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & MYC\_TARGETS\_V2 \\
+  28 & PEROXISOME & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & BILE\_ACID\_METABOLISM \\
+  29 & PI3K\_AKT\_MTOR\_SIGNALING & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & MITOTIC\_SPINDLE \\
+  30 & SPERMATOGENESIS & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & \na \\
+  31 & TGF\_BETA\_SIGNALING & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & UV\_RESPONSE\_DN \\
+  32 & UNFOLDED\_PROTEIN\_RESPONSE & 0.000 & 0.000 & 0.06 & 0.00 & none & 1.00 & \na & MTORC1\_SIGNALING \\
+  33 & ESTROGEN\_RESPONSE\_EARLY & -0.002 & 0.024 & 0.08 & 0.04 & negative & 0.96 & \na & ESTROGEN\_RESPONSE\_LATE \\
+  34 & CHOLESTEROL\_HOMEOSTASIS & -0.005 & 0.033 & 0.06 & 0.02 & positive & 0.98 & \na & \na \\
+  35 & ANGIOGENESIS & -0.008 & 0.124 & 0.08 & 0.04 & positive & 0.94 & \na & COAGULATION \\
+  36 & APICAL\_JUNCTION & -0.008 & 0.059 & 0.06 & 0.02 & positive & 0.98 & \na & TGF\_BETA\_SIGNALING \\
+  37 & MYOGENESIS & -0.013 & 0.429 & 0.06 & 0.04 & negative & 0.96 & \na & APICAL\_JUNCTION \\
+  38 & PANCREAS\_BETA\_CELLS & -0.014 & 0.070 & 0.06 & 0.02 & none & 0.96 & \na & \na \\
+  39 & INFLAMMATORY\_RESPONSE & -0.015 & 0.107 & 0.08 & 0.12 & positive & 0.88 & \na & TNFA\_SIGNALING\_VIA\_NFKB \\
+  40 & ALLOGRAFT\_REJECTION & -0.026 & 0.184 & 0.06 & 0.02 & positive & 0.98 & \na & APOPTOSIS \\
+  41 & WNT\_BETA\_CATENIN\_SIGNALING & -0.028 & 0.198 & 0.12 & 0.20 & negative & 0.80 & \na & \na \\
+  42 & ESTROGEN\_RESPONSE\_LATE & -0.036 & 0.202 & 0.06 & 0.04 & positive & 0.96 & \na & ESTROGEN\_RESPONSE\_EARLY \\
+  43 & BILE\_ACID\_METABOLISM & -0.037 & 0.264 & 0.06 & 0.02 & positive & 0.98 & \na & PEROXISOME \\
+  44 & XENOBIOTIC\_METABOLISM & -0.041 & 0.232 & 0.06 & 0.04 & positive & 0.96 & \na & \na \\
+  45 & REACTIVE\_OXYGEN\_SPECIES\_PATHWAY & -0.042 & 0.426 & 0.18 & 0.24 & positive & 0.76 & \na & \na \\
+  46 & HEDGEHOG\_SIGNALING & -0.049 & 0.271 & 0.06 & 0.08 & positive & 0.92 & \na & \na \\
+  47 & DNA\_REPAIR & -0.054 & 0.379 & 0.06 & 0.02 & negative & 0.98 & \na & G2M\_CHECKPOINT \\
+  48 & APICAL\_SURFACE & -0.066 & 0.290 & 0.06 & 0.06 & positive & 0.94 & \na & \na \\
+  49 & COAGULATION & -0.082 & 0.461 & 0.08 & 0.08 & positive & 0.92 & \na & COMPLEMENT \\
+  50 & PROTEIN\_SECRETION & -0.107 & 0.754 & 0.06 & 0.02 & positive & 0.98 & \na & PI3K\_AKT\_MTOR\_SIGNALING \\
+\end{longtable}
+\tablenote{Tier: C, exploratory tier~C; \na, not prioritised. Sign: dominant sign of the
+  coefficient across fits. Share zero: share of fits in which the set received a zero
+  coefficient. Values of 0.000 are numerically zero to three decimals (sets never selected).
+  \enquote{Score correlated with}: a set whose score correlates with this one at
+  $\lvert\rho\rvert\ge0.80$, so that importance may be shared or split between the two.}
+\endgroup
+
+% ----------------------------------------------------------------- cell-line triage
+\begin{landscape}
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}r l l L{0.10\linewidth} S[table-format=1.3] S[table-format=1.3]
+    S[table-format=1.3] S[table-format=1.3] S[table-format=1.3] c L{0.13\linewidth}
+    L{0.28\linewidth}@{}}
+  \caption[Cell-line discrepancy review]{Cell-line discrepancy review: every line in
+    discrepancy tiers A, B and C, and MCF-7 (not prioritised), shown for context; the other
+    192 lines are not prioritised. Predictions are the repeat-averaged out-of-fold
+    predictions (mSF2); disagreement is $\lvert$M1$-$M2$\rvert$; SD is the spread of the M2
+    prediction across repeats. Tier thresholds are cohort percentiles of the absolute error
+    (Section~\ref{sec:triage-methods}). Measured lines are not independent validation
+    samples, and context lines are labelled only; their tiers are not changed. Source:
+    \path{results/tables/primary_v1/publication_triage_v1/table_s3_discrepancy_review.csv}.}
+  \label{tab:s3}\\
+  \toprule
+  \thead{Rank} & \thead{DepMap ID} & \thead{Cell line} & \thead{Tissue}
+    & {\thead{Observed}} & {\thead{Pred.\ M1}} & {\thead{Pred.\ M2}}
+    & {\thead{Disagr.}} & {\thead{SD M2}} & \thead{Tier} & \thead{Triage category}
+    & \thead{Technical flags} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{12}{@{}l}{\tcont{Table~\thetable\ (continued)}}\\
+  \toprule
+  \thead{Rank} & \thead{DepMap ID} & \thead{Cell line} & \thead{Tissue}
+    & {\thead{Observed}} & {\thead{Pred.\ M1}} & {\thead{Pred.\ M2}}
+    & {\thead{Disagr.}} & {\thead{SD M2}} & \thead{Tier} & \thead{Triage category}
+    & \thead{Technical flags} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{12}{@{}r}{\tcont{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  1 & ACH-000322 & HT-144 & Skin & 0.080 & 0.594 & 0.593 & 0.001 & 0.013 & A & technical review first & small tissue group \\
+  2 & ACH-000622 & KNS-42 & CNS/Brain & 0.125 & 0.586 & 0.596 & 0.009 & 0.017 & A & unexplained discrepancy & \na \\
+  3 & ACH-000941 & HEC-1-B & Uterus & 0.970 & 0.568 & 0.561 & 0.006 & 0.009 & A & technical review first & related lines in the cohort; small tissue group \\
+  4 & ACH-000055 & D283 Med & CNS/Brain & 0.180 & 0.585 & 0.582 & 0.003 & 0.023 & A & unexplained discrepancy & \na \\
+  5 & ACH-000900 & NCI-H23 & Lung & 0.190 & 0.593 & 0.583 & 0.010 & 0.012 & A & unexplained discrepancy & \na \\
+  6 & ACH-000808 & HuH28 & Biliary Tract & 0.998 & 0.583 & 0.625 & 0.042 & 0.014 & A & technical review first & small tissue group \\
+  7 & ACH-000048 & TOV-112D & Ovary/Fallopian Tube & 0.970 & 0.584 & 0.546 & 0.038 & 0.019 & A & unexplained discrepancy & \na \\
+  8 & ACH-000736 & SNU-601 & Esophagus/Stomach & 0.190 & 0.582 & 0.560 & 0.022 & 0.010 & A & unexplained discrepancy & \na \\
+  9 & ACH-000335 & MSTO-211H & Pleura & 0.970 & 0.591 & 0.579 & 0.012 & 0.013 & A & technical review first & small tissue group \\
+  10 & ACH-000934 & MDA-MB-361 & Breast & 0.180 & 0.582 & 0.542 & 0.040 & 0.012 & A & unexplained discrepancy & \na \\
+  11 & ACH-000408 & TE-5 & Esophagus/Stomach & 0.211 & 0.582 & 0.617 & 0.035 & 0.010 & A & unexplained discrepancy & \na \\
+  12 & ACH-000657 & A2780 & Ovary/Fallopian Tube & 0.230 & 0.617 & 0.577 & 0.040 & 0.013 & A & unexplained discrepancy & \na \\
+  \midrule
+  13 & ACH-000631 & KS-1 & CNS/Brain & 0.233 & 0.582 & 0.605 & 0.022 & 0.022 & B & unexplained discrepancy & \na \\
+  14 & ACH-000149 & SK-N-SH & Peripheral Nervous System & 0.930 & 0.584 & 0.602 & 0.018 & 0.013 & B & technical review first & related lines in the cohort; Cellosaurus problem flag on a relative (CVCL\_0019); small tissue group \\
+  15 & ACH-000025 & CH-157MN & CNS/Brain & 0.960 & 0.575 & 0.639 & 0.064 & 0.026 & B & unexplained discrepancy & \na \\
+  16 & ACH-000545 & VM-CUB1 & Bladder/Urinary Tract & 0.920 & 0.586 & 0.608 & 0.022 & 0.016 & B & unexplained discrepancy & \na \\
+  17 & ACH-000520 & 59M & Ovary/Fallopian Tube & 0.910 & 0.579 & 0.611 & 0.032 & 0.012 & B & unexplained discrepancy & \na \\
+  18 & ACH-000662 & COR-L23 & Lung & 0.291 & 0.594 & 0.601 & 0.007 & 0.012 & B & unexplained discrepancy & \na \\
+  19 & ACH-000423 & SK-MEL-3 & Skin & 0.880 & 0.578 & 0.539 & 0.039 & 0.023 & B & technical review first & small tissue group \\
+  20 & ACH-000958 & SW48 & Bowel & 0.280 & 0.584 & 0.563 & 0.021 & 0.018 & B & unexplained discrepancy & \na \\
+  21 & ACH-000652 & SUIT-2 & Pancreas & 0.885 & 0.584 & 0.562 & 0.022 & 0.006 & B & unexplained discrepancy & \na \\
+  \midrule
+  22 & ACH-000758 & MKN74 & Esophagus/Stomach & 0.293 & 0.582 & 0.563 & 0.019 & 0.030 & C & exploratory candidate & \na \\
+  23 & ACH-000046 & ACHN & Kidney & 0.861 & 0.579 & 0.586 & 0.006 & 0.013 & C & technical review first & small tissue group \\
+  24 & ACH-000511 & Calu-1 & Lung & 0.896 & 0.586 & 0.626 & 0.040 & 0.017 & C & exploratory candidate & \na \\
+  25 & ACH-000984 & HEC-6 & Uterus & 0.249 & 0.572 & 0.518 & 0.054 & 0.018 & C & technical review first & small tissue group \\
+  26 & ACH-000863 & DBTRG-05MG & CNS/Brain & 0.311 & 0.580 & 0.632 & 0.052 & 0.011 & C & exploratory candidate & \na \\
+  27 & ACH-000538 & HUTU80 & Bowel & 0.278 & 0.582 & 0.541 & 0.041 & 0.015 & C & exploratory candidate & \na \\
+  28 & ACH-000292 & NCI-H841 & Lung & 0.850 & 0.589 & 0.559 & 0.030 & 0.027 & C & exploratory candidate & \na \\
+  29 & ACH-000903 & FTC-133 & Thyroid & 0.338 & 0.589 & 0.613 & 0.024 & 0.013 & C & technical review first & small tissue group \\
+  30 & ACH-000940 & AN3 CA & Uterus & 0.360 & 0.576 & 0.526 & 0.051 & 0.035 & C & technical review first & small tissue group; prediction unstable across CV repeats \\
+  31 & ACH-000355 & NCI-H82 & Lung & 0.730 & 0.589 & 0.517 & 0.071 & 0.020 & C & technical review first & M1 and M2 disagree strongly \\
+  32 & ACH-000470 & SW1463 & Bowel & 0.685 & 0.571 & 0.534 & 0.037 & 0.036 & C & technical review first & prediction unstable across CV repeats \\
+  33 & ACH-000358 & NCI-H69 & Lung & 0.425 & 0.593 & 0.543 & 0.050 & 0.038 & C & technical review first & prediction unstable across CV repeats \\
+  34 & ACH-000169 & RD & Soft Tissue & 0.690 & 0.589 & 0.494 & 0.095 & 0.182 & C & technical review first & small tissue group; prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  35 & ACH-000544 & OE21 & Esophagus/Stomach & 0.710 & 0.567 & 0.611 & 0.044 & 0.033 & C & technical review first & prediction unstable across CV repeats \\
+  36 & ACH-000464 & CAS-1 & CNS/Brain & 0.740 & 0.575 & 0.659 & 0.083 & 0.040 & C & technical review first & prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  37 & ACH-001306 & 8305C & Thyroid & 0.736 & 0.582 & 0.658 & 0.075 & 0.015 & C & technical review first & small tissue group; M1 and M2 disagree strongly \\
+  38 & ACH-000703 & DMS 79 & Lung & 0.507 & 0.593 & 0.579 & 0.014 & 0.035 & C & technical review first & prediction unstable across CV repeats \\
+  39 & ACH-000480 & HuH-7 & Liver & 0.510 & 0.584 & 0.652 & 0.067 & 0.051 & C & technical review first & small tissue group; prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  40 & ACH-000979 & DU 145\textsuperscript{\textdagger} & Prostate & 0.710 & 0.580 & 0.650 & 0.071 & 0.048 & C & technical review first & stranded RNA profile; small tissue group; prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  41 & ACH-000771 & BICR 56 & Head and Neck & 0.650 & 0.599 & 0.703 & 0.103 & 0.021 & C & technical review first & M1 and M2 disagree strongly \\
+  42 & ACH-000244 & DK-MG & CNS/Brain & 0.529 & 0.574 & 0.667 & 0.094 & 0.030 & C & technical review first & M1 and M2 disagree strongly \\
+  43 & ACH-000415 & BICR 6 & Head and Neck & 0.714 & 0.594 & 0.683 & 0.089 & 0.034 & C & technical review first & prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  44 & ACH-000665 & SK-MES-1 & Lung & 0.675 & 0.583 & 0.647 & 0.065 & 0.033 & C & technical review first & prediction unstable across CV repeats \\
+  45 & ACH-000138 & CFPAC-1 & Pancreas & 0.554 & 0.588 & 0.668 & 0.079 & 0.017 & C & technical review first & M1 and M2 disagree strongly \\
+  46 & ACH-000254 & SCC-15 & Head and Neck & 0.585 & 0.598 & 0.670 & 0.072 & 0.017 & C & technical review first & M1 and M2 disagree strongly \\
+  47 & ACH-000148 & Hs 578T & Breast & 0.650 & 0.566 & 0.644 & 0.078 & 0.050 & C & technical review first & prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  48 & ACH-000188 & SCC-25 & Head and Neck & 0.675 & 0.598 & 0.680 & 0.082 & 0.036 & C & technical review first & prediction unstable across CV repeats; M1 and M2 disagree strongly \\
+  \midrule
+  206 & ACH-000019 & MCF7\textsuperscript{\textdagger} & Breast & 0.520 & 0.574 & 0.534 & 0.040 & 0.016 & \na & not prioritised & \na \\
+\end{longtable}
+\tablenote{\textsuperscript{\textdagger}\,Context line from the motivating \textit{Moringa}
+  study (DU145 and MCF-7). \enquote{Unexplained discrepancy}: unexplained discrepancy
+  requiring follow-up (tier A or B without technical flags); \enquote{exploratory candidate}:
+  tier~C without technical flags; \enquote{technical review first}: at least one technical
+  flag. Rank 206 of 241 for MCF-7.}
+\endgroup
+\end{landscape}
+
+% =====================================================================================
+\section{Compound evidence records}\label{app:compounds}
+
+The complete curated records, with every citation, DOI, verification route, reading depth,
+extraction solvent, identification method, model system, radiation dose, concentration,
+measured genes and reported direction, are held in \path{data/compounds/moringa_constituents.yaml}
+and \path{data/compounds/compound_biology_evidence.yaml}; the curation audit trail (searches,
+exclusions, identifier problems and unresolved gaps) is in
+\path{docs/compound_evidence_curation.md}. Tables~\ref{tab:c1}--\ref{tab:c4} present the
+evidence used for the ranking. DOIs of the primary studies are listed in the tables; only the
+studies discussed in the text appear in the reference list.
+
+% ---------------------------------------------------------------- constituent inventory
+\begin{landscape}
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}L{0.11\linewidth} r l L{0.18\linewidth} c L{0.23\linewidth}
+    L{0.075\linewidth} L{0.11\linewidth} L{0.13\linewidth}@{}}
+  \caption[\textit{Moringa} constituent inventory]{Inventory of documented
+    \textit{M.~oleifera} seed and leaf constituents: one row per primary analytical report,
+    with the extraction solvent or fraction as reported and the strength of identification
+    (isolation and NMR or reference standard; spectral-library match; not stated). DCM: the
+    report concerns a dichloromethane (methylene chloride) extract or fraction. Benzyl
+    isothiocyanate is listed because it was evaluated, although its only report concerns its
+    precursor in roots. Source:
+    \path{results/tables/primary_v1/compounds_v1/table_c1_constituent_inventory.csv}.}
+  \label{tab:c1}\\
+  \toprule
+  \thead{Compound} & \thead{\#} & \thead{Part} & \thead{Solvent or fraction} & \thead{DCM}
+    & \thead{Identification method} & \thead{Strength} & \thead{Research group}
+    & \thead{DOI} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{9}{@{}l}{\tcont{Table~\thetable\ (continued)}}\\
+  \toprule
+  \thead{Compound} & \thead{\#} & \thead{Part} & \thead{Solvent or fraction} & \thead{DCM}
+    & \thead{Identification method} & \thead{Strength} & \thead{Research group}
+    & \thead{DOI} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{9}{@{}r}{\tcont{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  Acetylated moringin\textsuperscript{a} & 1 & leaf & Ethanol leaf extract & no
+    & Isolation; structure elucidated by NMR & isolation, NMR & Faizi / Siddiqui (Karachi)
+    & \doilink{10.1021/np50111a011} \\
+   & 2 & leaf & Fresh leaves extracted with water & no & Not stated in the abstract
+    & not stated & Raskin (Rutgers) & \doilink{10.1016/j.phytochem.2014.03.028} \\
+  \addlinespace
+  $\alpha$-Tocopherol & 1 & leaf & Leaf supercritical \ce{CO2} extract & no
+    & GC-MS with NIST library and Kovats retention indices, quantified against a calibration
+      curve & reference standard & Kessler (2025) & \doilink{10.1111/jocd.70486} \\
+   & 2 & seed & Seed oil (cold press, \textit{n}-hexane, or chloroform/methanol 50:50) & no
+    & Tocopherols by HPLC ($\alpha$, $\gamma$ and $\delta$ reported) & not stated
+    & Tsaknis / Lalas & \doilink{10.1021/jf9904214} \\
+  \addlinespace
+  Astragalin & 1 & leaf & Not stated in the abstract (full text paywalled) & no
+    & HPLC and GC-MS per MeSH; criteria not verified & not stated & Bennett / Mellon (Norwich)
+    & \doilink{10.1021/jf0211480} \\
+   & 2 & leaf & Leaf water extract & no & Standard purchased for quantitation; identification
+      against literature MS data; recorded conservatively as a library match & library match
+    & Wang J (2024) & \doilink{10.1016/j.fochx.2024.101585} \\
+  \addlinespace
+  Benzyl isothiocyanate & 1 & other & Roots (precursor benzyl glucosinolate), not seed or leaf
+    & no & HPLC and GC-MS per MeSH & not stated & Bennett / Mellon (Norwich)
+    & \doilink{10.1021/jf0211480} \\
+  \addlinespace
+  $\beta$-Sitosterol & 1 & seed & Ethanol seed extract & no & Isolation (also
+      $\beta$-sitosterol-3-\textit{O}-glucoside and an oleoyl-glucoside); method not stated
+    & not stated & Guevara / Nishino & \doilink{10.1016/s1383-5718(99)00025-x} \\
+   & 2 & seed & Seed oil (cold press, \textit{n}-hexane, or chloroform/methanol 50:50) & no
+    & Sterol analysis; up to 50.07\% of the sterol fraction & not stated & Tsaknis / Lalas
+    & \doilink{10.1021/jf9904214} \\
+   & 3 & seed & Bio-guided column fractionation; solvent not stated & no & GC-MS
+    & library match & Raafat (Beirut) & \doilink{10.1007/s11655-017-2758-4} \\
+  \addlinespace
+  Chlorogenic acid & 1 & leaf & Not stated in the abstract (full text paywalled) & no
+    & HPLC and GC-MS per MeSH; 3- and 5-caffeoylquinic acids reported & not stated
+    & Bennett / Mellon (Norwich) & \doilink{10.1021/jf0211480} \\
+   & 2 & leaf & Leaf water extract & no & Standard purchased for quantitation; identification
+      against literature MS data; recorded as a library match & library match
+    & Wang J (2024) & \doilink{10.1016/j.fochx.2024.101585} \\
+  \addlinespace
+  \textit{cis}-Vaccenic acid & 1 & leaf & Dichloromethane leaf extract & \textbf{yes}
+    & GC-MS; 10.68\% of the reported profile; criteria not verified & library match
+    & Khurana (Amity) & \doilink{10.5958/0975-6892.2019.00004.2} \\
+  \addlinespace
+  \textit{O}-Ethyl carbamate\textsuperscript{b} & 1 & seed & Ethanol seed extract & no
+    & Reported as a new compound; method not stated & not stated & Guevara / Nishino
+    & \doilink{10.1016/s1383-5718(99)00025-x} \\
+   & 2 & seed & 85\% ethanol seed extract, D101 resin chromatography & no
+    & Isolated as compound 7; data compared with the literature & isolation, NMR & Li LZ
+    & \doilink{10.3390/molecules28176426} \\
+  \addlinespace
+  Glucomoringin & 1 & both & Not stated in the abstract (full text paywalled) & no
+    & HPLC and GC-MS per MeSH; criteria not verified & not stated & Bennett / Mellon (Norwich)
+    & \doilink{10.1021/jf0211480} \\
+   & 2 & both & Not stated in the abstract & no & Not stated in the abstract & not stated
+    & Bennett / Mellon (Norwich) & \doilink{10.1016/j.foodchem.2010.03.073} \\
+   & 3 & seed & 85\% ethanol seed extract, D101 resin chromatography & no
+    & Isolated as compound 16; data compared with the literature & isolation, NMR & Li LZ
+    & \doilink{10.3390/molecules28176426} \\
+   & 4 & leaf & Leaf water reflux extract & no & Orbitrap MS/MS fragmentation compared with
+      the literature; no authentic standard & library match & Wang J (2024)
+    & \doilink{10.1016/j.fochx.2024.101585} \\
+  \addlinespace
+  4-Hydroxyphenyl\-acetonitrile & 1 & leaf & Dichloromethane fraction of a leaf methanolic
+      extract & \textbf{yes} & GC-MS; reported as a major compound; full list and criteria
+      not verified (paywalled) & library match & Arsad (USM)
+    & \doilink{10.1007/s11033-021-06466-y} \\
+   & 2 & seed & Ripe seed: crude 80\% ethanol extract, butanol fraction and aqueous residue
+      (DCM fraction prepared, GC-MS not reported) & no & GC-MS with NIST library match
+      $>80\%$; no authentic standards & library match & Arsad (USM)
+    & \doilink{10.4103/pm.pm_212_17} \\
+  \addlinespace
+  Isoquercitrin & 1 & leaf & Not stated in the abstract (full text paywalled) & no
+    & HPLC and GC-MS per MeSH; also quercetin-3-\textit{O}-(6$''$-malonyl)glucoside
+    & not stated & Bennett / Mellon (Norwich) & \doilink{10.1021/jf0211480} \\
+   & 2 & leaf & Leaf water extract & no & Standard purchased for quantitation; identification
+      by formula and literature MS; recorded as a library match & library match
+    & Wang J (2024) & \doilink{10.1016/j.fochx.2024.101585} \\
+  \addlinespace
+  Kaempferol & 1 & seed & Not stated in the abstract & no & LC-HRMS dereplication (tentative
+      annotation, no standard) & library match & Shady (2022)
+    & \doilink{10.3390/antiox11091743} \\
+  \addlinespace
+  Methyl 4-hydroxyphenylacetate & 1 & leaf & Dichloromethane fraction of a leaf methanolic
+      extract & \textbf{yes} & GC-MS; reported as a major compound; criteria not verified
+    & library match & Arsad (USM) & \doilink{10.1007/s11033-021-06466-y} \\
+  \addlinespace
+  Moringin & 1 & seed & Ethanol seed extract & no & Isolation; method not stated
+    & not stated & Guevara / Nishino & \doilink{10.1016/s1383-5718(99)00025-x} \\
+   & 2 & leaf & Fresh leaves extracted with water & no & Not stated (full text not
+      retrieved) & not stated & Raskin (Rutgers) & \doilink{10.1016/j.phytochem.2014.03.028} \\
+   & 3 & leaf & Leaf fast centrifugal partition chromatography fractions & no
+    & Not stated in the abstract & not stated & Raskin (Rutgers) & \doilink{10.1021/jf505014n} \\
+  \addlinespace
+  Niazimicin & 1 & both & \ce{CH2Cl2} partition fraction of a 70\% ethanol maceration of
+      seeds and of leaves & \textbf{yes} & Reference standard isolated from the seed
+      \ce{CH2Cl2} fraction (purity 96.6\% by PDA); identity by HRMS, UV, IR, EI-MS and 1D/2D
+      NMR; quantified by validated UPLC-MS/MS (MRM 358\,$\rightarrow$\,107)
+    & isolation, NMR & Hanafi / Abdel Motaal (Cairo) & \doilink{10.38212/2224-6614.3282} \\
+   & 2 & seed & Methylene-chloride and ethyl-acetate fractions of a seed extract
+    & \textbf{yes} & Not stated in the abstract & not stated & Hanafi / Abdel Motaal (Cairo)
+    & \doilink{10.1111/jfbc.13992} \\
+   & 3 & seed & Ethanol seed extract & no & Isolation; method not stated & not stated
+    & Guevara / Nishino & \doilink{10.1016/s1383-5718(99)00025-x} \\
+   & 4 & seed & Ethyl-acetate fraction of an ethanolic seed extract & no
+    & Chromatographic isolation & not stated & Albuquerque Costa (Ceará)
+    & \doilink{10.1155/2017/7963747} \\
+   & 5 & seed & 85\% ethanol seed extract, D101 resin chromatography & no
+    & Isolated as compound 11; spectroscopic data compared with the literature
+    & isolation, NMR & Li LZ & \doilink{10.3390/molecules28176426} \\
+  \addlinespace
+  Niaziminin & 1 & leaf & Ethanol leaf extract & no & Isolation; structure elucidated by NMR
+    & isolation, NMR & Faizi / Siddiqui (Karachi) & \doilink{10.1021/np50111a011} \\
+   & 2 & leaf & Leaf; solvent not given in the abstract & no & Not stated in the abstract
+    & not stated & Ohigashi (Kyoto) & \doilink{10.1055/s-2006-957442} \\
+  \addlinespace
+  Niazirin & 1 & leaf & Ethanol leaf extract & no & Bioassay-guided isolation; spectroscopy
+      including 2D NMR & isolation, NMR & Faizi / Siddiqui (Karachi)
+    & \doilink{10.1021/np50111a011} \\
+   & 2 & seed & Ethanol seed extract & no & Isolation; method not stated & not stated
+    & Guevara / Nishino & \doilink{10.1016/s1383-5718(99)00025-x} \\
+   & 3 & seed & 85\% ethanol seed extract, D101 resin chromatography & no
+    & Isolated as compound 9; data compared with the literature & isolation, NMR & Li LZ
+    & \doilink{10.3390/molecules28176426} \\
+  \addlinespace
+  Oleic acid & 1 & seed & Seed oil (cold press, \textit{n}-hexane, or chloroform/methanol
+      50:50) & no & Fatty-acid methyl-ester analysis; up to 75.39\% of the oil & not stated
+    & Tsaknis / Lalas & \doilink{10.1021/jf9904214} \\
+  \addlinespace
+  Palmitic acid & 1 & leaf & Dichloromethane leaf extract & \textbf{yes} & GC-MS; 96
+      compounds reported, \textit{n}-hexadecanoic acid the largest peak (28.35\%); library
+      matching assumed but not verified & library match & Khurana (Amity)
+    & \doilink{10.5958/0975-6892.2019.00004.2} \\
+   & 2 & seed & Seed oil (cold press, \textit{n}-hexane, or chloroform/methanol 50:50) & no
+    & Fatty-acid methyl-ester analysis & not stated & Tsaknis / Lalas
+    & \doilink{10.1021/jf9904214} \\
+  \addlinespace
+  Phytol & 1 & leaf & Hydroethanolic leaf extract & no & GC-MS; 23.54\% of the leaf profile;
+      method details not verified & library match & Vats / Gupta (Rajasthan)
+    & \doilink{10.1007/s12298-016-0407-6} \\
+  \addlinespace
+  Quercetin & 1 & seed & Not stated in the abstract & no & LC-HRMS dereplication (tentative
+      annotation, no standard) & library match & Shady (2022)
+    & \doilink{10.3390/antiox11091743} \\
+   & 2 & leaf & Leaf water extract & no & Listed in the constituent table; no authentic
+      standard & library match & Wang J (2024) & \doilink{10.1016/j.fochx.2024.101585} \\
+  \addlinespace
+  Rutin & 1 & leaf & \textit{M.~oleifera} leaf water extract & no & Standard purchased for
+      quantitation; identification against literature MS data; recorded as a library match
+    & library match & Wang J (2024) & \doilink{10.1016/j.fochx.2024.101585} \\
+   & 2 & leaf & Not stated in the abstract & no & Quercetin rutinosides among the leaf
+      flavonoids; criteria not stated & not stated & Bennett / Mellon (Norwich)
+    & \doilink{10.1016/j.foodchem.2010.03.073} \\
+\end{longtable}
+\tablenote{\textsuperscript{a}\,4-[(4$'$-\textit{O}-Acetyl-$\alpha$-L-rhamnosyloxy)benzyl]
+  isothiocyanate. \textsuperscript{b}\,\textit{O}-Ethyl-4-($\alpha$-L-rhamnosyloxy)benzyl
+  carbamate. Research groups are those used to count independent sources; reports from one
+  group count once (for example the two niazimicin reports of the Cairo group, and the two
+  4-hydroxyphenylacetonitrile reports of the USM group). Identity caveats recorded in the
+  source file include: the glucomoringin identifier is ambiguous (every PubChem record is a
+  potassium salt with a different stereo-InChIKey); free quercetin and kaempferol may arise by
+  hydrolysis of glycosides; the C18:1 isomer of the \textit{cis}-vaccenic acid report cannot
+  be settled by library matching; and niazirin was explicitly \emph{not} identified in the
+  dichloromethane fractions analysed by \textcite{abdelsayed2021jfda}.}
+\endgroup
+\end{landscape}
+
+% ------------------------------------------------------------ compound-biology evidence
+\begin{landscape}
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}l L{0.075\linewidth} l L{0.065\linewidth} L{0.16\linewidth}
+    L{0.085\linewidth} L{0.085\linewidth} L{0.15\linewidth} L{0.08\linewidth} c c
+    L{0.11\linewidth}@{}}
+  \caption[Compound--biology evidence]{Primary evidence linking the constituents to
+    radiation-response biology. Level L3: ionising-radiation study of the purified compound;
+    L2: purified compound modulating a relevant process without radiation. Reported directions
+    are never merged: protection of normal cells, protection of tumour cells, sensitisation of
+    tumour cells, process modulation without radiation, genotoxicity or no effect. Liability:
+    evidence that caps the tier at C. Scored: the record counts towards the score (purified
+    compound). Source:
+    \path{results/tables/primary_v1/compounds_v1/table_c2_biology_evidence.csv}.}
+  \label{tab:c2}\\
+  \toprule
+  \thead{ID} & \thead{Compound} & \thead{Level} & \thead{Process} & \thead{Model system}
+    & \thead{Radiation} & \thead{Dose (Gy)} & \thead{Concentration} & \thead{Direction}
+    & \thead{Liab.} & \thead{Scored} & \thead{DOI} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{12}{@{}l}{\tcont{Table~\thetable\ (continued)}}\\
+  \toprule
+  \thead{ID} & \thead{Compound} & \thead{Level} & \thead{Process} & \thead{Model system}
+    & \thead{Radiation} & \thead{Dose (Gy)} & \thead{Concentration} & \thead{Direction}
+    & \thead{Liab.} & \thead{Scored} & \thead{DOI} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{12}{@{}r}{\tcont{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  TOC-01 & $\alpha$-Tocopherol & L3 & proliferation & Rats (Sprague-Dawley), exteriorised
+      mid-small bowel & X-rays & 11 & not stated (luminal phosphate and acetate esters; also
+      dietary) & protection, normal & no & yes & \doilink{10.1097/00000658-199522240-00008} \\
+  TOC-02 & $\alpha$-Tocopherol & L3 & other & Humans, $n=54$, oral cavity and oropharyngeal
+      cancer patients & External-beam radiotherapy & 2 per fraction over 5--7 weeks; total
+      not stated & not stated (oil-solution rinse) & protection, normal & no & yes
+    & \doilink{10.1002/hed.10382} \\
+  AST-01 & Astragalin & L2 & DNA damage & \textit{In vitro} DNA and \textit{Saccharomyces
+      cerevisiae} & none & not stated & not stated & genotoxic & \textbf{yes} & yes
+    & \doilink{10.3390/ijms13032846} \\
+  BIT-01 & Benzyl isothio\-cyanate & L3 & cell cycle & BxPC-3 human pancreatic cancer & Gamma
+    & 5 & 2.5~µM & sensitisation, tumour & no & yes & \doilink{10.2741/e55} \\
+  BIT-02 & Benzyl isothio\-cyanate & L3 & apoptosis & PANC-1 and MIAPaCa-2 human pancreatic
+      cancer & X-rays & not stated & 5--10~µM (PANC-1); 2.5--5~µM (MIAPaCa-2)
+    & sensitisation, tumour & no & yes & \doilink{10.3892/ijmm.2011.770} \\
+  BST-01 & $\beta$-Sitosterol & L3 & DNA damage & Mouse thymocytes (BALB/c) & Ionising;
+      modality unverified & 6 & not stated & protection, normal & no & yes
+    & \doilink{10.1002/jcb.21326} \\
+  BST-02 & $\beta$-Sitosterol & L3 & oxidative stress & Adjuvant-arthritic male rats with and
+      without irradiation & Gamma & 2 per week $\times$ 4 (8 total) & 40~mg/kg/day oral
+    & protection, normal & no & yes & \doilink{10.1080/08923973.2025.2591423} \\
+  CGA-01 & Chlorogenic acid & L3 & oxidative stress & Hepatocellular carcinoma cell lines (not
+      stated) and a murine model & Ionising & not stated & not stated
+    & \textbf{protection, tumour} & \textbf{yes} & yes & \doilink{10.1155/2022/4566949} \\
+  CGA-02 & Chlorogenic acid & L3 & DNA damage & Mouse bone marrow & Gamma, whole body
+    & 1.15 (0.05~Gy/s) & 50, 100, 200~mg/kg oral & protection, normal & no & yes
+    & \doilink{10.1016/0165-7992(93)90022-n} \\
+  CGA-03 & Chlorogenic acid & L3 & apoptosis & Mice, $n=70$, testis & Ionising, total body
+    & 2.0 & 5--80~mg/kg i.p. & protection, normal & no & yes
+    & \doilink{10.1016/j.heliyon.2022.e10798} \\
+  KAE-01 & Kaempferol & L3 & cell cycle & A-549 lung cancer and HFL1 normal lung fibroblasts;
+      nude-mouse xenograft & Ionising & not stated & not stated & sensitisation, tumour & no
+    & yes & \doilink{10.3892/or.2015.4204} \\
+  KAE-02 & Kaempferol & L3 & apoptosis & C57BL/6 mice and HUVECs & Gamma & 8.5 and 7 total
+      body; \textit{in vitro} not stated & not stated & protection, normal & no & yes
+    & \doilink{10.1016/j.etap.2018.04.014} \\
+  MOR-01 & Moringin & L2 & apoptosis & SH-SY5Y human neuroblastoma & none & \na & 16.4~µM
+    & process, no radiation & no & yes & \doilink{10.3390/ijms20081930} \\
+  MOR-02 & Moringin & L2 & cell cycle & PC-3 human prostate cancer & none & \na
+    & IC\textsubscript{50} 3.5~µg/mL & process, no radiation & no & yes
+    & \doilink{10.3390/molecules28073214} \\
+  MOR-03 & Moringin & L2 & oxidative stress & Differentiated NSC-34 motor-neuron-like cells
+    & none & \na & 0.5, 5, 10~µM ($\alpha$-cyclodextrin complex) & process, no radiation & no
+    & yes & \doilink{10.3390/antiox13070813} \\
+  MOR-04 & Moringin & L2 & apoptosis & Carcinoma, myeloma and leukaemia lines; nude-mouse
+      xenografts & none & \na & micromolar range; not stated & process, no radiation & no
+    & yes & \doilink{10.1016/j.bcp.2009.12.008} \\
+  NZM-01 & Niazimicin & L2 & oxidative stress & Rats, aluminium-chloride dementia model
+    & none & \na & 250~mg/kg/day (extract fraction) & process, no radiation & no
+    & \textbf{no} & \doilink{10.1111/jfbc.13992} \\
+  NZR-01 & Niazirin & L2 & oxidative stress & High-glucose vascular smooth muscle cells;
+      diabetic mice & none & \na & not stated & process, no radiation & no & yes
+    & \doilink{10.1016/j.phymed.2019.153066} \\
+  OLE-01 & Oleic acid & L3 & proliferation & Human LDV lymphoid cells & Ionising (air or
+      nitrogen) & not stated & not stated & \textbf{no effect} & no & yes
+    & \doilink{10.1080/09553008314550431} \\
+  PHY-01 & Phytol & L2 & apoptosis & A549 human lung carcinoma & none & \na & not stated
+    & process, no radiation & no & yes & \doilink{10.1016/j.biopha.2017.05.066} \\
+  PHY-02 & Phytol & L2 & oxidative phosphorylation & A549 human lung carcinoma & none & \na
+    & not stated & process, no radiation & no & yes & \doilink{10.1016/j.biopha.2018.06.035} \\
+  QUE-01 & Quercetin & L3 & DNA repair & Human ovarian cancer cells (not stated) and xenograft
+    & X-rays & not stated & not stated & sensitisation, tumour & no & yes
+    & \doilink{10.2147/ott.s147316} \\
+  QUE-02 & Quercetin & L3 & proliferation & Medulloblastoma lines versus neural precursors and
+      normal fibroblasts; orthotopic xenografts & Ionising, fractionated & not stated & low
+      micromolar & sensitisation, tumour & no & yes & \doilink{10.18632/oncotarget.7980} \\
+  QUE-03 & Quercetin & L3 & DNA damage & Human peripheral blood lymphocytes; plasmid DNA
+    & Gamma & 1--4 (cells); 6 (plasmid) & 3--48~µM; 24~µM optimal & protection, normal & no
+    & yes & \doilink{10.1016/j.mrgentox.2008.03.003} \\
+  QUE-04 & Quercetin & L3 & other & C3H/HeN mouse skin, human and murine fibroblasts, murine
+      tumours & X-rays & 35 & 1\% in chow & protection, normal & no & yes
+    & \doilink{10.1667/rr3237.1} \\
+  RUT-01 & Rutin & L3 & DNA damage & Human peripheral blood lymphocytes & Gamma & 2
+    & 25~µg/mL & protection, normal & no & yes & \doilink{10.4103/ijnm.ijnm_30_17} \\
+  RUT-02 & Rutin & L3 & oxidative stress & Rat brain & Gamma & 5 & 200~mg/kg/day oral
+    & protection, normal & no & yes & \doilink{10.1080/13813455.2017.1374978} \\
+\end{longtable}
+\tablenote{NZM-01 is recorded so that the absence of purified-niazimicin biology is explicit:
+  the dosed material was an extract fraction, not the purified compound, so the record does
+  not score. CGA-01 is liability evidence and is never pooled with the normal-tissue
+  chlorogenic-acid studies. QUE-04 reports no effect on fibroblast or murine tumour
+  radioresponse. Several abstracts omit cell lines, doses or concentrations; these gaps are
+  recorded as \enquote{not stated} and must be recovered from the full texts.}
+\endgroup
+\end{landscape}
+
+% ---------------------------------------------------------- ranking justifications
+\begin{landscape}
+\begingroup\scriptsize\setlength{\tabcolsep}{3pt}
+\begin{longtable}{@{}L{0.11\linewidth} L{0.15\linewidth} L{0.19\linewidth}
+    L{0.27\linewidth} L{0.11\linewidth} L{0.15\linewidth}@{}}
+  \caption[Written justification of every ranking score]{Written justification of every
+    point of the candidate ranking (Table~\ref{tab:ranking}) and of each tier, as recorded by
+    the scoring code. Source:
+    \path{results/tables/primary_v1/compounds_v1/table_c3_candidate_ranking.csv}.}
+  \label{tab:c3reasons}\\
+  \toprule
+  \thead{Compound} & \thead{$D_1$ identity} & \thead{$D_2$ radiation biology}
+    & \thead{$D_3$ independent sources} & \thead{$D_4$ feasibility} & \thead{Tier reason} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{6}{@{}l}{\tcont{Table~\thetable\ (continued)}}\\
+  \toprule
+  \thead{Compound} & \thead{$D_1$ identity} & \thead{$D_2$ radiation biology}
+    & \thead{$D_3$ independent sources} & \thead{$D_4$ feasibility} & \thead{Tier reason} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{6}{@{}r}{\tcont{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  $\alpha$-Tocopherol & 1 primary report with structural confirmation (reference standard)
+    & Ionising-radiation evidence from 2 independent groups (Delaney, Minnesota; Ferreira,
+      Brazil) & 2 groups reporting it in \textit{Moringa}, 2 in the biology evidence, 4
+      distinct in total & Identifier verified; 2 scored studies report a usable
+      concentration & Total 8/8 with $D_1\ge1$ and $D_2\ge2$ \\
+  Chlorogenic acid & 2 primary reports; identification by spectral-library match or not
+      stated & Ionising-radiation evidence from 3 independent groups (Abraham / Kesavan; Shoorei
+      / Karimipour; Yan) & 2 groups in \textit{Moringa}, 3 in the biology evidence, 5 distinct
+    & Identifier verified; 3 scored studies report a usable concentration
+    & Capped at C from A (total 7/8): liability evidence CGA-01, protection of tumour cells \\
+  Kaempferol & 1 primary report; spectral-library match or not stated & Ionising-radiation
+      evidence from 2 independent groups (Yao, Taiwan; Yuan, China) & 1 group in
+      \textit{Moringa}, 2 in the biology evidence, 3 distinct & Identifier verified; 2 scored
+      studies report a usable concentration & Total 7/8 with $D_1\ge1$ and $D_2\ge2$ \\
+  Quercetin & 2 primary reports; spectral-library match or not stated & Ionising-radiation
+      evidence from 4 independent groups (Citrin, NCI; Gong / Liu, China; Hulleman /
+      Wurdinger, Amsterdam; Menon, Annamalai) & 2 groups in \textit{Moringa}, 4 in the
+      biology evidence, 6 distinct & Identifier verified; 4 scored studies report a usable
+      concentration & Total 7/8 with $D_1\ge1$ and $D_2\ge2$ \\
+  Rutin & 2 primary reports; spectral-library match or not stated & Ionising-radiation
+      evidence from 2 independent groups (Abdel-Rafei / Thabet, NCRRT Egypt; Patil,
+      Mangalore) & 2 groups in \textit{Moringa}, 2 in the biology evidence, 4 distinct
+    & Identifier verified; 2 scored studies report a usable concentration
+    & Total 7/8 with $D_1\ge1$ and $D_2\ge2$ \\
+  $\beta$-Sitosterol & 3 primary reports; spectral-library match or not stated
+    & Ionising-radiation evidence from 2 independent groups (Abdel-Rafei / Thabet, NCRRT
+      Egypt; Wang SQ, China) & 3 groups in \textit{Moringa}, 2 in the biology evidence, 5
+      distinct & Identifier verified; 2 scored studies report a usable concentration
+    & Total 7/8 with $D_1\ge1$ and $D_2\ge2$ \\
+  Benzyl isothiocyanate & No primary analytical study identifies it in \textit{Moringa}
+      seed or leaf (review-only, tentative or another plant part) & Ionising-radiation
+      evidence from 2 independent groups (Kubota / Okayasu; Srivastava) & 1 group in
+      \textit{Moringa}, 2 in the biology evidence, 3 distinct & Identifier verified; 2
+      scored studies report a usable concentration & Not assessable: no primary
+      \textit{Moringa} identification (prespecified rule) \\
+  Niazirin & 2 primary reports with structural confirmation (isolation, NMR) & No
+      ionising-radiation study; 1 study of a relevant process without radiation (Weng, China)
+    & 3 groups in \textit{Moringa}, 1 in the biology evidence, 4 distinct & Identifier
+      verified; 1 scored study reports a usable concentration & Total 6/8 with $D_1\ge1$ and
+      $D_2\ge1$ \\
+  Oleic acid & 1 primary report; spectral-library match or not stated & Ionising-radiation
+      evidence from one group (Cramp, UK) & 1 group in \textit{Moringa}, 1 in the biology
+      evidence, 2 distinct & Identifier verified; 1 scored study reports a usable
+      concentration & Total 5/8 with $D_1\ge1$ and $D_2\ge1$ \\
+  Astragalin & 2 primary reports; spectral-library match or not stated & No
+      ionising-radiation study; 1 study of a relevant process without radiation (Saito)
+    & 2 groups in \textit{Moringa}, 1 in the biology evidence, 3 distinct & Identifier
+      verified; 1 scored study reports a usable concentration & Capped at C from B (total
+      5/8): liability evidence AST-01, genotoxic \\
+  Moringin & 3 primary reports; spectral-library match or not stated & No ionising-radiation
+      study; 4 studies of relevant processes without radiation (Abdull Razis; D'Incalci;
+      Mazzon; Navarra) & 2 groups in \textit{Moringa}, 4 in the biology evidence, 6 distinct
+    & Identifier verified; 4 scored studies report a usable concentration & Total 5/8 with
+      $D_1\ge1$ and $D_2\ge1$ \\
+  Phytol & 1 primary report; spectral-library match or not stated & No ionising-radiation
+      study; 2 studies of relevant processes without radiation (Devi; Thakkar) & 1 group in
+      \textit{Moringa}, 2 in the biology evidence, 3 distinct & Identifier verified; 2 scored
+      studies report a usable concentration & Total 5/8 with $D_1\ge1$ and $D_2\ge1$ \\
+  Glucomoringin & 1 primary report with structural confirmation (isolation, NMR) & No primary
+      study of the purified compound in a relevant process & 3 groups in \textit{Moringa}, 0
+      in the biology evidence, 3 distinct & No concentration reported in any scored study
+    & Total 4/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  Niazimicin & 2 primary reports with structural confirmation (isolation, NMR) & No primary
+      study of the purified compound in a relevant process & 4 groups in \textit{Moringa}, 0
+      in the biology evidence, 4 distinct & No concentration reported in any scored study
+    & Total 4/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  Acetylated moringin & 1 primary report with structural confirmation (isolation, NMR) & No
+      primary study of the purified compound in a relevant process & 2 groups in
+      \textit{Moringa}, 0 in the biology evidence, 2 distinct & No concentration reported in
+      any scored study & Total 3/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  Niaziminin & 1 primary report with structural confirmation (isolation, NMR) & No primary
+      study of the purified compound in a relevant process & 2 groups in \textit{Moringa}, 0
+      in the biology evidence, 2 distinct & No concentration reported in any scored study
+    & Total 3/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  \textit{O}-Ethyl carbamate & 1 primary report with structural confirmation (isolation, NMR)
+    & No primary study of the purified compound in a relevant process & 2 groups in
+      \textit{Moringa}, 0 in the biology evidence, 2 distinct & No concentration reported in
+      any scored study & Total 3/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  Isoquercitrin & 2 primary reports; spectral-library match or not stated & No primary study
+      of the purified compound in a relevant process & 2 groups in \textit{Moringa}, 0 in the
+      biology evidence, 2 distinct & No concentration reported in any scored study & Total
+      2/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  Palmitic acid & 2 primary reports; spectral-library match or not stated & No primary study
+      of the purified compound in a relevant process & 2 groups in \textit{Moringa}, 0 in the
+      biology evidence, 2 distinct & No concentration reported in any scored study & Total
+      2/8 with $D_1\ge1$ and $D_2\ge0$ \\
+  4-Hydroxyphenyl\-acetonitrile & 2 primary reports; spectral-library match or not stated
+    & No primary study of the purified compound in a relevant process & At most one
+      independent group (Arsad, USM) & No concentration reported in any scored study
+    & Total 1/8, below the tier-C threshold \\
+  Methyl 4-hydroxyphenyl\-acetate & 1 primary report; spectral-library match or not stated
+    & No primary study of the purified compound in a relevant process & At most one
+      independent group (Arsad, USM) & No concentration reported in any scored study
+    & Total 1/8, below the tier-C threshold \\
+  \textit{cis}-Vaccenic acid & 1 primary report; spectral-library match or not stated & No
+      primary study of the purified compound in a relevant process & At most one independent
+      group (Khurana, Amity) & No concentration reported in any scored study & Total 1/8,
+      below the tier-C threshold \\
+\end{longtable}
+\endgroup
+\end{landscape}
+
+% -------------------------------------------------------------- pathway overlap
+\begingroup\footnotesize
+\begin{longtable}{@{}l l S[table-format=1.0] S[table-format=2.0] S[table-format=3.0]
+    L{0.21\linewidth} L{0.13\linewidth}@{}}
+  \caption[Compound--pathway measured-gene overlap]{Overlap between the genes a published
+    experiment measured for a compound and the members of a tier-C Hallmark gene set (prefix
+    \texttt{HALLMARK\_} omitted). An overlap marks where a compound and a model-highlighted
+    gene set touch the same genes, which is a hypothesis to test; it is not evidence that the
+    compound modifies the gene set, the pathway or clonogenic SF2, and the gene-set ranking
+    itself is capped at tier~C. Benzyl isothiocyanate is not assessable and is not in the
+    shortlist. Source:
+    \path{results/tables/primary_v1/compounds_v1/table_c4_pathway_overlap.csv}.}
+  \label{tab:c4}\\
+  \toprule
+  \thead{Compound} & \thead{Gene set} & {\thead{Overlap}} & {\thead{Measured}}
+    & {\thead{In set}} & \thead{Overlapping genes} & \thead{Evidence} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{7}{@{}l}{\tcont{Table~\thetable\ (continued)}}\\
+  \toprule
+  \thead{Compound} & \thead{Gene set} & {\thead{Overlap}} & {\thead{Measured}}
+    & {\thead{In set}} & \thead{Overlapping genes} & \thead{Evidence} \\
+  \midrule
+  \endhead
+  \midrule
+  \multicolumn{7}{@{}r}{\tcont{Continued on next page}}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+  Benzyl isothiocyanate & P53\_PATHWAY & 2 & 9 & 200 & APAF1; CDKN1A & BIT-01; BIT-02 \\
+   & UV\_RESPONSE\_DN & 2 & 9 & 144 & MAPK14; NFKB1 & BIT-01 \\
+  \addlinespace
+  $\beta$-Sitosterol & OXIDATIVE\_PHOSPHORYLATION & 2 & 10 & 200 & AIFM1; CYCS & BST-01 \\
+   & P53\_PATHWAY & 2 & 10 & 200 & FOS; JUN & BST-01 \\
+   & UV\_RESPONSE\_UP & 2 & 10 & 158 & CASP3; FOS & BST-01 \\
+   & COMPLEMENT & 1 & 10 & 200 & CASP3 & BST-01 \\
+  \addlinespace
+  Chlorogenic acid & OXIDATIVE\_PHOSPHORYLATION & 1 & 3 & 200 & BAX & CGA-03 \\
+   & P53\_PATHWAY & 1 & 3 & 200 & BAX & CGA-03 \\
+  \addlinespace
+  Kaempferol & COMPLEMENT & 2 & 4 & 200 & CASP3; CASP9 & KAE-02 \\
+   & OXIDATIVE\_PHOSPHORYLATION & 1 & 4 & 200 & CYCS & KAE-02 \\
+   & UV\_RESPONSE\_UP & 1 & 4 & 158 & CASP3 & KAE-02 \\
+  \addlinespace
+  Moringin & P53\_PATHWAY & 3 & 11 & 200 & BAX; CDKN1A; TP53 & MOR-01; MOR-02; MOR-03 \\
+   & COMPLEMENT & 2 & 11 & 200 & CASP3; CASP9 & MOR-01; MOR-03 \\
+   & OXIDATIVE\_PHOSPHORYLATION & 1 & 11 & 200 & BAX & MOR-01; MOR-02; MOR-03 \\
+   & UV\_RESPONSE\_DN & 1 & 11 & 144 & NFKB1 & MOR-01; MOR-04 \\
+   & UV\_RESPONSE\_UP & 1 & 11 & 158 & CASP3 & MOR-01; MOR-03 \\
+  \addlinespace
+  Phytol & COMPLEMENT & 2 & 5 & 200 & CASP3; CASP9 & PHY-01 \\
+   & P53\_PATHWAY & 1 & 5 & 200 & FAS & PHY-01 \\
+   & UV\_RESPONSE\_UP & 1 & 5 & 158 & CASP3 & PHY-01 \\
+  \addlinespace
+  Quercetin & P53\_PATHWAY & 5 & 9 & 200 & BAX; CDKN1A; DDIT3; TGFB1; TP53 & QUE-01; QUE-04 \\
+   & OXIDATIVE\_PHOSPHORYLATION & 1 & 9 & 200 & BAX & QUE-01 \\
+   & UV\_RESPONSE\_UP & 1 & 9 & 158 & H2AX & QUE-01 \\
+  \addlinespace
+  Rutin & KRAS\_SIGNALING\_UP & 2 & 7 & 200 & IL1B; NGF & RUT-02 \\
+   & COMPLEMENT & 1 & 7 & 200 & IL6 & RUT-02 \\
+   & UV\_RESPONSE\_UP & 1 & 7 & 158 & IL6 & RUT-02 \\
+\end{longtable}
+\endgroup
+
+% =====================================================================================
+\section{Data provenance and table correspondence}\label{app:provenance}
+
+Dataset manifests are held in \path{data/manifests/}, one file per source and release, with
+DOI, URL, licence, access date, per-file SHA-256, column meanings, units, endpoint definition
+and transformations. The run records are \path{results/models/primary_v1/run_manifest.json},
+\path{results/tables/primary_v1/evaluation_record.json},
+\path{results/triage/primary_v1/triage_manifest.json} and the compound record
+\path{results/tables/primary_v1/compounds_v1/compound_record.json}; each records the git
+commit, a flag for uncommitted changes, configuration and file checksums, package versions
+and UTC timestamps. Table~\ref{tab:provenance} maps every result table of this report to the
+project's table identifier and source file.
+
+\begin{table}[htbp]
+  \caption{Correspondence between the result tables of this report, the project's table
+    identifiers and the saved output files.}\label{tab:provenance}
+  \footnotesize
+  \begin{tabular}{@{}l l L{0.66\linewidth}@{}}
+    \toprule
+    \thead{This report} & \thead{Project ID} & \thead{Source file} \\
+    \midrule
+    Table~\ref{tab:composition} & Table 1 & \path{results/tables/primary_v1/publication_v1/table_1_dataset_composition.csv} \\
+    Table~\ref{tab:performance} & Table 2 & \path{results/tables/primary_v1/publication_v1/table_2_model_comparison.csv} \\
+    Table~\ref{tab:tissue} & Table 3 & \path{results/tables/primary_v1/publication_v1/table_3_tissue_performance.csv} \\
+    Table~\ref{tab:r1} & Table R1 & \path{results/tables/exploratory_m3_v1/model_metrics.csv} \\
+    Table~\ref{tab:r2} & Table R2 & \path{results/tables/loto_v1/held_out_tissue.csv} \\
+    Table~\ref{tab:r3} & Table R3 & \path{results/tables/scales_v1/comparisons.csv} \\
+    Table~\ref{tab:ranking} & Table C3 & \path{results/tables/primary_v1/compounds_v1/table_c3_candidate_ranking.csv} \\
+    Table~\ref{tab:s1} & Table S1 & \path{results/tables/primary_v1/publication_v1/table_s1_repeat_delta_mae.csv} \\
+    Table~\ref{tab:s4} & Table S4 & \path{results/tables/primary_v1/publication_v1/within_tissue_spearman_v2.csv} \\
+    Table~\ref{tab:s2} & Table S2 & \path{results/tables/primary_v1/publication_triage_v1/table_s2_gene_set_ranking.csv} \\
+    Table~\ref{tab:s3} & Table S3 & \path{results/tables/primary_v1/publication_triage_v1/table_s3_discrepancy_review.csv} \\
+    Table~\ref{tab:c1} & Table C1 & \path{results/tables/primary_v1/compounds_v1/table_c1_constituent_inventory.csv} \\
+    Table~\ref{tab:c2} & Table C2 & \path{results/tables/primary_v1/compounds_v1/table_c2_biology_evidence.csv} \\
+    Table~\ref{tab:c3reasons} & Table C3 & \path{results/tables/primary_v1/compounds_v1/table_c3_candidate_ranking.csv} (justification columns) \\
+    Table~\ref{tab:c4} & Table C4 & \path{results/tables/primary_v1/compounds_v1/table_c4_pathway_overlap.csv} \\
+    \bottomrule
+  \end{tabular}
+  \tablenote{Numbers are rounded for display; the source files hold full precision. A small
+    number of columns of the source files (identifiers such as PubChem CIDs and InChIKeys,
+    percentile columns and verbatim quotations) are not reproduced here.}
+\end{table}
+
+% =====================================================================================
+\section{Configuration, commands and documentation}\label{app:config}
+
+\begin{table}[htbp]
+  \caption{Configuration file and script for each step of the pipeline.}\label{tab:config}
+  \footnotesize
+  \begin{tabular}{@{}L{0.30\linewidth}L{0.30\linewidth}L{0.34\linewidth}@{}}
+    \toprule
+    \thead{Step} & \thead{Configuration} & \thead{Script} \\
+    \midrule
+    Preprocessing and quality control & \path{configs/preprocessing.yaml} & \path{scripts/run_preprocessing.py} \\
+    Primary experiment & \path{configs/experiment.yaml} & \path{scripts/run_model.py} \\
+    Evaluation & \path{configs/experiment.yaml} & \path{scripts/evaluate_models.py} \\
+    Explainability & \path{configs/experiment.yaml} & \path{scripts/run_explainability.py} \\
+    Pathway and cell-line triage & \path{configs/triage.yaml} & \path{scripts/generate_triage.py} \\
+    Publication tables & \path{configs/publication.yaml} & \path{scripts/make_publication_tables.py} \\
+    Exploratory M3 & \path{configs/experiment_exploratory_m3.yaml} & \path{scripts/run_model.py} \\
+    Leave-one-tissue-out & \path{configs/experiment_loto.yaml} & \path{scripts/run_model.py} \\
+    Outcome scales & \path{configs/experiment_scales.yaml} & \path{scripts/run_model.py} \\
+    Compound evidence and ranking & \path{configs/compounds.yaml} & \path{scripts/make_compound_tables.py} \\
+    Report figures & \path{configs/figures_report.yaml} & \path{scripts/make_report_figures.py} \\
+    Negative controls (not executed) & \path{configs/experiment_controls.yaml} & \path{scripts/run_model.py} \\
+    Coverage simulation (deferred) & \path{configs/simulation.yaml} & \path{scripts/run_interval_simulation.py} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Methodological documentation: study protocol \path{docs/protocol.md}; architecture and naming
+\path{docs/architecture.md}; data rules \path{docs/data_management.md}; figure standards
+\path{docs/figure_standards.md}; compound prioritisation rules \path{docs/compound_protocol.md};
+robustness plan \path{docs/robustness_plan.md}; reviewer matrix
+\path{docs/agent_workflow.md}; phase gates \path{docs/research_roadmap.md}; and every decision,
+open question and investigator ruling in \path{docs/decision_log.md}. The page-by-page
+extraction of the original manuscript is \path{docs/moringa_scientific_linkage.md}.
+
+% =====================================================================================
+\section{Reproducibility information}\label{app:reproducibility}
+
+The environment is specified in \path{environment.yml} (conda environment
+\path{explainable-radiosensitivity-ml}, Python~3.11); package versions are recorded in every
+run record but are not yet pinned in a lockfile. The primary run used six physical CPU cores
+(twelve logical threads) and about 31~GiB of memory, with bounded multiprocessing and one BLAS
+thread per worker; the base random seed is 20261021. Tests are in \path{tests/}; tests that
+would fit a model are marked \path{model_fit} and excluded from routine runs. Result folders
+and figures are write-once, so regeneration requires an explicit version change or an explicit
+overwrite flag.

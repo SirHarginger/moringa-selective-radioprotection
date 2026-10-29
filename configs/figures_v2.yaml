@@ -1,0 +1,83 @@
+# Publication figures, version 2 (shared style: src/radiosensitivity_ml/visualization/style.py).
+# Saved evaluation tables only; version-1 files are kept (write-once). D04.07.
+# Suggested manuscript order: Fig 1 = fig_01, Fig 2 = fig_02, Fig 3 = fig_03,
+# Fig 4 = fig_05 (model performance; file ID fig_04 is the workflow diagram).
+tables_dir: results/tables/primary_v1
+output_dir: figures/generated
+version: 2
+dpi: 600
+formats: [pdf, svg, png]
+figures:
+  - id: fig_01
+    slug: observed_vs_predicted
+    kind: observed_vs_predicted_v2
+    inputs: {oof: oof_predictions.csv, metrics: model_metrics.csv}
+    options: {models: [M0, M1, M2, M2P]}
+    caption: >
+      Observed CLARIFi mSF2 (literature-median clonogenic surviving fraction at 2 Gy)
+      versus out-of-fold predicted mSF2 for the global-mean (A), tissue-only (B),
+      tissue + 50 Hallmark scores (C) and tissue + proliferation + Hallmark (D) models.
+      Each point is one independent biological component (related cell lines averaged);
+      each line's prediction is averaged over 10 repeats of 5-fold grouped
+      cross-validation, so no line contributes more than one point. Dashed line:
+      identity; all panels share axis limits. MAE and out-of-sample R² are
+      component-weighted out-of-fold values averaged over repeats. Predictions are
+      compressed toward the cohort mean in every model (R² near zero). Descriptive only:
+      superiority was not formally assessed.
+  - id: fig_02
+    slug: delta_mae
+    kind: repeat_lollipop
+    inputs: {per_repeat: per_repeat_delta_mae.csv, comparisons: comparisons.csv}
+    caption: >
+      Paired component-weighted ΔMAE = MAE(M1, tissue only) − MAE(M2, tissue +
+      expression) in each of 10 cross-validation repeats; positive values (blue) favour
+      M2, negative values (vermillion) favour M1. Dashed line: pooled estimate (mean of
+      repeats). Repeats re-split the same 237 components, so their spread shows
+      split-to-split variability, not sampling uncertainty; no interval is shown because
+      no interval method was validated. Superiority was not formally assessed and
+      negative controls were not run.
+  - id: fig_03
+    slug: tissue_errors
+    kind: tissue_dumbbell
+    inputs: {errors: tissue_errors.csv}
+    options: {min_components: 10}
+    caption: >
+      Component-weighted out-of-fold MAE by tissue (OncotreeLineage) for tissue-only M1
+      and tissue + expression M2. Top: tissues with at least 10 independent components,
+      ordered by the change in MAE; labels give MAE(M1) − MAE(M2) (positive: M2 lower).
+      Bottom (muted): tissues with fewer than 10 components, descriptive only. n =
+      independent components. Differences are small relative to the MAE itself;
+      descriptive only.
+  - id: fig_05
+    slug: model_performance
+    kind: model_summary
+    inputs: {metrics: model_metrics.csv}
+    caption: >
+      Model performance summary. (A) Component-weighted MAE (bars start at zero). (B)
+      Out-of-sample R² (0 corresponds to predicting the training mean). (C) Change in MAE
+      relative to tissue-only M1 (positive: lower MAE than M1), with the relative change.
+      For M2 the change equals the paired ΔMAE. All values are out-of-fold, averaged over
+      10 repeats of 5-fold grouped cross-validation; descriptive only.
+  - id: fig_s01
+    slug: repeat_variability
+    kind: repeat_lollipop
+    inputs: {per_repeat: per_repeat_delta_mae.csv, comparisons: comparisons.csv}
+    options:
+      shown: ["primary: tissue+expression vs tissue", "S1: beyond tissue+proliferation"]
+    caption: >
+      Per-repeat ΔMAE for the primary comparison (A, M2 vs M1) and the proliferation-
+      adjusted sensitivity comparison (B, M2P vs M1P). Split-to-split variability only;
+      descriptive.
+  - id: fig_s03
+    slug: moringa_context_lines
+    kind: context_lines_v2
+    inputs: {oof: oof_predictions.csv}
+    options: {lines: {ACH-000019: MCF-7, ACH-000979: DU145}}
+    caption: >
+      Supplementary context. Top: observed CLARIFi mSF2 of all eligible lines. Bottom:
+      observed (filled diamond) and out-of-fold predicted (open markers, M1 and M2) mSF2
+      of MCF-7 and DU145, two lines of the motivating Moringa study. CLARIFi mSF2 is
+      clonogenic survival after 2 Gy; the Moringa study measured proliferation and
+      viability, which are different endpoints. No statement about Moringa extracts,
+      radioprotection or wound healing is made or implied. DU145 has a stranded RNA
+      profile.

@@ -1,0 +1,970 @@
+# Compound-to-biology evidence: primary experimental studies of PURIFIED compounds.
+#
+# SCOPE RULES (applied during curation and enforced by compounds/curation.py):
+#   * primary studies only -- reviews are pointers, never evidence;
+#   * the PURIFIED compound, not an extract or fraction. A study that dosed an extract is
+#     recorded with purified_compound: false and counts_for_score: false;
+#   * UV (UVA/UVB/UVC) and visible light are NOT ionising radiation and never qualify as
+#     L3. Many hits for the flavonoids are UV-photoprotection studies; they are excluded;
+#   * nanoparticle, metal-conjugate and liposomal formulations are excluded: the carrier
+#     confounds the compound;
+#   * chemical identity is policed. Caffeic acid phenethyl ester (CAPE) is not caffeic
+#     acid; alpha-tocopherol succinate is not alpha-tocopherol; nitro-oleic acid is not
+#     oleic acid. Derivative-only evidence is never credited to the parent compound;
+#   * radioprotection and radiosensitisation are never merged, and the direction always
+#     names the cell type (normal or tumour).
+#
+#   evidence_level  L3_radiation  purified compound + ionising radiation + a
+#                                 radiation-response endpoint
+#                   L2_process    purified compound modulating a relevant process, no
+#                                 ionising radiation
+#                   L1_indirect   recorded for transparency only; never scored
+#   direction       radioprotection_normal | radioprotection_tumour (LIABILITY) |
+#                   radiosensitisation_tumour | no_effect | mixed |
+#                   process_modulation_no_radiation | genotoxic (LIABILITY)
+#
+# Fields absent from the source are null. "NOT STATED" gaps are real gaps in the
+# published abstract, never filled in by inference. genes_measured lists ONLY symbols the
+# cited paper actually reports as measured; a paper naming pathways but no individual
+# proteins has an empty list.
+#
+# Reading depth is abstract-level throughout unless marked full_text; the concentrations
+# and radiation doses missing below must be recovered from full texts before publication
+# (docs/compound_evidence_curation.md, open item 3).
+#
+# Curation: literature-reviewer agent, 2026-10-22. Retracted work is excluded: Giacoppo
+# et al. 2017 (PMID 28705212) is flagged retracted in Europe PMC and is not used.
+
+curation_record: "docs/compound_evidence_curation.md (searches, exclusions, open items)"
+curated_on: "2026-10-22"
+curated_by: "literature-reviewer agent (searching and reading only); recorded by Claude Code"
+
+evidence:
+
+  # ------------------------------------------------------------------- moringin (no L3)
+
+  - evidence_id: MOR-01
+    compound_id: moringin
+    evidence_level: L2_process
+    process_category: apoptosis
+    citation: >
+      Cirmi S, Ferlazzo N, Gugliandolo A, Musumeci L, Mazzon E, Bramanti A, Navarra M.
+      Moringin from Moringa oleifera seeds inhibits growth, arrests cell-cycle, and
+      induces apoptosis of SH-SY5Y human neuroblastoma cells through the modulation of
+      NF-kB and apoptotic related factors. International Journal of Molecular Sciences
+      2019;20(8):1930.
+    doi: "10.3390/ijms20081930"
+    pmid: "31010127"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "SH-SY5Y human neuroblastoma"
+    tissue_class: tumour
+    species: human
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "16.4 micromolar (moringin from myrosinase bioactivation of glucomoringin)"
+    exposure_timing: "24, 48 and 72 h"
+    endpoints: >
+      Growth inhibition; cell-cycle distribution (G2 and S accumulation); apoptosis;
+      mRNA and protein expression; caspase cleavage; NF-kB nuclear translocation
+    genes_measured: ["TP53", "CDKN1A", "BAX", "CASP3", "CASP9", "NFKB1"]
+    direction: process_modulation_no_radiation
+    research_group: "Navarra (Messina)"
+    limitation: "Single cell line, single concentration, no ionising radiation"
+    counts_for_score: true
+
+  - evidence_id: MOR-02
+    compound_id: moringin
+    evidence_level: L2_process
+    process_category: cell_cycle
+    citation: >
+      Abd Karim NA, Adam AHB, Jaafaru MS, Rukayadi Y, Abdull Razis AF. Apoptotic
+      potential of glucomoringin isothiocyanate (GMG-ITC) isolated from Moringa oleifera
+      Lam seeds on human prostate cancer cells (PC-3). Molecules 2023;28(7):3214.
+    doi: "10.3390/molecules28073214"
+    pmid: "37049977"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "PC-3 human prostate cancer"
+    tissue_class: tumour
+    species: human
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "IC50 3.5 microgram/mL (GMG-ITC isolated from seeds)"
+    exposure_timing: "Time-dependent; exact times NOT STATED in the abstract"
+    endpoints: >
+      Proliferation and IC50; morphology; Annexin V apoptosis; cell-cycle analysis
+      (G2/M arrest reported as a 39.1% reduction)
+    genes_measured: ["TP53", "BAX", "BAD", "BCL2", "MAPK8"]
+    direction: process_modulation_no_radiation
+    research_group: "Abdull Razis (Universiti Putra Malaysia)"
+    limitation: >
+      Single cell line, no normal-cell comparator in the abstract, no ionising radiation
+    counts_for_score: true
+
+  - evidence_id: MOR-03
+    compound_id: moringin
+    evidence_level: L2_process
+    process_category: oxidative_stress_response
+    citation: >
+      Gugliandolo A, Cali G, Muscara C, Artimagnella O, Rollin P, Perenzoni D, Iori R,
+      Mazzon E, Chiricosta L. alpha-Cyclodextrin/moringin induces an antioxidant
+      transcriptional response activating Nrf2 in differentiated NSC-34 motor neurons.
+      Antioxidants 2024;13(7):813.
+    doi: "10.3390/antiox13070813"
+    pmid: "39061882"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Differentiated NSC-34 motor-neuron-like cells (normal surrogate, not a clean normal cell)"
+    tissue_class: normal_surrogate
+    species: mouse
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "0.5, 5 and 10 micromolar as an alpha-cyclodextrin/moringin complex"
+    exposure_timing: "48 h and 96 h"
+    endpoints: >
+      Transcriptomics; cytoplasmic and nuclear NRF2 protein; STRING interactor analysis
+    genes_measured: ["NFE2L2", "BAX", "CASP9", "CASP3"]
+    direction: process_modulation_no_radiation
+    research_group: "Mazzon (IRCCS Messina)"
+    limitation: >
+      Cyclodextrin-formulated rather than free compound; single cell line; no ionising
+      radiation; compound supplied by Iori, as in most moringin work
+    counts_for_score: true
+
+  - evidence_id: MOR-04
+    compound_id: moringin
+    evidence_level: L2_process
+    process_category: apoptosis
+    citation: >
+      Brunelli D, Tavecchio M, Falcioni C, Frapolli R, Erba E, Iori R, Rollin P,
+      Barillari J, Manzotti C, Morazzoni P, D'Incalci M. The isothiocyanate produced from
+      glucomoringin inhibits NF-kB and reduces myeloma growth in nude mice in vivo.
+      Biochemical Pharmacology 2010;79(8):1141-1148.
+    doi: "10.1016/j.bcp.2009.12.008"
+    pmid: "20006591"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: >
+      Human carcinoma, multiple myeloma and leukaemia lines including MCF7; nude mice
+      bearing carcinoma and myeloma xenografts
+    tissue_class: tumour
+    species: "human cells; mouse xenograft"
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "Active in the micromolar range; exact doses and schedule NOT STATED"
+    exposure_timing: "NOT STATED"
+    endpoints: >
+      Cell death; cell cycle; caspase-dependent apoptosis; NF-kB inhibition; GST-pi
+      activity (about 3-fold increase in MCF7); in vivo antitumour activity and toxicity
+    genes_measured: ["NFKB1", "GSTP1"]
+    direction: process_modulation_no_radiation
+    research_group: "D'Incalci (Milan)"
+    limitation: >
+      Doses not reported in the abstract; compound supplied by Iori, so independence from
+      the other moringin studies is limited
+    counts_for_score: true
+
+  # ------------------------------------------------------------------------- niazimicin
+
+  - evidence_id: NZM-01
+    compound_id: niazimicin
+    evidence_level: L2_process
+    process_category: oxidative_stress_response
+    citation: >
+      Abdelsayed EM, Medhat D, Mandour YM, Hanafi RS, Motaal AA. Niazimicin: a
+      thiocarbamate glycoside from Moringa oleifera Lam. seeds with a novel
+      neuroprotective activity. Journal of Food Biochemistry 2021;45(12):e13992.
+    doi: "10.1111/jfbc.13992"
+    pmid: "34747026"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: false
+    model_system: "Albino rats (strain NOT STATED), aluminium-chloride-induced dementia"
+    tissue_class: normal
+    species: rat
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "250 mg/kg/day for 15 days"
+    exposure_timing: "15 days"
+    endpoints: >
+      Malondialdehyde -47%; cholinesterase -34%; nitric oxide -53%; amyloid-beta -59%;
+      glutathione +54%. Caspase-3 and iNOS appear only in molecular docking, not measured
+    genes_measured: []
+    direction: process_modulation_no_radiation
+    research_group: "Hanafi / Abdel Motaal (Cairo)"
+    limitation: >
+      DISQUALIFYING: the dosed material was a 70% ethanol seed-extract fraction, not the
+      purified compound, so it cannot support a compound-level claim
+    counts_for_score: false
+    notes: >
+      Recorded so that the absence of purified-niazimicin biology is explicit rather than
+      invisible. Niazimicin is the one constituent with a confirmed identification in the
+      dichloromethane fractions of seed and leaf, yet no study has tested the purified
+      compound in any radiation-response process.
+
+  # --------------------------------------------------------------------------- niazirin
+
+  - evidence_id: NZR-01
+    compound_id: niazirin
+    evidence_level: L2_process
+    process_category: oxidative_stress_response
+    citation: >
+      Wang F, Bao Y, Shen X, Zengin G, Lyu Y, Xiao J, Weng Z. Niazirin from Moringa
+      oleifera Lam. attenuates high-glucose-induced oxidative stress through the
+      PKC-zeta/Nox4 pathway. Phytomedicine 2021;86:153066.
+    doi: "10.1016/j.phymed.2019.153066"
+    pmid: "31447278"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: >
+      High-glucose-treated vascular smooth muscle cells (species NOT STATED) and
+      streptozotocin-diabetic mice (strain NOT STATED)
+    tissue_class: normal
+    species: "NOT STATED"
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "NOT STATED in the abstract"
+    exposure_timing: "NOT STATED"
+    endpoints: >
+      DCF-DA reactive oxygen species; malondialdehyde; total antioxidant capacity; SOD;
+      glutathione peroxidase; cell viability; western blot; cell-free FRAP, ABTS and DPPH
+    genes_measured: ["PRKCZ", "NOX4"]
+    direction: process_modulation_no_radiation
+    research_group: "Weng (China)"
+    limitation: >
+      Single study, no independent replication, concentrations not stated, and no
+      DNA-damage, repair or radiation endpoint
+    counts_for_score: true
+
+  # ---------------------------------------------------------------------- beta-sitosterol
+
+  - evidence_id: BST-01
+    compound_id: beta_sitosterol
+    evidence_level: L3_radiation
+    process_category: dna_damage
+    citation: >
+      Li CR, Zhou Z, Lin RX, Zhu D, Sun YN, Tian LL, Li L, Gao Y, Wang SQ.
+      beta-Sitosterol decreases irradiation-induced thymocyte early damage by regulation
+      of the intracellular redox balance and maintenance of mitochondrial membrane
+      stability. Journal of Cellular Biochemistry 2007;102(3):748-758.
+    doi: "10.1002/jcb.21326"
+    pmid: "17427947"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Thymocytes (MeSH indexes mice, BALB/c)"
+    tissue_class: normal
+    species: mouse
+    radiation_type: "Ionising radiation; modality UNVERIFIED (rendered as 'ion irradiation')"
+    radiation_dose_gy: "6"
+    concentration: "NOT STATED in the abstract"
+    exposure_timing: "NOT STATED"
+    endpoints: >
+      Apoptosis; DNA strand breaks; intracellular reactive oxygen species; antioxidant
+      enzyme activities; mitochondrial membrane stability
+    genes_measured: ["CYCS", "AIFM1", "CASP3", "PARP1", "MAPK8", "JUN", "FOS"]
+    direction: radioprotection_normal
+    research_group: "Wang SQ (China)"
+    limitation: >
+      Concentrations absent from the abstract; single primary cell type; the radiation
+      modality (gamma versus heavy ion) must be confirmed from the full text
+    counts_for_score: true
+
+  - evidence_id: BST-02
+    compound_id: beta_sitosterol
+    evidence_level: L3_radiation
+    process_category: oxidative_stress_response
+    citation: >
+      El Bakary NM, Thabet NM, Rashed LA, Azab KSh, Helal H, Maarouf RE, Abdel-Rafei MK.
+      Beta-sitosterol alleviates inflammatory culprits and disease severity in arthritic
+      irradiated rats: role of the brain-spleen axis. Immunopharmacology and
+      Immunotoxicology 2026;48(1):11-33.
+    doi: "10.1080/08923973.2025.2591423"
+    pmid: "41292280"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Adjuvant-induced arthritic male rats with and without irradiation"
+    tissue_class: normal
+    species: rat
+    radiation_type: "Gamma"
+    radiation_dose_gy: "2 Gy per fraction weekly x 4 (8 Gy total)"
+    concentration: "40 mg/kg body weight/day, oral"
+    exposure_timing: "Daily; methotrexate 0.5 mg/kg twice weekly as comparator"
+    endpoints: >
+      Arthritic clinical signs; histopathology; radiographic osteopathology; joint
+      inflammatory markers; oxidative stress, antioxidant defences and cytokines in serum,
+      spleen and brain
+    genes_measured: ["APLN", "APLNR", "NFE2L2"]
+    direction: radioprotection_normal
+    research_group: "Abdel-Rafei / Thabet (NCRRT Egypt)"
+    limitation: >
+      Disease-model readouts only; no DNA-damage or clonogenic endpoint; no tumour arm, so
+      selectivity is untested; very recent with little citation history
+    counts_for_score: true
+
+  # ------------------------------------------------------------------- chlorogenic acid
+
+  - evidence_id: CGA-01
+    compound_id: chlorogenic_acid
+    evidence_level: L3_radiation
+    process_category: oxidative_stress_response
+    citation: >
+      Yin X, He X, Wu L, Yan D, Yan S. Chlorogenic acid, the main antioxidant in coffee,
+      reduces radiation-induced apoptosis and DNA damage via NF-E2-related factor 2 (Nrf2)
+      activation in hepatocellular carcinoma. Oxidative Medicine and Cellular Longevity
+      2022;2022:4566949.
+    doi: "10.1155/2022/4566949"
+    pmid: "35958020"
+    doi_verified_via: crossref
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Hepatocellular carcinoma cell lines (lines NOT STATED) and a murine model"
+    tissue_class: tumour
+    species: "human cells; mouse"
+    radiation_type: "Ionising radiation"
+    radiation_dose_gy: "NOT STATED"
+    concentration: "NOT STATED"
+    exposure_timing: "NOT STATED"
+    endpoints: >
+      Apoptosis; DNA damage; reactive oxygen species; radiation resistance, with NRF2
+      knockdown
+    genes_measured: ["NFE2L2"]
+    direction: radioprotection_tumour
+    research_group: "Yan (China)"
+    limitation: >
+      LIABILITY EVIDENCE: the authors conclude the compound could hinder radiotherapy by
+      inhibiting radiation-induced apoptosis in tumour cells. The abstract lacks cell
+      lines, radiation dose and concentration; published in a journal with a large
+      contemporaneous retraction wave (no retraction notice found for this article as of
+      2026-10-22, but the status must be re-checked before submission)
+    counts_for_score: true
+    notes: >
+      Must never be pooled with the normal-tissue chlorogenic-acid protection studies: the
+      cell type protected is the whole point.
+
+  - evidence_id: CGA-02
+    compound_id: chlorogenic_acid
+    evidence_level: L3_radiation
+    process_category: dna_damage
+    citation: >
+      Abraham SK, Sarma L, Kesavan PC. Protective effects of chlorogenic acid, curcumin
+      and beta-carotene against gamma-radiation-induced in vivo chromosomal damage.
+      Mutation Research 1993;303(3):109-112.
+    doi: "10.1016/0165-7992(93)90022-n"
+    pmid: "7694126"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Mouse bone marrow (strain NOT STATED)"
+    tissue_class: normal
+    species: mouse
+    radiation_type: "Gamma, whole body"
+    radiation_dose_gy: "1.15 (at 0.05 Gy/s)"
+    concentration: "Oral 50, 100 and 200 mg/kg body weight, single dose"
+    exposure_timing: "2 h before, or immediately after, irradiation"
+    endpoints: "Micronucleated polychromatic erythrocytes at 24, 30 and 48 h"
+    genes_measured: []
+    direction: radioprotection_normal
+    research_group: "Abraham / Kesavan (JNU India)"
+    limitation: >
+      Very low radiation dose, single cytogenetic endpoint, 1993 methodology, no molecular
+      markers
+    counts_for_score: true
+
+  - evidence_id: CGA-03
+    compound_id: chlorogenic_acid
+    evidence_level: L3_radiation
+    process_category: apoptosis
+    citation: >
+      Abedpour N, Zeinali A, Karimipour M, Pourheidar B, Farjah GH, Abak A, Shoorei H.
+      Protective effects of chlorogenic acid against ionizing radiation-induced
+      testicular toxicity. Heliyon 2022;8(10):e10798.
+    doi: "10.1016/j.heliyon.2022.e10798"
+    pmid: "36212000"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Mice, n = 70 (strain NOT STATED), testis"
+    tissue_class: normal
+    species: mouse
+    radiation_type: "Ionising, total body"
+    radiation_dose_gy: "2.0 single fraction"
+    concentration: "5, 10, 20, 40 and 80 mg/kg intraperitoneally"
+    exposure_timing: "Timing relative to irradiation NOT STATED; tissue at 16 h and 35 days"
+    endpoints: >
+      Spermatogenesis indices; seminiferous tubule, basal lamina and Leydig cell
+      histology; sperm parameters; malondialdehyde; SOD; total antioxidant capacity;
+      glutathione
+    genes_measured: ["BAX", "BCL2"]
+    direction: radioprotection_normal
+    research_group: "Shoorei / Karimipour (Iran)"
+    limitation: >
+      Organ-toxicity endpoints only, no DNA-damage assay; an erratum exists (Heliyon 2023,
+      DOI 10.1016/j.heliyon.2023.e14739, PMID 37151639) and has not been read
+    counts_for_score: true
+
+  # ------------------------------------------------------------------------------ rutin
+
+  - evidence_id: RUT-01
+    compound_id: rutin
+    evidence_level: L3_radiation
+    process_category: dna_damage
+    citation: >
+      Patil SL, Swaroop K, Kakde N, Somashekarappa HM. In vitro protective effect of
+      rutin and quercetin against radiation-induced genetic damage in human lymphocytes.
+      Indian Journal of Nuclear Medicine 2017;32(4):289-295.
+    doi: "10.4103/ijnm.ijnm_30_17"
+    pmid: "29142345"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Human peripheral blood lymphocytes in vitro"
+    tissue_class: normal
+    species: human
+    radiation_type: "Gamma"
+    radiation_dose_gy: "2"
+    concentration: "25 microgram/mL (approximately 41 micromolar rutin)"
+    exposure_timing: "Applied before irradiation; pre-treatment duration NOT STATED"
+    endpoints: >
+      Alkaline comet assay (% tail DNA, olive tail moment); cytokinesis-block micronucleus
+      assay
+    genes_measured: []
+    direction: radioprotection_normal
+    research_group: "Patil (Mangalore India)"
+    limitation: >
+      No molecular markers; this group produced all the single-agent rutin radiation
+      papers, so they are one source
+    counts_for_score: true
+
+  - evidence_id: RUT-02
+    compound_id: rutin
+    evidence_level: L3_radiation
+    process_category: oxidative_stress_response
+    citation: >
+      Thabet NM, Moustafa EM. Protective effect of rutin against brain injury induced by
+      acrylamide or gamma radiation: role of the PI3K/AKT/GSK-3beta/NRF-2 signalling
+      pathway. Archives of Physiology and Biochemistry 2018;124(2):185-193.
+    doi: "10.1080/13813455.2017.1374978"
+    pmid: "28906145"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Rat brain (MeSH indexes Sprague-Dawley; abstract does not state strain)"
+    tissue_class: normal
+    species: rat
+    radiation_type: "Gamma"
+    radiation_dose_gy: "5"
+    concentration: "200 mg/kg body weight/day, oral"
+    exposure_timing: "Duration NOT STATED"
+    endpoints: >
+      Brain histopathology; malondialdehyde; glutathione S-transferase; IL-1beta; IL-6;
+      reactive oxygen species; IGF-1; NGF
+    genes_measured: ["NFE2L2", "AKT1", "GSK3B", "IL1B", "IL6", "IGF1", "NGF"]
+    direction: radioprotection_normal
+    research_group: "Abdel-Rafei / Thabet (NCRRT Egypt)"
+    limitation: >
+      No DNA-damage endpoint and no tumour arm; the same group also produced the
+      beta-sitosterol study BST-02, so rutin and beta-sitosterol partly share a source
+    counts_for_score: true
+
+  # -------------------------------------------------------------------- alpha-tocopherol
+
+  - evidence_id: TOC-01
+    compound_id: alpha_tocopherol
+    evidence_level: L3_radiation
+    process_category: proliferation
+    citation: >
+      Felemovicius I, Bonsack ME, Baptista ML, Delaney JP. Intestinal radioprotection by
+      vitamin E (alpha-tocopherol). Annals of Surgery 1995;222(4):504-508.
+    doi: "10.1097/00000658-199522240-00008"
+    pmid: "7574930"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Rats (MeSH: Sprague-Dawley), surgically exteriorised mid-small bowel"
+    tissue_class: normal
+    species: rat
+    radiation_type: "X-rays"
+    radiation_dose_gy: "11 (1100 cGy)"
+    concentration: "NOT STATED (luminal alpha-tocopherol phosphate and acetate; also a dietary arm)"
+    exposure_timing: "Luminal application 30 min before irradiation; dietary arm 10 days before"
+    endpoints: >
+      Surviving crypts (crypt microcolony clonogenic assay); mucosal height; goblet cell
+      numbers at day 5
+    genes_measured: []
+    direction: radioprotection_normal
+    research_group: "Delaney (Minnesota)"
+    limitation: >
+      Esterified forms rather than free alpha-tocopherol; concentrations unreported; no
+      molecular endpoints; no tumour arm
+    counts_for_score: true
+    notes: >
+      One of only two items in this file with a clonogenic radiation endpoint, which is the
+      endpoint the machine-learning study models.
+
+  - evidence_id: TOC-02
+    compound_id: alpha_tocopherol
+    evidence_level: L3_radiation
+    process_category: other
+    citation: >
+      Ferreira PR, Fleck JF, Diehl A, Barletta D, Braga-Filho A, Barletta A, Ilha L.
+      Protective effect of alpha-tocopherol in head and neck cancer radiation-induced
+      mucositis: a double-blind randomized trial. Head and Neck 2004;26(4):313-321.
+    doi: "10.1002/hed.10382"
+    pmid: "15054734"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Humans, n = 54, oral cavity and oropharyngeal cancer patients"
+    tissue_class: normal
+    species: human
+    radiation_type: "Therapeutic external-beam radiotherapy"
+    radiation_dose_gy: "2 Gy per fraction over 5-7 weeks; total dose NOT STATED"
+    concentration: "NOT STATED (alpha-tocopherol oil-solution rinse)"
+    exposure_timing: "Before each 2 Gy fraction and again 8-12 h later"
+    endpoints: >
+      Symptomatic mucositis incidence 21.6% with alpha-tocopherol versus 33.5% with
+      placebo (p = 0.038, risk reduced 36%); pain grades 2-3 decreased; survival
+    genes_measured: []
+    direction: radioprotection_normal
+    research_group: "Ferreira (Brazil)"
+    limitation: >
+      Topical rinse, so only local exposure; small trial; clinical endpoint with no
+      mechanism; says nothing about whether the tumour was also protected
+    counts_for_score: true
+
+  # -------------------------------------------------------------------------- astragalin
+
+  - evidence_id: AST-01
+    compound_id: astragalin
+    evidence_level: L2_process
+    process_category: dna_damage
+    citation: >
+      Saito S, et al. Astragalin from Cassia alata induces DNA adducts in vitro and
+      repairable DNA damage in the yeast Saccharomyces cerevisiae. International Journal
+      of Molecular Sciences 2012;13(3):2846-2862.
+    doi: "10.3390/ijms13032846"
+    pmid: "22489129"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "In vitro DNA and Saccharomyces cerevisiae"
+    tissue_class: non_mammalian
+    species: "yeast; cell-free"
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "NOT STATED in the abstract"
+    exposure_timing: "NOT STATED"
+    endpoints: "DNA adduct formation; repairable DNA damage in yeast"
+    genes_measured: []
+    direction: genotoxic
+    research_group: "Saito (2012)"
+    limitation: >
+      LIABILITY EVIDENCE and a weak model: yeast and cell-free systems only, no mammalian
+      system, no ionising radiation. The only DNA-damage-relevant primary signal for this
+      compound points towards damage, not protection
+    counts_for_score: true
+
+  # ------------------------------------------------------------------------------ phytol
+
+  - evidence_id: PHY-01
+    compound_id: phytol
+    evidence_level: L2_process
+    process_category: apoptosis
+    citation: >
+      Thakor P, Subramanian RB, Thakkar SS, Ray A, Thakkar VR. Phytol induces ROS
+      mediated apoptosis by induction of caspase 9 and 3 through activation of TRAIL, FAS
+      and TNF receptors and inhibits tumor progression factor glucose 6 phosphate
+      dehydrogenase in lung carcinoma cell line (A549). Biomedicine and Pharmacotherapy
+      2017;93:1209-1218.
+    doi: "10.1016/j.biopha.2017.05.066"
+    pmid: "28575806"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "A549 human lung carcinoma"
+    tissue_class: tumour
+    species: human
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "NOT STATED (title-level extraction only)"
+    exposure_timing: "NOT STATED"
+    endpoints: >
+      Reactive-oxygen-species-mediated apoptosis; caspase 9 and 3 induction; TRAIL, FAS
+      and TNF receptor activation; glucose-6-phosphate dehydrogenase inhibition
+    genes_measured: ["CASP9", "CASP3", "TNFSF10", "FAS", "G6PD"]
+    direction: process_modulation_no_radiation
+    research_group: "Thakkar (India)"
+    limitation: >
+      Title-level extraction only; single tumour line; no ionising radiation; a separate
+      report (Islam et al. 2017, DOI 10.1016/j.chemosphere.2017.02.145) describes
+      genotoxic potential for phytol
+    counts_for_score: true
+
+  - evidence_id: PHY-02
+    compound_id: phytol
+    evidence_level: L2_process
+    process_category: oxidative_phosphorylation
+    citation: >
+      Sakthivel R, Malar DS, Devi KP. Phytol shows anti-angiogenic activity and induces
+      apoptosis in A549 cells by depolarizing the mitochondrial membrane potential.
+      Biomedicine and Pharmacotherapy 2018;105:742-752.
+    doi: "10.1016/j.biopha.2018.06.035"
+    pmid: "29908495"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "A549 human lung carcinoma"
+    tissue_class: tumour
+    species: human
+    radiation_type: null
+    radiation_dose_gy: null
+    concentration: "NOT STATED (title-level extraction only)"
+    exposure_timing: "NOT STATED"
+    endpoints: "Anti-angiogenic activity; apoptosis; mitochondrial membrane depolarisation"
+    genes_measured: []
+    direction: process_modulation_no_radiation
+    research_group: "Devi (Madurai)"
+    limitation: "Title-level extraction only; single tumour line; no ionising radiation"
+    counts_for_score: true
+
+  # -------------------------------------------------------------------------- oleic acid
+
+  - evidence_id: OLE-01
+    compound_id: oleic_acid
+    evidence_level: L3_radiation
+    process_category: proliferation
+    citation: >
+      George AM, Lunec J, Cramp WA. Effect of membrane fatty acid changes on the
+      radiation sensitivity of human lymphoid cells. International Journal of Radiation
+      Biology and Related Studies in Physics, Chemistry and Medicine 1983;43(4):363-378.
+    doi: "10.1080/09553008314550431"
+    pmid: "6601634"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Human LDV lymphoid cells in culture"
+    tissue_class: normal
+    species: human
+    radiation_type: "Ionising radiation, delivered in air or nitrogen"
+    radiation_dose_gy: "NOT STATED"
+    concentration: >
+      Oleic acid (or linoleic acid) added to delipidated-serum medium; concentration NOT
+      STATED; at least 3 days of supplementation
+    exposure_timing: "At least 3 days before irradiation"
+    endpoints: >
+      Gas-liquid chromatography of cellular lipids; nuclear phospholipid composition;
+      membrane fluidity by DPH fluorescence polarisation; clonogenic survival after
+      irradiation
+    genes_measured: []
+    direction: no_effect
+    research_group: "Cramp (UK)"
+    limitation: >
+      1983 methodology, single lymphoid line, doses unreported; but it is a direct
+      clonogenic test and it argues against prioritising this compound
+    counts_for_score: true
+    notes: >
+      An informative negative result: membrane oleate enrichment did not alter clonogenic
+      radiosensitivity. Recorded because absence of an effect is evidence too.
+
+  # ------------------- compounds whose Moringa identity is unconfirmed (never ranked) ---
+  # Their evidence is recorded so that the cost of the identity gap is visible: these are
+  # the best-evidenced compounds in radiobiology, and the prespecified D1 = 0 rule keeps
+  # them out of the shortlist until their presence in seed or leaf is confirmed.
+
+  - evidence_id: QUE-01
+    compound_id: quercetin
+    evidence_level: L3_radiation
+    process_category: dna_repair
+    citation: >
+      Gong C, Yang Z, Zhang L, Wang Y, Gong W, Liu Y. Quercetin suppresses DNA
+      double-strand break repair and enhances the radiosensitivity of human ovarian cancer
+      cells via the p53-dependent endoplasmic reticulum stress pathway. OncoTargets and
+      Therapy 2018;11:17-27.
+    doi: "10.2147/ott.s147316"
+    pmid: "29317830"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Human ovarian cancer cells (lines NOT STATED) and a xenograft"
+    tissue_class: tumour
+    species: human
+    radiation_type: "X-rays"
+    radiation_dose_gy: "NOT STATED"
+    concentration: "NOT STATED"
+    exposure_timing: "Pretreatment; duration NOT STATED"
+    endpoints: >
+      Double-strand-break repair; DNA damage; apoptosis; endoplasmic-reticulum stress;
+      xenograft tumour growth
+    genes_measured: ["TP53", "BAX", "CDKN1A", "BCL2", "ATM", "DDIT3", "H2AX"]
+    direction: radiosensitisation_tumour
+    research_group: "Gong / Liu (China)"
+    limitation: >
+      The abstract omits cell lines, radiation dose and concentration; all three must be
+      confirmed from the full text before use
+    counts_for_score: true
+
+  - evidence_id: QUE-02
+    compound_id: quercetin
+    evidence_level: L3_radiation
+    process_category: proliferation
+    citation: >
+      Lagerweij T, Hiddingh L, Biesmans D, Crommentuijn MH, Cloos J, Li XN, Kogiso M,
+      Tannous BA, Vandertop WP, Noske DP, Kaspers GJ, Wurdinger T, Hulleman E. A chemical
+      screen for medulloblastoma identifies quercetin as a putative radiosensitizer.
+      Oncotarget 2016;7(24):35776-35788.
+    doi: "10.18632/oncotarget.7980"
+    pmid: "26967057"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: >
+      DAOY, D283-med and D458-med medulloblastoma versus neural precursor cells and normal
+      human fibroblasts; orthotopic xenograft mice
+    tissue_class: both
+    species: human
+    radiation_type: "Ionising radiation (fractionated schedules)"
+    radiation_dose_gy: "NOT STATED"
+    concentration: "Low micromolar; exact value NOT STATED"
+    exposure_timing: "In vivo given at the time of irradiation"
+    endpoints: >
+      960-compound radiosensitisation screen; proliferation; animal survival
+      (significantly prolonged)
+    genes_measured: []
+    direction: radiosensitisation_tumour
+    research_group: "Hulleman / Wurdinger (Amsterdam)"
+    limitation: >
+      Screen-level result with no mechanism and no quantified doses in the abstract; the
+      normal-cell arm reported no effect on proliferation
+    counts_for_score: true
+    notes: >
+      Methodologically the closest analogue of the differential normal-versus-tumour
+      comparison the Moringa manuscript attempted.
+
+  - evidence_id: QUE-03
+    compound_id: quercetin
+    evidence_level: L3_radiation
+    process_category: dna_damage
+    citation: >
+      Devipriya N, Sudheer AR, Srinivasan M, Menon VP. Quercetin ameliorates gamma
+      radiation-induced DNA damage and biochemical changes in human peripheral blood
+      lymphocytes. Mutation Research 2008;654(1):1-7.
+    doi: "10.1016/j.mrgentox.2008.03.003"
+    pmid: "18436471"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Human peripheral blood lymphocytes and cell-free plasmid DNA"
+    tissue_class: normal
+    species: human
+    radiation_type: "Gamma"
+    radiation_dose_gy: "6 (plasmid); 4 (micronucleus); 1, 2, 3, 4 (lymphocytes)"
+    concentration: "3, 6, 12, 24, 48 micromolar; 24 micromolar optimal"
+    exposure_timing: "1 h pre-incubation (plasmid); 30 min pre-incubation (lymphocytes)"
+    endpoints: >
+      Micronucleus frequency; dicentric chromosomal aberrations; alkaline comet assay;
+      TBARS; antioxidant status
+    genes_measured: []
+    direction: radioprotection_normal
+    research_group: "Menon (Annamalai India)"
+    limitation: "No molecular readout; ex vivo lymphocytes only"
+    counts_for_score: true
+
+  - evidence_id: QUE-04
+    compound_id: quercetin
+    evidence_level: L3_radiation
+    process_category: other
+    citation: >
+      Horton JA, Li F, Chung EJ, Hudak K, White A, Krausz K, Gonzalez F, Citrin D.
+      Quercetin inhibits radiation-induced skin fibrosis. Radiation Research
+      2013;180(2):205-215.
+    doi: "10.1667/rr3237.1"
+    pmid: "23819596"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: >
+      Female C3H/HeN mice (skin), human and murine fibroblasts, and murine tumours
+    tissue_class: both
+    species: "mouse; human cells"
+    radiation_type: "X-rays"
+    radiation_dose_gy: "35 (right hind leg)"
+    concentration: "1% quercetin by weight in chow (continuous); start and duration NOT STATED"
+    exposure_timing: "Dietary, continuous"
+    endpoints: >
+      Hind-leg extension; soluble collagen; tissue cytokines; clonogenic assays; collagen
+      contraction; western blot
+    genes_measured: ["TGFB1", "CFL1"]
+    direction: radioprotection_normal
+    research_group: "Citrin (NCI)"
+    limitation: >
+      Dietary dosing with unquantified plasma exposure; late-fibrosis endpoint rather than
+      clonogenic radiosensitivity
+    counts_for_score: true
+    notes: >
+      The abstract reports no effect on fibroblast or murine tumour radioresponse, so this
+      is normal-tissue mitigation WITHOUT tumour protection: the pattern a selective agent
+      would need, and a model for how such a claim must be worded.
+
+  - evidence_id: KAE-01
+    compound_id: kaempferol
+    evidence_level: L3_radiation
+    process_category: cell_cycle
+    citation: >
+      Kuo WT, Tsai YC, Wu HC, Ho YJ, Chen YS, Yao CH, Yao CH. Radiosensitization of
+      non-small cell lung cancer by kaempferol. Oncology Reports 2015;34(5):2351-2356.
+    doi: "10.3892/or.2015.4204"
+    pmid: "26323894"
+    doi_verified_via: crossref
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: >
+      A-549 human non-small-cell lung cancer and HFL1 normal human lung fibroblasts;
+      BALB/c nude mouse xenograft
+    tissue_class: both
+    species: human
+    radiation_type: "Ionising radiation"
+    radiation_dose_gy: "NOT STATED"
+    concentration: "NOT STATED"
+    exposure_timing: "NOT STATED"
+    endpoints: >
+      MTT; cell-cycle analysis; clonogenic assay; tumour volume; haematoxylin and eosin;
+      immunohistochemistry; western blot
+    genes_measured: []
+    direction: radiosensitisation_tumour
+    research_group: "Yao (Taiwan)"
+    limitation: >
+      Quantitative dosing absent from the abstract; the abstract names pathways
+      (PI3K/AKT, ERK, mitochondrial apoptosis) but no individual proteins, so no gene
+      symbols are recorded; single tumour line. The normal HFL1 arm reported no growth effect
+    counts_for_score: true
+
+  - evidence_id: KAE-02
+    compound_id: kaempferol
+    evidence_level: L3_radiation
+    process_category: apoptosis
+    citation: >
+      Wang J, Li T, Feng J, Li L, Wang R, Cheng H, Yuan Y. Kaempferol protects against
+      gamma radiation-induced mortality and damage by inhibiting oxidative stress and
+      modulating apoptotic molecules in vivo and in vitro. Environmental Toxicology and
+      Pharmacology 2018;60:128-137.
+    doi: "10.1016/j.etap.2018.04.014"
+    pmid: "29705372"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "Male C57BL/6 mice and human umbilical vein endothelial cells (HUVECs)"
+    tissue_class: normal
+    species: "mouse; human cells"
+    radiation_type: "Gamma"
+    radiation_dose_gy: "8.5 total body (30-day survival); 7 total body (day-7 tissue); in vitro NOT STATED"
+    concentration: "NOT STATED"
+    exposure_timing: "Pretreatment"
+    endpoints: >
+      30-day survival; tissue morphology and damage; oxidative stress; apoptosis; HUVEC
+      viability and apoptosis
+    genes_measured: ["PRDX5", "CYCS", "CASP9", "CASP3"]
+    direction: radioprotection_normal
+    research_group: "Yuan (China)"
+    limitation: >
+      Kaempferol dose not reported in the abstract; no tumour arm, so selectivity is
+      untested
+    counts_for_score: true
+
+  - evidence_id: BIT-01
+    compound_id: benzyl_isothiocyanate
+    evidence_level: L3_radiation
+    process_category: cell_cycle
+    citation: >
+      Sahu RP, Epperly MW, Srivastava SK. Benzyl isothiocyanate sensitizes human
+      pancreatic cancer cells to radiation therapy. Frontiers in Bioscience (Elite
+      Edition) 2009;1:568-576.
+    doi: "10.2741/e55"
+    pmid: "19482673"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "BxPC-3 human pancreatic cancer"
+    tissue_class: tumour
+    species: human
+    radiation_type: "Gamma"
+    radiation_dose_gy: "5"
+    concentration: "2.5 micromolar"
+    exposure_timing: "24 h before irradiation"
+    endpoints: >
+      Cell survival; G2/M arrest; apoptosis at 24 and 48 h (2.8-fold increase with the
+      combination at 48 h)
+    genes_measured: ["ATR", "CHEK2", "CDC25C", "CDK1", "CDKN1A", "NFKB1", "MAPK14"]
+    direction: radiosensitisation_tumour
+    research_group: "Srivastava (Pittsburgh / Texas Tech)"
+    limitation: "Single cell line; no normal-cell comparator in the abstract"
+    counts_for_score: true
+    notes: >
+      The mechanistically most detailed radiation study of any isothiocyanate here, and the
+      basis of the chemical-class analogy to moringin discussed in the report. It is NOT
+      evidence about moringin, and benzyl isothiocyanate is not a documented seed or leaf
+      constituent.
+
+  - evidence_id: BIT-02
+    compound_id: benzyl_isothiocyanate
+    evidence_level: L3_radiation
+    process_category: apoptosis
+    citation: >
+      Ohara M, Kimura S, Tanaka A, Ohnishi K, Okayasu R, Kubota N. Benzyl isothiocyanate
+      sensitizes human pancreatic cancer cells to radiation by inducing apoptosis.
+      International Journal of Molecular Medicine 2011;28(6):1043-1047.
+    doi: "10.3892/ijmm.2011.770"
+    pmid: "21833466"
+    doi_verified_via: europepmc
+    reading_depth: abstract
+    is_review: false
+    purified_compound: true
+    model_system: "PANC-1 and MIAPaCa-2 human pancreatic cancer"
+    tissue_class: tumour
+    species: human
+    radiation_type: "X-rays"
+    radiation_dose_gy: "NOT STATED"
+    concentration: "5-10 micromolar (PANC-1); 2.5-5 micromolar (MIAPaCa-2)"
+    exposure_timing: "24 h"
+    endpoints: "Clonogenic assay; DAPI apoptosis scoring; western blot"
+    genes_measured: ["XIAP", "APAF1"]
+    direction: radiosensitisation_tumour
+    research_group: "Kubota / Okayasu (Hiroshima / NIRS)"
+    limitation: "Radiation dose absent from the abstract; no normal-cell comparator"
+    counts_for_score: true
+    notes: >
+      Independent of BIT-01 and concordant in direction and tumour type: the most
+      convergent signal in this evidence base.

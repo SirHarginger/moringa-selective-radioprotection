@@ -10,16 +10,20 @@ licence: "CC-BY-4.0"
 licence_url: "https://www.gsea-msigdb.org/gsea/msigdb_license_terms.jsp"
 licence_note: "Additional terms apply only to KEGG, KEGG MEDICUS, BioCarta and ST_ gene sets (C2/M2); none to H."
 redistribution_allowed: true      # with attribution
-access_date: null                 # set from results/logs/phase_01/acquisition_log.tsv
-retrieved_by: null
-retrieval_method: scripted        # python scripts/acquire_data.py
-provenance_status: unverified
+access_date: "2026-10-21"         # local file mtime 2026-10-21 19:32 UTC
+retrieved_by: investigator
+retrieval_method: manual          # no acquisition-log entry and no SHA256SUMS in the folder
+provenance_status: local_hash_recorded_source_match_pending
+# Verified by Claude Code 2026-10-21 (D04.01): 50 lines, 50 unique HALLMARK_ set names,
+# standard GMT layout (name, MSigDB URL, symbols). Source identity is confirmed only when
+# the investigator's check (README §4) shows the official URL yields the same SHA-256.
 files:
   - path: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
     file_url: "https://data.broadinstitute.org/gsea-msigdb/msigdb/release/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt"
     published_md5: null           # none published; observed SHA-256 recorded after download
     listed_size: "48K"            # directory listing, approximate
-    sha256: null
+    sha256: f22066af72e215ccb7b89d88e492c07e1eef17534c2ca7b0f9902cfecbbdd8e9
+    size_bytes: 48689
     format: gmt
     notes: "50 Hallmark sets; HGNC symbols, mapped to DepMap 'SYMBOL (Entrez)' columns by symbol."
 endpoint:

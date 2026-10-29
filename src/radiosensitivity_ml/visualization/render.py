@@ -21,6 +21,7 @@ import pandas as pd
 from radiosensitivity_ml.config import config_sha256
 from radiosensitivity_ml.data.provenance import file_sha256
 from radiosensitivity_ml.visualization import figures as fg
+from radiosensitivity_ml.visualization import publication as pub
 
 KINDS: dict[str, Callable[..., object]] = {
     "observed_vs_predicted": fg.observed_vs_predicted,
@@ -30,6 +31,14 @@ KINDS: dict[str, Callable[..., object]] = {
     "stability_vs_null": fg.stability_vs_null,
     "cross_assay": fg.cross_assay,
     "supplementary_case_lines": fg.supplementary_case_lines,
+    # version-2 publication figures (shared style module; D04.07)
+    "observed_vs_predicted_v2": pub.observed_vs_predicted_v2,
+    "repeat_lollipop": pub.repeat_lollipop,
+    "tissue_dumbbell": pub.tissue_dumbbell,
+    "model_summary": pub.model_summary,
+    "context_lines_v2": pub.context_lines_v2,
+    "gene_set_ranking": pub.gene_set_ranking,
+    "discrepancy_errors": pub.discrepancy_errors,
 }
 INDEX_COLUMN = {"gene_set_tests.csv": 0}
 

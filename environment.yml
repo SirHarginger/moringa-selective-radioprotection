@@ -18,8 +18,20 @@ dependencies:
   - scipy
   - scikit-learn
   - matplotlib
+  - seaborn      # primary plotting interface for the report figures (D05.02);
+                 # matplotlib stays underneath for layout and file export
   - pyarrow
-  - pyyaml
+  - pyyamlcd /srv/trustora/projects/fraud-detection-ai
+
+PYTHONPATH=src .venv-validation/bin/python \
+  scripts/run_party_continuity_check.py \
+  --curated-root data/processed/curated/cash_transactions \
+  --party-key-file ~/.trustora/anomaly_party.key \
+  --start 2026-02-01 \
+  --end 2026-04-30 \
+  --focus-start 2026-04-17 \
+  --focus-end 2026-04-30 \
+  --statement "Q4 C1 continuity check; authorised by <owner>, <date>, reference <approval-id>"
   - requests     # LEGACY (prototype download scripts) - removal proposed
   - tqdm         # LEGACY (prototype progress bars) - removal proposed
   - joblib

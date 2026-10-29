@@ -1,0 +1,506 @@
+% References for the French Embassy project report.
+%
+% VERIFICATION. Every entry below was checked during preparation against the Crossref API
+% (api.crossref.org/works/<doi>) or the Europe PMC REST API, and the route is noted in the
+% `note` field of each entry together with the reading depth:
+%   [ABS] the abstract was read;  [FT] the full text was read.
+% No DOI, PMID, author list, title, year, volume or page range in this file was written
+% from memory. Entries whose dose, concentration or cell-line identity could not be read
+% from the abstract carry that gap in the project's evidence tables, not here.
+%
+% Items flagged for action before submission:
+%   - yin2022: published in a journal with a large contemporaneous retraction wave. No
+%     retraction notice was found on 2026-10-22; re-verify immediately before submission.
+%   - abedpour2022: an erratum exists (DOI 10.1016/j.heliyon.2023.e14739, PMID 37151639)
+%     and has not been read.
+%   - The retracted Giacoppo et al. 2017 moringin paper (PMID 28705212) is deliberately
+%     ABSENT from this file and is not cited anywhere.
+
+% ---------------------------------------------------------------- radiobiology background
+
+@article{puck1956,
+  author  = {Puck, Theodore T. and Marcus, Philip I.},
+  title   = {Action of {X}-rays on mammalian cells},
+  journal = {The Journal of Experimental Medicine},
+  year    = {1956},
+  volume  = {103},
+  number  = {5},
+  pages   = {653--666},
+  doi     = {10.1084/jem.103.5.653},
+  note    = {Clonogenic assay, original description. DOI verified via Crossref}
+}
+
+@article{fertil1981,
+  author  = {Fertil, Bernard and Malaise, Edmond-Philippe},
+  title   = {Inherent cellular radiosensitivity as a basic concept for human tumor radiotherapy},
+  journal = {International Journal of Radiation Oncology, Biology, Physics},
+  year    = {1981},
+  volume  = {7},
+  pages   = {621--629},
+  doi     = {10.1016/0360-3016(81)90377-1},
+  note    = {DOI, title, volume and pages verified via Crossref}
+}
+
+@article{west1993,
+  author  = {West, Catharine M. L. and Davidson, Susan E. and Roberts, Stephen A. and Hunter, Robin D.},
+  title   = {Intrinsic radiosensitivity and prediction of patient response to radiotherapy for carcinoma of the cervix},
+  journal = {British Journal of Cancer},
+  year    = {1993},
+  volume  = {68},
+  pages   = {819--823},
+  doi     = {10.1038/bjc.1993.434},
+  note    = {DOI, authors, volume and pages verified via Crossref}
+}
+
+@article{oike2020,
+  author  = {Oike, Takahiro and Komatsu, Shuichiro and Komatsu, Yuka and
+             Nachankar, Ankita and Darwis, Narisa Dewi Maulany and Shibata, Atsushi and
+             Ohno, Tatsuya},
+  title   = {Reporting of methodologies used for clonogenic assays to determine
+             radiosensitivity},
+  journal = {Journal of Radiation Research},
+  year    = {2020},
+  volume  = {61},
+  number  = {6},
+  pages   = {828--831},
+  doi     = {10.1093/jrr/rraa064},
+  pmid    = {32823284},
+  note    = {Audit of 1,672 papers: 30.5\% did not report replicates, 32.3\% did not
+             report dose rate. Title, full author list, volume, issue and pages verified
+             via Crossref on 2026-10-22 (an earlier draft of this file carried a
+             paraphrased title and an incomplete author list; both are now corrected)}
+}
+
+% ------------------------------------------------- prior radiosensitivity prediction work
+
+@article{yard2016,
+  author  = {Yard, Brian D. and Adams, Drew J. and Chie, Eui Kyu and Tamayo, Pablo and
+             Battaglia, Jessica S. and Gopal, Priyanka and Rogacki, Kevin and
+             Pearson, Bradley E. and Phillips, James and Raymond, Daniel P. and
+             Pennell, Nathan A. and Almeida, Francisco and Cheah, Jaime H. and
+             Clemons, Paul A. and Shamji, Alykhan and Peacock, Craig D. and
+             Schreiber, Stuart L. and Hammerman, Peter S. and Abazeed, Mohamed E.},
+  title   = {A genetic basis for the variation in the vulnerability of cancer to {DNA} damage},
+  journal = {Nature Communications},
+  year    = {2016},
+  volume  = {7},
+  pages   = {11428},
+  doi     = {10.1038/ncomms11428},
+  pmid    = {27109210},
+  note    = {CC BY 4.0. DOI verified via Crossref; PMID and PMC4848553 via Europe PMC}
+}
+
+@article{oconnor2022,
+  author  = {O'Connor, Joseph D. and Overton, Ian M. and McMahon, Stephen J.},
+  title   = {{RadSigBench}: a framework for benchmarking functional genomics signatures of
+             cancer cell radiosensitivity},
+  journal = {Briefings in Bioinformatics},
+  year    = {2022},
+  volume  = {23},
+  number  = {2},
+  pages   = {bbab561},
+  doi     = {10.1093/bib/bbab561},
+  pmid    = {35066588},
+  note    = {Mean out-of-sample R-squared 0.01 (CCLE) and 0.00 (NCI-60); published
+             signatures performed no better than resampled random gene sets. The key
+             prior for this project. Verified via Europe PMC}
+}
+
+% ------------------------------------------------------------------------ data resources
+
+@article{clarifi2024,
+  author  = {Oike, Takahiro and Kambe, Ryosuke and
+             Darwis, Narisa Dewi Maulany and Shibata, Atsushi and Ohno, Tatsuya},
+  title   = {Establishment of cancer cell radiosensitivity database linked to
+             multi-layer omics data},
+  journal = {Cancer Science},
+  year    = {2025},
+  volume  = {116},
+  number  = {3},
+  pages   = {690--697},
+  doi     = {10.1111/cas.16334},
+  note    = {Outcome dataset (CLARIFi). Title, complete author list, volume, issue and
+             pages verified via Crossref on 2026-10-22; an earlier draft of this file
+             carried an invented title and an abbreviated author list, both now corrected.
+             Published online 2024-12-12, print issue March 2025, which is why the
+             citation key says 2024. Data DOI 10.5281/zenodo.20710748 (concept DOI
+             10.5281/zenodo.20710747). Licence CC BY-NC 4.0, confirmed from the Crossref
+             licence record and the Europe PMC full text (PMC11875790)}
+}
+
+@misc{depmap24q4,
+  author       = {{Broad Institute DepMap Consortium}},
+  title        = {{DepMap} 24{Q}4 {P}ublic},
+  year         = {2024},
+  publisher    = {Figshare+},
+  doi          = {10.25452/figshare.plus.27993248.v1},
+  note         = {Baseline expression and cell-line metadata. Licence CC BY 4.0.
+                  Per-file MD5 checksums published by the provider and verified locally}
+}
+
+@article{bairoch2018,
+  author  = {Bairoch, Amos},
+  title   = {The {C}ellosaurus, a cell-line knowledge resource},
+  journal = {Journal of Biomolecular Techniques: JBT},
+  year    = {2018},
+  number  = {2},
+  volume  = {29},
+  pages   = {25--38},
+  doi     = {10.7171/jbt.18-2902-002},
+  note    = {Release r56.0 used (archive DOI
+             10.26037/yareta:lbz6rhlaavbldmavv4k5jdaphe). Licence CC BY 4.0. Title,
+             author, journal, volume, issue and pages verified via Crossref on 2026-10-22}
+}
+
+@article{liberzon2015,
+  author  = {Liberzon, Arthur and Birger, Chet and Thorvaldsd{\'o}ttir, Helga and
+             Ghandi, Mahmoud and Mesirov, Jill P. and Tamayo, Pablo},
+  title   = {The {M}olecular {S}ignatures {D}atabase hallmark gene set collection},
+  journal = {Cell Systems},
+  year    = {2015},
+  volume  = {1},
+  pages   = {417--425},
+  doi     = {10.1016/j.cels.2015.12.004},
+  note    = {Release 2025.1.Hs used; 50 Hallmark sets, SHA-256 verified locally. Source
+             identity pending comparison with the official URL}
+}
+
+% ------------------------------------------- Moringa constituent chemistry (primary only)
+
+@article{abdelsayed2021jfda,
+  author  = {Abdelsayed, Eman M. and Abdel Motaal, Amira and Hanafi, Rasha S.},
+  title   = {Novel {UPLC}-{MS}/{MS} method for standardization of niazimicin content in
+             edible seeds and leaves of {M}oringa oleifera},
+  journal = {Journal of Food and Drug Analysis},
+  year    = {2021},
+  volume  = {29},
+  number  = {1},
+  pages   = {128--143},
+  doi     = {10.38212/2224-6614.3282},
+  pmid    = {35696224},
+  note    = {[FT] The only structurally confirmed identification of any constituent in a
+             dichloromethane (methylene chloride) fraction of Moringa seed AND leaf:
+             isolated from the seed CH2Cl2 fraction, confirmed by HRMS, UV, IR, EI-MS and
+             1D/2D NMR, quantified by validated UPLC-MS/MS. Niazirin and glucomoringin
+             were not identified. Verified via Europe PMC}
+}
+
+@article{mohdfisall2021,
+  author  = {Mohd Fisall, Ummu Fatihah and Ismail, Nor Zakiah and
+             Adebayo, Ismail Abiola and Arsad, Hasni},
+  title   = {Dichloromethane fraction of {M}oringa oleifera leaf methanolic extract
+             selectively inhibits breast cancer cells ({MCF}-7)},
+  journal = {Molecular Biology Reports},
+  year    = {2021},
+  volume  = {48},
+  number  = {5},
+  pages   = {4465--4475},
+  doi     = {10.1007/s11033-021-06466-y},
+  pmid    = {34086162},
+  note    = {[ABS] Leaf DCM fraction; GC-MS major compounds 4-hydroxybenzeneacetonitrile
+             and methyl 4-hydroxyphenylacetate. Full compound list and identification
+             criteria NOT verified (full text paywalled). Verified via Europe PMC}
+}
+
+@article{khandelwal2019,
+  author  = {Khandelwal, Shruti and Khurana, Satish M. P.},
+  title   = {Molecular docking studies and {GC}-{MS} analysis of the antimicrobial
+             compounds isolated from leaves of {M}oringa oleifera},
+  journal = {Medicinal Plants -- International Journal of Phytomedicines and Related
+             Industries},
+  year    = {2019},
+  volume  = {11},
+  number  = {1},
+  doi     = {10.5958/0975-6892.2019.00004.2},
+  note    = {[ABS via the Crossref record] Leaf DCM extract; 96 compounds reported,
+             n-hexadecanoic acid 28.35\% and cis-vaccenic acid 10.68\%. No PMID; the
+             journal is indexed in neither PubMed nor Europe PMC, and the full compound
+             list and method could not be accessed. The C18:1 isomer assignment cannot be
+             settled by library matching alone. DOI verified via Crossref}
+}
+
+% ------------------------------------- moringin biology (no ionising-radiation study exists)
+
+@article{cirmi2019,
+  author  = {Cirmi, Santa and Ferlazzo, Nadia and Gugliandolo, Agnese and
+             Musumeci, Laura and Mazzon, Emanuela and Bramanti, Alessia and
+             Navarra, Michele},
+  title   = {Moringin from {M}oringa oleifera seeds inhibits growth, arrests cell-cycle,
+             and induces apoptosis of {SH}-{SY}5{Y} human neuroblastoma cells through the
+             modulation of {NF}-{\textkappa}{B} and apoptotic related factors},
+  journal = {International Journal of Molecular Sciences},
+  year    = {2019},
+  volume  = {20},
+  number  = {8},
+  pages   = {1930},
+  doi     = {10.3390/ijms20081930},
+  pmid    = {31010127},
+  note    = {[ABS] 16.4 micromolar, 24/48/72 h; TP53, CDKN1A, BAX up, CASP3 and CASP9
+             activated, NF-kB translocation inhibited. No ionising radiation. Verified via
+             Europe PMC}
+}
+
+@article{abdkarim2023,
+  author  = {Abd Karim, Nurul Ashikin and Adam, Ahmad Hazim Bin and
+             Jaafaru, Mohammed Sani and Rukayadi, Yaya and Abdull Razis, Ahmad Faizal},
+  title   = {Apoptotic potential of glucomoringin isothiocyanate ({GMG}-{ITC}) isolated
+             from {M}oringa oleifera {L}am seeds on human prostate cancer cells ({PC}-3)},
+  journal = {Molecules},
+  year    = {2023},
+  volume  = {28},
+  number  = {7},
+  pages   = {3214},
+  doi     = {10.3390/molecules28073214},
+  pmid    = {37049977},
+  note    = {[ABS] IC50 3.5 microgram/mL; G2/M arrest; TP53, BAX, BAD, BCL2, MAPK8.
+             No ionising radiation. Verified via Europe PMC}
+}
+
+@article{gugliandolo2024,
+  author  = {Gugliandolo, Agnese and Cal{\`\i}, Giuseppe and Muscar{\`a}, Claudia and
+             Artimagnella, Osvaldo and Rollin, Patrick and Perenzoni, Daniele and
+             Iori, Renato and Mazzon, Emanuela and Chiricosta, Luigi},
+  title   = {{\textalpha}-{C}yclodextrin/moringin induces an antioxidant transcriptional
+             response activating {N}rf2 in differentiated {NSC}-34 motor neurons},
+  journal = {Antioxidants},
+  year    = {2024},
+  volume  = {13},
+  number  = {7},
+  pages   = {813},
+  doi     = {10.3390/antiox13070813},
+  pmid    = {39061882},
+  note    = {[ABS] 0.5--10 micromolar as a cyclodextrin complex, 48/96 h; NFE2L2 up,
+             BAX and cleaved CASP9/CASP3 lowest at 10 micromolar. No ionising radiation.
+             Verified via Europe PMC}
+}
+
+@article{brunelli2010,
+  author  = {Brunelli, Davide and Tavecchio, Michele and Falcioni, Caterina and
+             Frapolli, Roberta and Erba, Eugenio and Iori, Renato and Rollin, Patrick and
+             Barillari, Jessica and Manzotti, Claudio and Morazzoni, Paolo and
+             D'Incalci, Maurizio},
+  title   = {The isothiocyanate produced from glucomoringin inhibits {NF}-{\textkappa}{B}
+             and reduces myeloma growth in nude mice in vivo},
+  journal = {Biochemical Pharmacology},
+  year    = {2010},
+  volume  = {79},
+  number  = {8},
+  pages   = {1141--1148},
+  doi     = {10.1016/j.bcp.2009.12.008},
+  pmid    = {20006591},
+  note    = {[ABS] Active in the micromolar range (exact doses not stated); NF-kB
+             inhibited, GSTP1 activity raised about 3-fold in MCF7. No ionising radiation.
+             Verified via Europe PMC}
+}
+
+% ------------------------------------------- compound radiation biology (primary, purified)
+
+@article{li2007,
+  author  = {Li, Chun-Rong and Zhou, Zhen and Lin, Rui-Xue and Zhu, Dan and
+             Sun, Yan-Nan and Tian, Lan-Lan and Li, Lei and Gao, Yue and Wang, Shu-Qian},
+  title   = {{\textbeta}-{S}itosterol decreases irradiation-induced thymocyte early damage
+             by regulation of the intracellular redox balance and maintenance of
+             mitochondrial membrane stability},
+  journal = {Journal of Cellular Biochemistry},
+  year    = {2007},
+  volume  = {102},
+  number  = {3},
+  pages   = {748--758},
+  doi     = {10.1002/jcb.21326},
+  pmid    = {17427947},
+  note    = {[ABS] 6 Gy; radioprotection of normal thymocytes; CYCS, AIFM1, CASP3, PARP1,
+             MAPK8, JUN/FOS. Concentration not stated; radiation modality ambiguous
+             ("ion irradiation") and must be confirmed from the full text. Verified via
+             Europe PMC}
+}
+
+@article{elbakary2026,
+  author  = {El Bakary, Nermeen M. and Thabet, Noura M. and Rashed, Laila A. and
+             Azab, Khaled Sh. and Helal, Hany and Maarouf, Rasha E. and
+             Abdel-Rafei, Mohamed K.},
+  title   = {Beta-sitosterol alleviates inflammatory culprits and disease severity in
+             arthritic irradiated rats: role of the brain--spleen axis},
+  journal = {Immunopharmacology and Immunotoxicology},
+  year    = {2026},
+  volume  = {48},
+  number  = {1},
+  pages   = {11--33},
+  doi     = {10.1080/08923973.2025.2591423},
+  pmid    = {41292280},
+  note    = {[ABS] Gamma 2 Gy weekly x 4 (8 Gy total); 40 mg/kg/day oral; APLN, APLNR and
+             NFE2L2 pathways reported. Same group as thabet2018, so rutin and
+             beta-sitosterol evidence partly share a source. Verified via Europe PMC}
+}
+
+@article{horton2013,
+  author  = {Horton, Jason A. and Li, Fei and Chung, Eun Joo and Hudak, Kathryn and
+             White, Ayla and Krausz, Kristopher and Gonzalez, Frank and Citrin, Deborah},
+  title   = {Quercetin inhibits radiation-induced skin fibrosis},
+  journal = {Radiation Research},
+  year    = {2013},
+  volume  = {180},
+  number  = {2},
+  pages   = {205--215},
+  doi     = {10.1667/rr3237.1},
+  pmid    = {23819596},
+  note    = {[ABS] X-rays 35 Gy; 1\% quercetin in chow; TGFB1, CFL1. Reports
+             normal-tissue anti-fibrotic protection WITH NO effect on fibroblast or murine
+             tumour radioresponse: the best published model of how a selectivity claim must
+             be worded. Cited here as a methodological exemplar only; quercetin itself is
+             NOT a verified Moringa seed or leaf constituent. Verified via Europe PMC}
+}
+
+@article{patil2017,
+  author  = {Patil, Shrinivas L. and Swaroop, K. and Kakde, Nagesh and
+             Somashekarappa, H. M.},
+  title   = {In vitro protective effect of rutin and quercetin against radiation-induced
+             genetic damage in human lymphocytes},
+  journal = {Indian Journal of Nuclear Medicine},
+  year    = {2017},
+  volume  = {32},
+  number  = {4},
+  pages   = {289--295},
+  doi     = {10.4103/ijnm.ijnm_30_17},
+  pmid    = {29142345},
+  note    = {[ABS] Gamma 2 Gy; 25 microgram/mL; comet and micronucleus assays;
+             radioprotection of normal human lymphocytes. Verified via Europe PMC}
+}
+
+@article{thabet2018,
+  author  = {Thabet, Noura M. and Moustafa, Enas M.},
+  title   = {Protective effect of rutin against brain injury induced by acrylamide or
+             gamma radiation: role of the {PI}3{K}/{AKT}/{GSK}-3{\textbeta}/{NRF}-2
+             signalling pathway},
+  journal = {Archives of Physiology and Biochemistry},
+  year    = {2018},
+  volume  = {124},
+  number  = {2},
+  pages   = {185--193},
+  doi     = {10.1080/13813455.2017.1374978},
+  pmid    = {28906145},
+  note    = {[ABS] Gamma 5 Gy; 200 mg/kg/day oral; NFE2L2, AKT1, GSK3B, IL1B, IL6, IGF1,
+             NGF. Same group as elbakary2026. Verified via Europe PMC}
+}
+
+@article{felemovicius1995,
+  author  = {Felemovicius, Isidoro and Bonsack, Mark E. and Baptista, Marcia L. and
+             Delaney, John P.},
+  title   = {Intestinal radioprotection by vitamin {E} ({\textalpha}-tocopherol)},
+  journal = {Annals of Surgery},
+  year    = {1995},
+  volume  = {222},
+  number  = {4},
+  pages   = {504--508},
+  doi     = {10.1097/00000658-199522240-00008},
+  pmid    = {7574930},
+  note    = {[ABS] X-rays 11 Gy (1100 cGy); crypt microcolony clonogenic assay;
+             radioprotection of normal rat intestine. Esterified forms; concentrations not
+             stated. One of only two items in this project's evidence base with a
+             clonogenic radiation endpoint. Verified via Europe PMC}
+}
+
+@article{ferreira2004,
+  author  = {Ferreira, Paulo Roberto and Fleck, Jos{\'e} Francisco and Diehl, Adriane and
+             Barletta, David and Braga-Filho, Aroldo and Barletta, Ariane and Ilha, Lier},
+  title   = {Protective effect of alpha-tocopherol in head and neck cancer
+             radiation-induced mucositis: a double-blind randomized trial},
+  journal = {Head and Neck},
+  year    = {2004},
+  volume  = {26},
+  number  = {4},
+  pages   = {313--321},
+  doi     = {10.1002/hed.10382},
+  pmid    = {15054734},
+  note    = {[ABS] n = 54; 2 Gy fractions over 5--7 weeks; mucositis 21.6\% vs 33.5\%
+             placebo, p = 0.038. Topical rinse, so local exposure only; says nothing about
+             whether the tumour was also protected. Verified via Europe PMC}
+}
+
+@article{abraham1993,
+  author  = {Abraham, S. K. and Sarma, L. and Kesavan, P. C.},
+  title   = {Protective effects of chlorogenic acid, curcumin and beta-carotene against
+             gamma-radiation-induced in vivo chromosomal damage},
+  journal = {Mutation Research},
+  year    = {1993},
+  volume  = {303},
+  number  = {3},
+  pages   = {109--112},
+  doi     = {10.1016/0165-7992(93)90022-n},
+  pmid    = {7694126},
+  note    = {[ABS] Gamma 1.15 Gy at 0.05 Gy/s; oral 50--200 mg/kg; micronucleated
+             polychromatic erythrocytes; radioprotection of normal mouse bone marrow.
+             Verified via Europe PMC}
+}
+
+@article{abedpour2022,
+  author  = {Abedpour, Neda and Zeinali, Arash and Karimipour, Mojtaba and
+             Pourheidar, Bagher and Farjah, Gholam Hossein and Abak, Atefe and
+             Shoorei, Hamed},
+  title   = {Protective effects of chlorogenic acid against ionizing radiation-induced
+             testicular toxicity},
+  journal = {Heliyon},
+  year    = {2022},
+  volume  = {8},
+  number  = {10},
+  pages   = {e10798},
+  doi     = {10.1016/j.heliyon.2022.e10798},
+  pmid    = {36212000},
+  note    = {[ABS] 2.0 Gy total body; 5--80 mg/kg i.p.; BAX, BCL2; radioprotection of
+             normal mouse testis. AN ERRATUM EXISTS (DOI 10.1016/j.heliyon.2023.e14739,
+             PMID 37151639) and has NOT been read. Verified via Europe PMC}
+}
+
+@article{yin2022,
+  author  = {Yin, Xin and He, Xia and Wu, Lin and Yan, Dong and Yan, Senxiang},
+  title   = {Chlorogenic acid, the main antioxidant in coffee, reduces radiation-induced
+             apoptosis and {DNA} damage via {NF}-{E}2-related factor 2 ({N}rf2)
+             activation in hepatocellular carcinoma},
+  journal = {Oxidative Medicine and Cellular Longevity},
+  year    = {2022},
+  volume  = {2022},
+  pages   = {4566949},
+  doi     = {10.1155/2022/4566949},
+  pmid    = {35958020},
+  note    = {[ABS] LIABILITY EVIDENCE: radioprotection of TUMOUR cells via NFE2L2; the
+             authors conclude it could hinder radiotherapy. Must never be pooled with the
+             normal-tissue chlorogenic-acid studies. Cell lines, radiation dose and
+             concentration all absent from the abstract. DOI verified via Crossref AND
+             Europe PMC; no retraction notice found on 2026-10-22, but the journal's
+             context is a quality caveat and the status must be re-checked before
+             submission}
+}
+
+@article{saito2012,
+  author  = {Saito, Samuel and Silva, Givaldo and Santos, Regineide Xavier and
+             Gosmann, Grace and Pungartnik, Cristina and Brendel, Martin},
+  title   = {Astragalin from {C}assia alata induces {DNA} adducts in vitro and repairable
+             {DNA} damage in the yeast {S}accharomyces cerevisiae},
+  journal = {International Journal of Molecular Sciences},
+  year    = {2012},
+  volume  = {13},
+  number  = {3},
+  pages   = {2846--2862},
+  doi     = {10.3390/ijms13032846},
+  pmid    = {22489129},
+  note    = {[ABS] LIABILITY EVIDENCE: pro-genotoxic (DNA adducts, repairable DNA damage).
+             Yeast and cell-free systems only; no mammalian system and no ionising
+             radiation. Verified via Europe PMC; complete author list, volume, issue and
+             pages verified via Crossref on 2026-10-22}
+}
+
+@article{george1983,
+  author  = {George, A. M. and Lunec, J. and Cramp, W. A.},
+  title   = {Effect of membrane fatty acid changes on the radiation sensitivity of human
+             lymphoid cells},
+  journal = {International Journal of Radiation Biology and Related Studies in Physics,
+             Chemistry and Medicine},
+  year    = {1983},
+  volume  = {43},
+  number  = {4},
+  pages   = {363--378},
+  doi     = {10.1080/09553008314550431},
+  pmid    = {6601634},
+  note    = {[ABS] INFORMATIVE NEGATIVE: membrane oleate enrichment did not alter
+             clonogenic survival after irradiation. Doses and concentrations not stated.
+             Verified via Europe PMC}
+}

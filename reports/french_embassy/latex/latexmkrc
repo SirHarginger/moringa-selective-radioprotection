@@ -1,0 +1,7 @@
+# latexmk configuration for main.tex (used by build.sh; run from this folder).
+$pdf_mode = 4;    # LuaLaTeX
+$lualatex = 'lualatex -interaction=nonstopmode -halt-on-error -file-line-error %O %S';
+$out_dir = 'build';
+$aux_dir = 'build';
+$bibtex_use = 2;  # run biber whenever the bibliography needs it
+$max_repeat = 8;  # enough passes for TOC widths, longtables and remember-picture

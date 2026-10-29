@@ -86,7 +86,7 @@ The rest of this section is kept for the record. **The δ text below is supersed
 | Option | Confirmatory test | What may be claimed | Requirements |
 |---|---|---|---|
 | **A: δ-anchored** (complies with O01.13 as ruled) | H0: ΔMAE ≤ δ vs H1: ΔMAE > δ; gate G-pred = LB > δ | "Meaningful improvement" if LB > δ | Before the freeze, the investigator supplies the cited formula: δ from A4 (ΔSF2 through fractionation), checked to be at least A1 (replicate noise), with no CLARIFi outcome summary used. Dated and signed |
-| **B: estimation-focused** (needs a **new dated ruling reversing** the O01.13 withdrawal) | H0: ΔMAE ≤ 0 vs H1: ΔMAE > 0; gate G-pred = LB > 0 | "Evidence of an out-of-sample gain" of the estimated size, with its interval and relative size ΔMAE/MAE(B1). **No claim that it is biologically meaningful.** The literature measurement-noise benchmark is reported descriptively only | An absolute precision criterion for G-n (CI half-width in SF2 units), taken from the literature only |
+| **B: estimation-focused** (needs a **new dated ruling reversing** the O01.13 withdrawal) | H0: ΔMAE ≤ 0 vs H1: ΔMAE > 0; gate G-pred = LB > 0 | "Evidence of an out-of-sample gain" of the estimated size, with its interval and relative size ΔMAE/MAE(B1). **No claim that it is biologically meaningful.** The literature measurement-noise benchmark is reported descriptively only | An interval method adopted by the §13 simulation; precision (G-n) is reported descriptively (D04.02) |
 
 **Reporting categories under Option A** (mutually exclusive; two-sided 90% CI):
 
@@ -316,15 +316,19 @@ The component bootstrap is **descriptive only** and cannot be adopted.
     - the map from X\* to the signal (scorer, score standardisation, signal scale) is fitted once on a reference synthetic sample and then fixed, so the truth and every replicate share one data-generating mechanism;
     - y is then back-transformed to (0, 1).
   - **No input is a summary of real CLARIFi outcomes.**
-  - **Label noise, bracketed in two levels:**
-    - low: within-lab replicate noise (A1; cited CV);
-    - high: cross-lab noise consistent with the published mSF2-to-in-house agreement (r = 0.50). That agreement is used as a reliability, i.e. a share of variance, never as an SD in CLARIFi units.
-    - **[OPEN]**: the inputs are verified before the freeze.
-  - **Scenarios:**
-    - tissue-variance share: low or high;
-    - expression effect, Option A: {0, 0.5δ, δ, 2δ};
-    - expression effect, Option B: k ∈ {0, 0.25, 0.5} × the noise SD (`effect_k`; expression variance weight = k² × noise weight; all four variance weights are then normalised to sum to 1);
-    - implemented as nine scenarios: three backgrounds (low tissue / high noise, high tissue / high noise, high tissue / low noise) × three values of k (`configs/simulation.yaml`).
+  - **Parameter status (decided D04.02; statistical review).** All values are on the logit scale and are unnormalised *weights*; `Scenario.shares()` normalises them, and the realised shares are written to `operating_characteristics.csv`.
+
+    | Parameter | Values | Status |
+    |---|---|---|
+    | High-noise weight | 0.50 | **Literature-motivated anchor.** Oike 2025 (*Cancer Sci* 116:690, DOI 10.1111/cas.16334): mSF2 vs in-house SF2 r = 0.50 (n = 23). Under a parallel-measures assumption, r = 0.50 implies label reliability ≈ 0.5. Not a measured value: imprecise (n = 23; 95% interval for r ≈ 0.11–0.76), on the SF2 rather than the logit scale, and may understate noise if the in-house SF2 is more reliable. Realised noise shares ≈ 0.56–0.71 |
+    | Low-noise weight | 0.20 | **Synthetic stress test.** Motivated by within-lab and inter-study SF2 CV < 30% (Nuryadi 2018, PMID 29568388; Matsui 2019, PMID 31450688), which is an upper bound and not convertible to a variance share without an SF2 level (never taken from CLARIFi). Realised noise shares ≈ 0.31–0.33 |
+    | Tissue weight | 0.15 / 0.35 | Synthetic stress test: low vs high tissue confounding |
+    | Component weight | 0.05 | Synthetic design choice (only 4 related pairs) |
+    | `effect_k` | 0 / 0.25 / 0.5 | Synthetic stress test: null, weak and moderate expression signal relative to noise; **not** calibrated on real mSF2–expression associations |
+    | `logit_mean`, `logit_sd` | −0.2, 1.0 | Synthetic design values (median SF2 ≈ 0.45; broad spread); no CLARIFi outcome summary used. `expit` never yields 0 or 1, so they do not probe the boundary rule; no extra scenario is added |
+
+    - Nine scenarios: three backgrounds (low tissue / high noise, high tissue / high noise, high tissue / low noise) × three values of k (`configs/simulation.yaml`).
+    - Expression effect under Option A ({0, 0.5δ, δ, 2δ}) is not used (Option B ruling).
 
 - **Estimand truth:** for each scenario, the Monte Carlo mean over ≥ 200 fresh training sets of size ≈ 0.8 × n drawn from the generator, each scored on 10,000 fresh test records. Test records are real (lineage, primary disease) pairs drawn with probability 1/|component|, each its own component. The Monte Carlo SE of the truth is recorded.
 
@@ -338,26 +342,39 @@ The component bootstrap is **descriptive only** and cannot be adopted.
   - mean width;
   - bias.
 
-- **Nsim:** 500 per scenario (Monte Carlo SE of coverage ≈ 0.0097).
+- **Nsim:** 500 per scenario (Monte Carlo SE of coverage ≈ 0.0097; coverage floor ≈ 0.931). Allowed fallback under the budget rule: 250 (MCSE ≈ 0.0138; floor ≈ 0.922). The thresholds are recomputed from nsim automatically.
 
-- **Adoption rule (mechanical):**
-  1. A candidate qualifies if, in **every** scenario, its one-sided coverage ≥ 0.95 − 2 × MCSE (≈ 0.93) and its false-positive rate ≤ 0.05 + 2 × MCSE.
+- **Adoption rule (mechanical; nominal level: one-sided 95% lower bound = two-sided 90% interval):**
+  1. A candidate qualifies if, in **every** one of the 9 scenarios, its one-sided coverage ≥ 0.95 − 2 × MCSE(0.95, nsim), and, in **every** null scenario (3), its false-positive rate (LB > 0) ≤ 0.05 + 2 × MCSE(0.05, nsim), and non-finite bounds occur in ≤ 1% of replicates of every scenario.
   2. Among qualifiers, adopt the one with the smallest mean width.
-  3. If none qualifies, G-pred is "not assessable" and the results are reported descriptively.
+  3. If none qualifies, G-pred is "not assessable". The primary result is still reported descriptively: the estimate, its per-repeat spread, and all candidate intervals labelled as not validated.
+  - *Properties, stated in advance:* the 12 checks at 2 × MCSE each fail about 2.3% of the time, so a perfectly calibrated method is rejected about 25% of the time; the tolerance accepts a true coverage of about 0.93. Strictness is acceptable because failure leads to descriptive reporting, not to a different claim.
+  - *Truth precision:* coverage uses the Monte Carlo truth. If `truth_mcse` > 0.1 × the SD of the replicate estimates, the scenario is flagged and coverage at truth ± 2 × `truth_mcse` is reported; the rule itself is unchanged.
+  - Coverage counts a non-finite lower bound as non-coverage.
 
 - **R rule:** the smallest R in {10, 20, 50} for which the simulated SD of ΔMAE between repeats (largest scenario mean), divided by √R, is ≤ 10% of the adopted interval's mean half-width.
   - If no R qualifies, the decision records `R_rule_not_met` and R is an investigator decision (an amendment); it is never defaulted silently.
-  - Coverage is simulated at R = 10. If the adopted R differs, the decision records `recheck_required`, and coverage is re-checked at that R before the real run.
+  - Coverage is simulated at R = 10. If the adopted R differs, the decision records `recheck_required`, and coverage is re-checked at that R before the real run: the same simulation config with `repeats: R` and `run_id: coverage_v1_r<R>`. The re-check passes only if it adopts the same method with `recheck_required: false`; its `decision.json` then becomes the decision file. Otherwise the outcome is "not assessable". There is no fallback to R = 10.
   - The real run's config must name the decision file and its SHA-256; evaluation refuses to give a verdict if the method or R differ from it.
 
-- **Compute budget:** **[OPEN]**. Investigator estimate needed; I2 with full inner tuning is costly. Fallback, fixed now: if I2 cannot be completed within budget, it is dropped from the candidates and the rule is applied to I1 and I3.
+- **Compute budget rule (fixed before the pilot; uses runtime only):**
+  1. Before the pilot, the investigator records the available compute budget H (hours) in the decision log.
+  2. The pilot (`--pilot`: 2 replicates per scenario, 2 truth sets) runs on the same hardware, thread settings and worker count W as the full run. It writes only `runtime.json` (mean seconds per replicate t_rep and per truth set t_truth, each measured in one worker process; W; wall-clock seconds; effective parallelism E = summed task seconds / wall-clock seconds) and no operating characteristics; nothing about method performance is inspected.
+     - *Units (D04.05):* H is recorded with its unit before the pilot. If H is in CPU-hours, costs use t_rep and t_truth as written. If H is in wall-clock hours at W workers, every cost below is divided by E measured at that W. The two units are never mixed.
+  3. Costs are spent in a fixed order, each step requiring 1.25 × estimated time ≤ remaining budget:
+     a. simulation: 9 × (nsim × t_rep + 200 × t_truth) with nsim = 500, else 250; if 250 does not fit, interval selection is declared "not assessable" before any full run;
+     b. a possible re-check at the adopted R: about (R / 10) × the step-a cost, same nsim; if unaffordable, "not assessable";
+     c. the real primary run (5 × R tasks per model) plus explainability;
+     d. negative controls: per draw, upper bound t_rep / 10 for each control type; P = B = 1999 if affordable, else 1000, else 0 and G-stab declared infeasible in advance.
+  4. No early stopping on results: every scenario runs its full nsim.
+  - Bates (I2) is not implemented and is not a candidate (D03.02); the rule applies to I1 and I3.
 
 ## 14. Gates and stopping rules
 
 | Gate | Condition | If it fails |
 |---|---|---|
 | G-ID | Frozen QC on a clean commit; reviews resolved | Stop before splits |
-| G-n | Simulated CI half-width ≤ a stated fraction of δ (Option A), or ≤ an absolute SF2 precision from the literature (Option B) **[OPEN]** | Report as an estimation-only benchmark without a confirmatory claim |
+| G-n | **Descriptive (Option B; D04.02):** the simulated mean half-width per scenario and the realised half-width are reported. Not a gate; never used to decide whether a claim is made. No literature-derived absolute precision criterion exists (the A1 CV cannot be converted to SF2 units without a CLARIFi-derived SF2 level, which is forbidden) | — |
 | G-pred | LB > 0 (Option B) under the interval adopted by the §13 rule | "No gain shown", or descriptive only if no method is adopted; explanation limited to aggregate stability |
 | G-stab | Per gene set, a permutation p-value with +1 correction against both nulls, BH at q = 0.05 (§15). P and B are large enough to reach the smallest BH threshold | No attribution statements |
 
@@ -491,16 +508,22 @@ Pathway relevance to future Moringa experiments is discussed only as a hypothesi
 |---|---|
 | δ option | **Decided: B** (D03.01) |
 | α | **Decided:** one-sided 0.05, reported as two-sided 90% intervals |
-| G-n precision criterion | **[OPEN]**: an absolute CI half-width in SF2 units, from the literature only. Otherwise G-n is reported descriptively |
+| G-n precision criterion | **Decided (proposed D04.02):** descriptive only (§14) |
+| Interval acceptance rule | **Decided:** §13 adoption rule (coverage floor, FPR ceiling, ≤ 1% non-finite, smallest width; none → not assessable, descriptive reporting) |
 | Boundary rule; clip rule | **Decided:** (E) exclusion on transformed scales; predictions clipped on the raw scale |
-| Hallmark release and licence | **Decided:** v2025.1.Hs symbols GMT, CC BY 4.0. GMT SHA-256 to record after download **[OPEN]** |
+| Hallmark release and licence | **Decided:** v2025.1.Hs symbols GMT, CC BY 4.0. Local SHA-256 `f22066af…bdd8e9` pinned (D04.01). **Investigator:** confirm it equals the official file (README §4) |
 | Grids | **Decided:** `configs/experiment.yaml` |
 | BH q | **Decided:** 0.05 |
-| P and B | **[OPEN]** after the runtime pilot (minimum 1000; recommended 1999) |
-| Compute budget | **[OPEN]** after the runtime pilot |
+| Simulation scenario values | **Decided (D04.02):** one literature-motivated anchor (high noise) and declared synthetic stress-test values (§13 table) |
+| Compute budget rule | **Decided (D04.02):** §13 budget rule. **Investigator:** record budget H (hours) before the pilot |
+| P and B; nsim fallback | **[PILOT]** set mechanically by the §13 budget rule (P = B ∈ {1999, 1000, 0}; nsim ∈ {500, 250}) |
 | Fitting weights | **Decided:** 1/\|component\| |
-| Simulation scenario values (`logit_mean`, `logit_sd`, noise shares) | **[OPEN]**: confirm the literature sources |
-| QC re-run on a clean commit; hashes recorded | **[OPEN]** |
-| Triage thresholds (`configs/triage.yaml`, §21) | **[OPEN]**: confirm or amend before the freeze; fixed afterwards |
-| Specialist sign-off; investigator signature | **[OPEN]** |
-| R, adopted interval method | **[SIM]**, after the freeze, before the outcome is unsealed |
+| Triage thresholds (`configs/triage.yaml`, §21) | **Decided** (D03.05, D03.06); fixed from the freeze |
+| QC on a clean commit; hashes recorded | **Investigator:** clean-tree run with `--out`, membership comparison, hashes pinned (README §5; D04.03) |
+| Specialist sign-off | statistical-reviewer reviewed §13–§14 and §21 (D03.05, D04.02); no reviewer re-checked the final edits |
+| Investigator signature and execution authorisation | **[OPEN]**, by the investigator only, in `docs/decision_log.md` |
+| R, adopted interval method, decision file and SHA-256 | **[SIM]** after the freeze, before the outcome is unsealed |
+
+**Files frozen at signature** (their SHA-256 and the commit are recorded in the signature entry): `docs/protocol.md`, `configs/experiment.yaml`, `configs/experiment_scales.yaml`, `configs/experiment_loto.yaml`, `configs/simulation.yaml`, `configs/triage.yaml`, `configs/preprocessing.yaml`, `data/manifests/*.yaml`. Code version: the signed commit. Data: CLARIFi and DepMap hashes in their manifests; QC outputs via `qc_sha256`; Hallmark GMT via `gene_sets_sha256`.
+
+**Design summary frozen with it:** primary M2 (tissue + 50 Hallmark scores, offset) vs M1 (20-level tissue ridge); raw mSF2; primary population (241 records / 237 components); 5 × 5 nested grouped cross-validation, R repeats; component-weighted paired ΔMAE; one-sided α = 0.05 via the simulation-adopted interval only.

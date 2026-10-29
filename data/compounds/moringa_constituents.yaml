@@ -1,0 +1,1157 @@
+# Curated inventory of Moringa oleifera seed and leaf constituents.
+#
+# PURPOSE. The motivating manuscript tested crude DICHLOROMETHANE (DCM) seed and leaf
+# extracts and never characterised them chemically. This file records, for each compound,
+# what the published analytical literature actually documents, and in WHICH solvent.
+#
+# HOW TO READ IT.
+#   extraction_category   dcm_documented              identified in a DCM extract/fraction
+#                                                     of Moringa SEED or LEAF
+#                         seed_or_leaf_other_solvent  primary analytical evidence in seed or
+#                                                     leaf, but not in DCM
+#                         indirect_or_unconfirmed     review-only, tentative, or another part
+#   identification_strength  isolation_nmr | reference_standard | library_match_only |
+#                            not_stated  -- what the CITED SOURCE states, verbatim where given
+#   reading_depth            abstract | full_text  -- how deeply that source was read here
+#   research_group           corresponding-author group; several papers from one group count
+#                            as ONE independent source (see compounds/ranking.py D3)
+#
+# A compound in this file is NOT asserted to be present in the investigator's own extracts.
+# No concentration, yield or extract composition is inferred anywhere.
+#
+# IDENTIFIERS. Every PubChem CID and InChIKey below was fetched from PubChem PUG-REST
+# during curation (2026-10-22). Where several stereochemical or salt records exist, the
+# chosen record is named and the ambiguity is written into identity_caveat.
+#
+# Curation: literature-reviewer agent, 2026-10-22; searches and unresolved gaps in
+# docs/compound_evidence_curation.md. Reviews were used only as pointers, never as evidence.
+
+curation_record: "docs/compound_evidence_curation.md (searches, verification routes, gaps)"
+curated_on: "2026-10-22"
+curated_by: "literature-reviewer agent (searching and reading only); recorded by Claude Code"
+
+constituents:
+
+  # ---------------------------------------------------------------- DCM-documented
+
+  - compound_id: niazimicin
+    preferred_name: Niazimicin
+    synonyms:
+      - "O-ethyl N-[4-(alpha-L-rhamnopyranosyloxy)benzyl]thiocarbamate"
+      - "NSC 711509"
+    pubchem_cid: "10247749"
+    inchikey: "JOSHUAQJVMGTGS-NBUQLFNLSA-N"
+    molecular_formula: "C16H23NO6S"
+    identifier_verified_via: pubchem
+    chemical_class: "Thiocarbamate glycoside (rhamnoside)"
+    plant_part: both
+    extraction_category: dcm_documented
+    identity_caveat: >
+      CID 10247749 carries the defined alpha-L-rhamnopyranosyl stereochemistry and is used
+      here. A name search also returns CID 5471459 (InChIKey
+      JOSHUAQJVMGTGS-UHFFFAOYSA-N), which has no stereochemistry. Abdelsayed et al.
+      assigned an (E) thiocarbamate configuration, so the double-bond geometry is a further
+      caveat not captured by either record.
+    notes: >
+      The only constituent in this inventory with a structurally confirmed identification
+      in a dichloromethane fraction of BOTH seed and leaf, which makes it the compound most
+      directly connected to the extraction solvent of the motivating study.
+    reports:
+      - citation: >
+          Abdelsayed EM, Abdel Motaal A, Hanafi RS. Novel UPLC-MS/MS method for
+          standardization of niazimicin content in edible seeds and leaves of Moringa
+          oleifera. Journal of Food and Drug Analysis 2021;29(1):128-143.
+        doi: "10.38212/2224-6614.3282"
+        pmid: "35696224"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: both
+        solvent_or_fraction: >
+          Methylene chloride (CH2Cl2) partition fraction of a 70% ethanol maceration of
+          seeds and of leaves (liquid-liquid partition: petroleum ether, methylene
+          chloride, ethyl acetate, n-butanol)
+        identification_method: >
+          Reference standard isolated from the seed methylene-chloride fraction by silica
+          column chromatography (reported purity 96.6% by PDA); identity confirmed by
+          HRMS, UV, IR, EI-MS and 1D/2D NMR; quantified by validated UPLC-MS/MS in MRM
+          mode (358 -> 107) with a desipramine internal standard
+        identification_strength: isolation_nmr
+        is_dcm: true
+        research_group: "Hanafi / Abdel Motaal (Cairo)"
+        quoted_wording: >
+          Niazimicin was quantified in the seed CH2Cl2 fraction and in the leaf CH2Cl2
+          fraction. Niazirin and glucomoringin were not identified in this work.
+      - citation: >
+          Abdelsayed EM, Medhat D, Mandour YM, Hanafi RS, Motaal AA. Niazimicin: a
+          thiocarbamate glycoside from Moringa oleifera Lam. seeds with a novel
+          neuroprotective activity. Journal of Food Biochemistry 2021;45(12):e13992.
+        doi: "10.1111/jfbc.13992"
+        pmid: "34747026"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Methylene-chloride and ethyl-acetate fractions of a seed extract"
+        identification_method: "Not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: true
+        research_group: "Hanafi / Abdel Motaal (Cairo)"
+        notes: >
+          Same research group as the UPLC-MS/MS paper above, so it is not an independent
+          confirmation of it.
+      - citation: >
+          Guevara AP, Vargas C, Sakurai H, Fujiwara Y, Hashimoto K, Maoka T, Kozuka M,
+          Ito Y, Tokuda H, Nishino H. An antitumor promoter from Moringa oleifera Lam.
+          Mutation Research 1999;440(2):181-188.
+        doi: "10.1016/s1383-5718(99)00025-x"
+        pmid: "10209341"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Ethanol seed extract"
+        identification_method: "Isolation; method not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Guevara / Nishino"
+      - citation: >
+          Albuquerque Costa R, Dos Fernandes Vieira RHS, et al. Antibacterial activity
+          of Moringa oleifera seed compounds. BioMed Research International
+          2017;2017:7963747.
+        doi: "10.1155/2017/7963747"
+        pmid: "28770224"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Ethyl-acetate fraction of an ethanolic seed extract"
+        identification_method: "Chromatographic isolation"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Albuquerque Costa (Ceara)"
+      - citation: >
+          Li LZ, et al. Chemical constituents of Moringa oleifera seeds. Molecules
+          2023;28(17):6426.
+        doi: "10.3390/molecules28176426"
+        pmid: "37687255"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "85% ethanol seed extract, D101 resin chromatography"
+        identification_method: >
+          Isolated as compound 11; structure assigned by comparison of spectroscopic data
+          with the literature
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Li LZ"
+
+  - compound_id: hydroxyphenylacetonitrile_4
+    preferred_name: 4-Hydroxyphenylacetonitrile
+    synonyms: ["4-hydroxybenzyl cyanide", "Benzeneacetonitrile, 4-hydroxy-"]
+    pubchem_cid: "26548"
+    inchikey: "AYKYOOPFBCOXSL-UHFFFAOYSA-N"
+    molecular_formula: "C8H7NO"
+    identifier_verified_via: pubchem
+    chemical_class: "Phenolic nitrile"
+    plant_part: both
+    extraction_category: dcm_documented
+    identity_caveat: >
+      Identification rests on GC-MS spectral-library matching in both sources, without an
+      authentic standard. Structurally this is the aglycone of niazirin; whether it occurs
+      natively or arises by hydrolysis or thermal degradation during analysis is not
+      established (hypothesis only).
+    reports:
+      - citation: >
+          Mohd Fisall UF, Ismail NZ, Adebayo IA, Arsad H. Dichloromethane fraction of
+          Moringa oleifera leaf methanolic extract selectively inhibits breast cancer
+          cells (MCF-7). Molecular Biology Reports 2021;48(5):4465-4475.
+        doi: "10.1007/s11033-021-06466-y"
+        pmid: "34086162"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Dichloromethane fraction of a Moringa oleifera leaf methanolic extract"
+        identification_method: >
+          GC-MS; reported as a major compound. The full compound list and the
+          identification criteria could not be verified (full text paywalled)
+        identification_strength: library_match_only
+        is_dcm: true
+        research_group: "Arsad (Universiti Sains Malaysia)"
+      - citation: >
+          Adebayo IA, Arsad H, Samian MR. Antiproliferative effect on breast cancer
+          (MCF7) of Moringa oleifera seed extracts. Pharmacognosy Magazine
+          2018;14(54):191-194.
+        doi: "10.4103/pm.pm_212_17"
+        pmid: "29720830"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: >
+          Ripe seed: crude 80% ethanol extract, its butanol fraction and the aqueous
+          residue (the DCM fraction was prepared but its GC-MS was not reported)
+        identification_method: "GC-MS with NIST library match >80%; no authentic standards"
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Arsad (Universiti Sains Malaysia)"
+        notes: "Same group as Mohd Fisall 2021, so not an independent confirmation."
+
+  - compound_id: methyl_4_hydroxyphenylacetate
+    preferred_name: Methyl 4-hydroxyphenylacetate
+    synonyms: ["Benzeneacetic acid, 4-hydroxy-, methyl ester"]
+    pubchem_cid: "518900"
+    inchikey: "XGDZEDRBLVIUMX-UHFFFAOYSA-N"
+    molecular_formula: "C9H10O3"
+    identifier_verified_via: pubchem
+    chemical_class: "Phenolic ester"
+    plant_part: leaf
+    extraction_category: dcm_documented
+    identity_caveat: >
+      Single source, abstract only, GC-MS library match without a standard. A methyl ester
+      detected after methanolic extraction may be an extraction or analytical artefact
+      rather than a native constituent (hypothesis only).
+    reports:
+      - citation: >
+          Mohd Fisall UF, Ismail NZ, Adebayo IA, Arsad H. Dichloromethane fraction of
+          Moringa oleifera leaf methanolic extract selectively inhibits breast cancer
+          cells (MCF-7). Molecular Biology Reports 2021;48(5):4465-4475.
+        doi: "10.1007/s11033-021-06466-y"
+        pmid: "34086162"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Dichloromethane fraction of a leaf methanolic extract"
+        identification_method: "GC-MS; reported as a major compound; criteria not verified"
+        identification_strength: library_match_only
+        is_dcm: true
+        research_group: "Arsad (Universiti Sains Malaysia)"
+
+  - compound_id: palmitic_acid
+    preferred_name: Palmitic acid
+    synonyms: ["n-Hexadecanoic acid", "Hexadecanoic acid"]
+    pubchem_cid: "985"
+    inchikey: "IPCSVZSSVZVIGE-UHFFFAOYSA-N"
+    molecular_formula: "C16H32O2"
+    identifier_verified_via: pubchem
+    chemical_class: "Saturated fatty acid"
+    plant_part: both
+    extraction_category: dcm_documented
+    identity_caveat: >
+      Ubiquitous plant fatty acid with very low taxonomic specificity: its presence says
+      little about Moringa in particular. The leaf DCM identification is a GC-MS library
+      match reported in a journal not indexed in PubMed or Europe PMC.
+    reports:
+      - citation: >
+          Khandelwal S, Khurana SMP. Molecular docking studies and GC-MS analysis of the
+          antimicrobial compounds isolated from leaves of Moringa oleifera. Medicinal
+          Plants - International Journal of Phytomedicines and Related Industries
+          2019;11(1).
+        doi: "10.5958/0975-6892.2019.00004.2"
+        pmid: null
+        doi_verified_via: crossref
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Dichloromethane leaf extract"
+        identification_method: >
+          GC-MS; 96 compounds reported, n-hexadecanoic acid the largest peak (28.35%).
+          Library matching assumed but not verified; the full list and method were not
+          accessible and the journal is not indexed in PubMed or Europe PMC
+        identification_strength: library_match_only
+        is_dcm: true
+        research_group: "Khurana (Amity)"
+      - citation: >
+          Tsaknis J, Lalas S, Gergis V, Dourtoglou V, Spiliotis V. Characterization of
+          Moringa oleifera variety Mbololo seed oil of Kenya. Journal of Agricultural and
+          Food Chemistry 1999;47(11):4495-4499.
+        doi: "10.1021/jf9904214"
+        pmid: "10552840"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Seed oil (cold press, n-hexane, or chloroform/methanol 50:50)"
+        identification_method: "Fatty-acid methyl-ester (FAME) analysis"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Tsaknis / Lalas"
+
+  - compound_id: cis_vaccenic_acid
+    preferred_name: cis-Vaccenic acid
+    synonyms: ["(11Z)-Octadec-11-enoic acid"]
+    pubchem_cid: "5282761"
+    inchikey: "UWHZIFQPPBDJPM-FPLPWBNLSA-N"
+    molecular_formula: "C18H34O2"
+    identifier_verified_via: pubchem
+    chemical_class: "Monounsaturated fatty acid"
+    plant_part: leaf
+    extraction_category: dcm_documented
+    identity_caveat: >
+      Identity uncertain. Electron-impact MS library matching cannot reliably distinguish
+      C18:1 positional isomers (Delta-9 oleic versus Delta-11 vaccenic) without authentic
+      standards or derivatisation. The source spells the name "cis-uaccenic acid". Single
+      source, abstract only.
+    reports:
+      - citation: >
+          Khandelwal S, Khurana SMP. Molecular docking studies and GC-MS analysis of the
+          antimicrobial compounds isolated from leaves of Moringa oleifera. Medicinal
+          Plants - International Journal of Phytomedicines and Related Industries
+          2019;11(1).
+        doi: "10.5958/0975-6892.2019.00004.2"
+        pmid: null
+        doi_verified_via: crossref
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Dichloromethane leaf extract"
+        identification_method: "GC-MS; 10.68% of the reported profile; criteria not verified"
+        identification_strength: library_match_only
+        is_dcm: true
+        research_group: "Khurana (Amity)"
+
+  # --------------------------------------------- seed or leaf, other solvents only
+
+  - compound_id: moringin
+    preferred_name: Moringin
+    synonyms:
+      - "4-(alpha-L-rhamnopyranosyloxy)benzyl isothiocyanate"
+      - "GMG-ITC"
+      - "MIC-1"
+    pubchem_cid: "153557"
+    inchikey: "QAZIHHJTZPNRCM-CNJBRALLSA-N"
+    molecular_formula: "C14H17NO5S"
+    identifier_verified_via: pubchem
+    chemical_class: "Glucosinolate-derived isothiocyanate"
+    plant_part: both
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Several PubChem records differ in stereochemistry (CIDs 12002975, 44198764, and
+      14865502 with none); CID 153557 is used here. Moringin is formed from glucomoringin
+      by myrosinase when tissue is disrupted, so its presence depends on how the extract
+      was prepared rather than on the intact plant alone.
+    notes: >
+      The isothiocyanate most characteristic of Moringa. No primary study has combined
+      purified moringin with ionising radiation (see compound_biology_evidence.yaml), so it
+      cannot be scored on radiation biology however chemically distinctive it is.
+    reports:
+      - citation: >
+          Guevara AP, Vargas C, Sakurai H, et al. An antitumor promoter from Moringa
+          oleifera Lam. Mutation Research 1999;440(2):181-188.
+        doi: "10.1016/s1383-5718(99)00025-x"
+        pmid: "10209341"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Ethanol seed extract"
+        identification_method: "Isolation; method not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Guevara / Nishino"
+      - citation: >
+          Waterman C, Cheng DM, Rojas-Silva P, et al. Stable, water extractable
+          isothiocyanates from Moringa oleifera leaves attenuate inflammation in vitro.
+          Phytochemistry 2014;103:114-122.
+        doi: "10.1016/j.phytochem.2014.03.028"
+        pmid: "24731259"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Fresh leaves extracted with water"
+        identification_method: "Not stated in the abstract (full-text fetch failed)"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Raskin (Rutgers)"
+      - citation: >
+          Tumer TB, Rojas-Silva P, Poulev A, Raskin I, Waterman C. Direct and indirect
+          antioxidant activity of polyphenol- and isothiocyanate-enriched fractions from
+          Moringa oleifera. Journal of Agricultural and Food Chemistry 2015;63(5):1505-1513.
+        doi: "10.1021/jf505014n"
+        pmid: "25605589"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf fast centrifugal partition chromatography (FCPC) fractions"
+        identification_method: "Not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Raskin (Rutgers)"
+        notes: "Same group as Waterman 2014; one independent source between them."
+
+  - compound_id: niazirin
+    preferred_name: Niazirin
+    synonyms: []
+    pubchem_cid: "129556"
+    inchikey: "OBJREHLZEIEGDU-CNJBRALLSA-N"
+    molecular_formula: "C14H17NO5"
+    identifier_verified_via: pubchem
+    chemical_class: "Nitrile glycoside (rhamnoside)"
+    plant_part: both
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Explicitly NOT identified in the seed or leaf methylene-chloride fractions analysed
+      by Abdelsayed et al. 2021, the one study that looked for it there.
+    reports:
+      - citation: >
+          Faizi S, Siddiqui BS, Saleem R, Siddiqui S, Aftab K, Gilani AH. Isolation and
+          structure elucidation of new nitrile and mustard oil glycosides from Moringa
+          oleifera and their effect on blood pressure. Journal of Natural Products
+          1994;57(9):1256-1261.
+        doi: "10.1021/np50111a011"
+        pmid: "7798960"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Ethanol leaf extract"
+        identification_method: >
+          Bioassay-guided isolation; structure elucidated by spectroscopy including 2D NMR
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Faizi / Siddiqui (Karachi)"
+      - citation: >
+          Guevara AP, Vargas C, Sakurai H, et al. An antitumor promoter from Moringa
+          oleifera Lam. Mutation Research 1999;440(2):181-188.
+        doi: "10.1016/s1383-5718(99)00025-x"
+        pmid: "10209341"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Ethanol seed extract"
+        identification_method: "Isolation; method not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Guevara / Nishino"
+      - citation: >
+          Li LZ, et al. Chemical constituents of Moringa oleifera seeds. Molecules
+          2023;28(17):6426.
+        doi: "10.3390/molecules28176426"
+        pmid: "37687255"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "85% ethanol seed extract, D101 resin chromatography"
+        identification_method: "Isolated as compound 9; data compared with the literature"
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Li LZ"
+
+  - compound_id: niaziminin
+    preferred_name: Niaziminin
+    synonyms: ["Niaziminin A", "Niaziminin B", "4'-O-acetyl niazimicin-type thiocarbamate"]
+    pubchem_cid: "10023860"
+    inchikey: "NZQNGCULBWTLGQ-DXJAZKPLSA-N"
+    molecular_formula: "C18H25NO7S"
+    identifier_verified_via: pubchem
+    chemical_class: "Acetylated thiocarbamate glycoside"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Niaziminin A and B were reported as isomers originally obtained as a mixture, and
+      their individual stereochemistry and geometry are not resolved in PubChem. The record
+      CID 44559760 labelled "Niaziminin A" (C19H25NO7S) holds a structure that does not
+      match the thiocarbamate and must not be used.
+    reports:
+      - citation: >
+          Faizi S, Siddiqui BS, Saleem R, Siddiqui S, Aftab K, Gilani AH. Isolation and
+          structure elucidation of new nitrile and mustard oil glycosides from Moringa
+          oleifera and their effect on blood pressure. Journal of Natural Products
+          1994;57(9):1256-1261.
+        doi: "10.1021/np50111a011"
+        pmid: "7798960"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Ethanol leaf extract"
+        identification_method: "Isolation; structure elucidated by NMR"
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Faizi / Siddiqui (Karachi)"
+      - citation: >
+          Murakami A, Kitazono Y, Jiwajinda S, Koshimizu K, Ohigashi H. Niaziminin, a
+          thiocarbamate from the leaves of Moringa oleifera, holds a strict structural
+          requirement for inhibition of tumour-promoter-induced Epstein-Barr virus
+          activation. Planta Medica 1998;64(4):319-323.
+        doi: "10.1055/s-2006-957442"
+        pmid: "9619112"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf; solvent not given in the abstract"
+        identification_method: "Not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Ohigashi (Kyoto)"
+
+  - compound_id: acetyl_rhamnosyloxybenzyl_itc
+    preferred_name: "4-[(4'-O-Acetyl-alpha-L-rhamnosyloxy)benzyl] isothiocyanate"
+    synonyms: ["Acetylated moringin"]
+    pubchem_cid: "10291650"
+    inchikey: "WVUZLAMBBZISKM-QOYUQHOESA-N"
+    molecular_formula: "C16H19NO6S"
+    identifier_verified_via: pubchem
+    chemical_class: "Acetylated isothiocyanate rhamnoside"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Positional isomers of the acetyl group have separate PubChem records (2'-O-acetyl CID
+      46933086, 3'-O-acetyl CID 46932936), so the position must be stated whenever this
+      compound is cited.
+    reports:
+      - citation: >
+          Faizi S, Siddiqui BS, Saleem R, Siddiqui S, Aftab K, Gilani AH. Isolation and
+          structure elucidation of new nitrile and mustard oil glycosides from Moringa
+          oleifera and their effect on blood pressure. Journal of Natural Products
+          1994;57(9):1256-1261.
+        doi: "10.1021/np50111a011"
+        pmid: "7798960"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Ethanol leaf extract"
+        identification_method: "Isolation; structure elucidated by NMR"
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Faizi / Siddiqui (Karachi)"
+      - citation: >
+          Waterman C, Cheng DM, Rojas-Silva P, et al. Stable, water extractable
+          isothiocyanates from Moringa oleifera leaves attenuate inflammation in vitro.
+          Phytochemistry 2014;103:114-122.
+        doi: "10.1016/j.phytochem.2014.03.028"
+        pmid: "24731259"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Fresh leaves extracted with water"
+        identification_method: "Not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Raskin (Rutgers)"
+
+  - compound_id: glucomoringin
+    preferred_name: Glucomoringin
+    synonyms: ["4-(alpha-L-rhamnopyranosyloxy)benzyl glucosinolate"]
+    pubchem_cid: "162639104"
+    inchikey: "OVFNULRBAJGUQL-FNPJROJFSA-M"
+    molecular_formula: "C20H28KNO14S2"
+    identifier_verified_via: pubchem
+    chemical_class: "Glucosinolate"
+    plant_part: both
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      AMBIGUOUS IDENTIFIER. Every PubChem record found is a potassium salt with a different
+      stereo-InChIKey (CID 162639104 OVFNULRBAJGUQL-FNPJROJFSA-M; CID 23669698
+      OVFNULRBAJGUQL-AAFSECJWSA-M; CID 177924937 OVFNULRBAJGUQL-ZXXSMENNSA-M); no neutral
+      or anionic record was found. Which record matches the natural structure was not
+      resolved and must be checked before the identifier is used in any publication.
+    notes: >
+      Highly polar, so its appearance in a dichloromethane fraction would be unexpected;
+      Abdelsayed et al. 2021 did not identify it in the seed or leaf CH2Cl2 fractions.
+      Generally inactive until myrosinase hydrolysis to moringin.
+    reports:
+      - citation: >
+          Bennett RN, Mellon FA, Foidl N, et al. Profiling glucosinolates and phenolics in
+          vegetative and reproductive tissues of the multi-purpose trees Moringa oleifera
+          L. and Moringa stenopetala L. Journal of Agricultural and Food Chemistry
+          2003;51(12):3546-3553.
+        doi: "10.1021/jf0211480"
+        pmid: "12769522"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: both
+        solvent_or_fraction: >
+          Not stated in the abstract (full text paywalled); MeSH terms list HPLC and GC-MS
+        identification_method: "HPLC and GC-MS per MeSH; criteria not verified"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"
+      - citation: >
+          Amaglo NK, Bennett RN, Lo Curto RB, et al. Profiling selected phytochemicals and
+          nutrients in different tissues of the multipurpose tree Moringa oleifera L.
+          grown in Ghana. Food Chemistry 2010;122(4):1047-1054.
+        doi: "10.1016/j.foodchem.2010.03.073"
+        pmid: null
+        doi_verified_via: crossref
+        reading_depth: abstract
+        is_review: false
+        plant_part: both
+        solvent_or_fraction: "Not stated in the abstract"
+        identification_method: "Not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"
+        notes: "Shares senior authorship with Bennett 2003; one independent source between them."
+      - citation: >
+          Li LZ, et al. Chemical constituents of Moringa oleifera seeds. Molecules
+          2023;28(17):6426.
+        doi: "10.3390/molecules28176426"
+        pmid: "37687255"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "85% ethanol seed extract, D101 resin chromatography"
+        identification_method: "Isolated as compound 16; data compared with the literature"
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Li LZ"
+      - citation: >
+          Wang J, et al. Characterization of Moringa oleifera leaf constituents. Food
+          Chemistry X 2024;23:101585.
+        doi: "10.1016/j.fochx.2024.101585"
+        pmid: "39027684"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf water reflux extract"
+        identification_method: >
+          Orbitrap MS/MS fragmentation compared with the literature; no authentic standard
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Wang J (Food Chemistry X 2024)"
+
+  - compound_id: ethyl_rhamnosyloxybenzyl_carbamate
+    preferred_name: "O-Ethyl-4-(alpha-L-rhamnosyloxy)benzyl carbamate"
+    synonyms: []
+    pubchem_cid: "101942512"
+    inchikey: "UNNZZQOFLFJJJZ-NBUQLFNLSA-N"
+    molecular_formula: "C16H23NO7"
+    identifier_verified_via: pubchem
+    chemical_class: "Carbamate glycoside"
+    plant_part: seed
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      A name search returns CID 129712240, which is MIS-STRUCTURED (C16H23NO8, with the
+      ethoxy group on the sugar) and must not be used. CID 101942512 is correct.
+    reports:
+      - citation: >
+          Guevara AP, Vargas C, Sakurai H, et al. An antitumor promoter from Moringa
+          oleifera Lam. Mutation Research 1999;440(2):181-188.
+        doi: "10.1016/s1383-5718(99)00025-x"
+        pmid: "10209341"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Ethanol seed extract"
+        identification_method: "Reported as a new compound; method not stated in the abstract"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Guevara / Nishino"
+      - citation: >
+          Li LZ, et al. Chemical constituents of Moringa oleifera seeds. Molecules
+          2023;28(17):6426.
+        doi: "10.3390/molecules28176426"
+        pmid: "37687255"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "85% ethanol seed extract, D101 resin chromatography"
+        identification_method: "Isolated as compound 7; data compared with the literature"
+        identification_strength: isolation_nmr
+        is_dcm: false
+        research_group: "Li LZ"
+
+  - compound_id: beta_sitosterol
+    preferred_name: beta-Sitosterol
+    synonyms: ["22,23-dihydrostigmasterol"]
+    pubchem_cid: "222284"
+    inchikey: "KZJWDPNRJALLNS-VJSFXXLFSA-N"
+    molecular_formula: "C29H50O"
+    identifier_verified_via: pubchem
+    chemical_class: "Phytosterol"
+    plant_part: seed
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Documented here for SEED only; no verified primary source was found for Moringa
+      oleifera leaf (Vats and Gupta 2017 report it in flower). Very widely distributed in
+      plants, so its presence carries little taxonomic specificity. Whether the
+      bio-guided fractionation of Raafat and Hdaib 2017 used dichloromethane is unverified,
+      because the solvent is not stated.
+    reports:
+      - citation: >
+          Guevara AP, Vargas C, Sakurai H, et al. An antitumor promoter from Moringa
+          oleifera Lam. Mutation Research 1999;440(2):181-188.
+        doi: "10.1016/s1383-5718(99)00025-x"
+        pmid: "10209341"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Ethanol seed extract"
+        identification_method: >
+          Isolation (also reports beta-sitosterol-3-O-glucoside and an oleoyl-glucoside);
+          method not stated in the abstract
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Guevara / Nishino"
+      - citation: >
+          Tsaknis J, Lalas S, Gergis V, Dourtoglou V, Spiliotis V. Characterization of
+          Moringa oleifera variety Mbololo seed oil of Kenya. Journal of Agricultural and
+          Food Chemistry 1999;47(11):4495-4499.
+        doi: "10.1021/jf9904214"
+        pmid: "10552840"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Seed oil (cold press, n-hexane, or chloroform/methanol 50:50)"
+        identification_method: >
+          Sterol analysis; reported as up to 50.07% of the sterol fraction. Stigmasterol
+          (CID 5280794) and campesterol are also reported
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Tsaknis / Lalas"
+      - citation: >
+          Raafat K, Hdaib F. Neuroprotective effects of Moringa oleifera: bio-guided GC-MS
+          identification of active compounds in diabetic neuropathy. Chinese Journal of
+          Integrative Medicine 2017.
+        doi: "10.1007/s11655-017-2758-4"
+        pmid: "29234979"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Bio-guided column fractionation; solvent not stated in the abstract"
+        identification_method: "GC-MS"
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Raafat (Beirut)"
+
+  - compound_id: isoquercitrin
+    preferred_name: Isoquercitrin
+    synonyms: ["Quercetin-3-O-glucoside", "Isoquercetin"]
+    pubchem_cid: "5280804"
+    inchikey: "OVSQVDMCBVZWGM-QSOFNFLRSA-N"
+    molecular_formula: "C21H20O12"
+    identifier_verified_via: pubchem
+    chemical_class: "Flavonol glycoside"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      LC-MS cannot separate the 3-O-glucoside from the 3-O-galactoside without an authentic
+      standard, so the sugar assignment is uncertain. The 6''-malonyl form reported by
+      Bennett et al. 2003 has no PubChem verification here. Isoquercitrin is extensively
+      deglycosylated to quercetin in vivo, so quercetin evidence must not be transferred to
+      it without pharmacokinetic justification.
+    reports:
+      - citation: >
+          Bennett RN, Mellon FA, Foidl N, et al. Profiling glucosinolates and phenolics in
+          vegetative and reproductive tissues of Moringa oleifera L. and Moringa
+          stenopetala L. Journal of Agricultural and Food Chemistry 2003;51(12):3546-3553.
+        doi: "10.1021/jf0211480"
+        pmid: "12769522"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Not stated in the abstract (full text paywalled)"
+        identification_method: >
+          HPLC and GC-MS per MeSH; also reports quercetin-3-O-(6''-malonyl)glucoside
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"
+      - citation: >
+          Wang J, et al. Characterization of Moringa oleifera leaf constituents. Food
+          Chemistry X 2024;23:101585.
+        doi: "10.1016/j.fochx.2024.101585"
+        pmid: "39027684"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf water extract"
+        identification_method: >
+          An isoquercitrin standard was purchased for quantitation, but the paper reports
+          the molecular formula and literature MS comparison for identification; recorded
+          conservatively as a library match
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Wang J (Food Chemistry X 2024)"
+
+  - compound_id: astragalin
+    preferred_name: Astragalin
+    synonyms: ["Kaempferol-3-O-glucoside"]
+    pubchem_cid: "5282102"
+    inchikey: "JPUKWEQWGBDDQB-QSOFNFLRSA-N"
+    molecular_formula: "C21H20O11"
+    identifier_verified_via: pubchem
+    chemical_class: "Flavonol glycoside"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Same hexoside-isomer ambiguity as isoquercitrin (glucoside versus galactoside cannot
+      be resolved without a standard). Extensively deglycosylated to kaempferol in vivo.
+    reports:
+      - citation: >
+          Bennett RN, Mellon FA, Foidl N, et al. Profiling glucosinolates and phenolics in
+          vegetative and reproductive tissues of Moringa oleifera L. and Moringa
+          stenopetala L. Journal of Agricultural and Food Chemistry 2003;51(12):3546-3553.
+        doi: "10.1021/jf0211480"
+        pmid: "12769522"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Not stated in the abstract (full text paywalled)"
+        identification_method: "HPLC and GC-MS per MeSH; criteria not verified"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"
+      - citation: >
+          Wang J, et al. Characterization of Moringa oleifera leaf constituents. Food
+          Chemistry X 2024;23:101585.
+        doi: "10.1016/j.fochx.2024.101585"
+        pmid: "39027684"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf water extract"
+        identification_method: >
+          A standard was purchased for quantitation; identification reported against
+          literature MS data; recorded conservatively as a library match
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Wang J (Food Chemistry X 2024)"
+
+  - compound_id: chlorogenic_acid
+    preferred_name: Chlorogenic acid
+    synonyms: ["5-O-caffeoylquinic acid"]
+    pubchem_cid: "1794427"
+    inchikey: "CWVRJTMFETXNAD-JUHZACGLSA-N"
+    molecular_formula: "C16H18O9"
+    identifier_verified_via: pubchem
+    chemical_class: "Hydroxycinnamate ester"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      Caffeoylquinic acid isomer numbering differs between conventions, so Bennett et al.'s
+      "3-caffeoylquinic acid" may not correspond to the modern 3-isomer. Matsuoka et al.
+      2022 list chlorogenic acid as "possibly yes" in their leaf CH2Cl2 extract; that is the
+      authors' speculation without analysis and is NOT treated as evidence here.
+    reports:
+      - citation: >
+          Bennett RN, Mellon FA, Foidl N, et al. Profiling glucosinolates and phenolics in
+          vegetative and reproductive tissues of Moringa oleifera L. and Moringa
+          stenopetala L. Journal of Agricultural and Food Chemistry 2003;51(12):3546-3553.
+        doi: "10.1021/jf0211480"
+        pmid: "12769522"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Not stated in the abstract (full text paywalled)"
+        identification_method: >
+          HPLC and GC-MS per MeSH; 3- and 5-caffeoylquinic acids reported in leaf
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"
+      - citation: >
+          Wang J, et al. Characterization of Moringa oleifera leaf constituents. Food
+          Chemistry X 2024;23:101585.
+        doi: "10.1016/j.fochx.2024.101585"
+        pmid: "39027684"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf water extract"
+        identification_method: >
+          A standard was purchased for quantitation; identification reported against
+          literature MS data; recorded conservatively as a library match
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Wang J (Food Chemistry X 2024)"
+
+  - compound_id: rutin
+    preferred_name: Rutin
+    synonyms: ["Quercetin-3-O-rutinoside", "Rutoside"]
+    pubchem_cid: "5280805"
+    inchikey: "IKGXIBQEEMLURG-NVPNHPEKSA-N"
+    molecular_formula: "C27H30O16"
+    identifier_verified_via: pubchem
+    chemical_class: "Flavonol glycoside"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      The Bennett et al. 2003 abstract attributes rutin to Moringa STENOPETALA leaves, not
+      Moringa oleifera, so it is not cited here as oleifera evidence. Amaglo et al. report
+      rutinosides generically. Extensively deglycosylated in vivo.
+    reports:
+      - citation: >
+          Wang J, et al. Characterization of Moringa oleifera leaf constituents. Food
+          Chemistry X 2024;23:101585.
+        doi: "10.1016/j.fochx.2024.101585"
+        pmid: "39027684"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Moringa oleifera leaf water extract"
+        identification_method: >
+          A rutin standard was purchased for quantitation; identification reported against
+          literature MS data; recorded conservatively as a library match
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Wang J (Food Chemistry X 2024)"
+      - citation: >
+          Amaglo NK, Bennett RN, Lo Curto RB, et al. Profiling selected phytochemicals and
+          nutrients in different tissues of the multipurpose tree Moringa oleifera L.
+          grown in Ghana. Food Chemistry 2010;122(4):1047-1054.
+        doi: "10.1016/j.foodchem.2010.03.073"
+        pmid: null
+        doi_verified_via: crossref
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Not stated in the abstract"
+        identification_method: >
+          Reported as quercetin rutinosides among the leaf flavonoids; specific
+          identification criteria not stated in the abstract
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"
+
+  - compound_id: alpha_tocopherol
+    preferred_name: alpha-Tocopherol
+    synonyms: ["Vitamin E (alpha form)"]
+    pubchem_cid: "14985"
+    inchikey: "GVJHHUAWPYXKBD-IEOSBIPESA-N"
+    molecular_formula: "C29H50O2"
+    identifier_verified_via: pubchem
+    chemical_class: "Tocochromanol"
+    plant_part: both
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      CID 14985 is the (2R,4'R,8'R) stereoform; the natural stereoform present in Moringa
+      was not specified in either source. In the leaf study the endogenous alpha-tocopherol
+      must be distinguished from synthetic alpha-tocopherol added during formulation.
+    reports:
+      - citation: >
+          Kessler JC, et al. Moringa oleifera leaf supercritical CO2 extract in a cosmetic
+          formulation. Journal of Cosmetic Dermatology 2025;24(10):e70486.
+        doi: "10.1111/jocd.70486"
+        pmid: "41081335"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf supercritical CO2 extract"
+        identification_method: >
+          GC-MS with NIST library and Kovats retention indices, quantified against a
+          calibration curve
+        identification_strength: reference_standard
+        is_dcm: false
+        research_group: "Kessler (2025)"
+      - citation: >
+          Tsaknis J, Lalas S, Gergis V, Dourtoglou V, Spiliotis V. Characterization of
+          Moringa oleifera variety Mbololo seed oil of Kenya. Journal of Agricultural and
+          Food Chemistry 1999;47(11):4495-4499.
+        doi: "10.1021/jf9904214"
+        pmid: "10552840"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Seed oil (cold press, n-hexane, or chloroform/methanol 50:50)"
+        identification_method: "Tocopherols by HPLC (alpha, gamma and delta reported)"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Tsaknis / Lalas"
+
+  - compound_id: phytol
+    preferred_name: Phytol
+    synonyms: ["(2E,7R,11R)-3,7,11,15-tetramethylhexadec-2-en-1-ol"]
+    pubchem_cid: "5280435"
+    inchikey: "BOTWFXYSPFMFNR-PYDDKJGSSA-N"
+    molecular_formula: "C20H40O"
+    identifier_verified_via: pubchem
+    chemical_class: "Acyclic diterpene alcohol"
+    plant_part: leaf
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      CID 5280435 is the E-isomer. Single source, abstract only (full-text fetch failed),
+      GC-MS library match. Phytol is the chlorophyll side chain and so is expected in any
+      green leaf material; its presence carries no taxonomic specificity. No
+      dichloromethane-specific report was found.
+    reports:
+      - citation: >
+          Vats S, Gupta T. Evaluation of bioactive compounds and antioxidant potential of
+          hydroethanolic extract of Moringa oleifera Lam. from Rajasthan, India.
+          Physiology and Molecular Biology of Plants 2017;23(1):239-248.
+        doi: "10.1007/s12298-016-0407-6"
+        pmid: "28250599"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Hydroethanolic leaf extract"
+        identification_method: >
+          GC-MS; reported as 23.54% of the leaf profile; method details not verified
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Vats / Gupta (Rajasthan)"
+
+  - compound_id: oleic_acid
+    preferred_name: Oleic acid
+    synonyms: ["(9Z)-octadec-9-enoic acid"]
+    pubchem_cid: "445639"
+    inchikey: "ZQPPMHVWECSIRJ-KTKRTIGZSA-N"
+    molecular_formula: "C18H34O2"
+    identifier_verified_via: pubchem
+    chemical_class: "Monounsaturated fatty acid"
+    plant_part: seed
+    extraction_category: seed_or_leaf_other_solvent
+    identity_caveat: >
+      The dominant seed-oil fatty acid (up to 75.39%), but ubiquitous and therefore of no
+      taxonomic specificity. Note the C18:1 isomer ambiguity shared with cis-vaccenic acid.
+    reports:
+      - citation: >
+          Tsaknis J, Lalas S, Gergis V, Dourtoglou V, Spiliotis V. Characterization of
+          Moringa oleifera variety Mbololo seed oil of Kenya. Journal of Agricultural and
+          Food Chemistry 1999;47(11):4495-4499.
+        doi: "10.1021/jf9904214"
+        pmid: "10552840"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Seed oil (cold press, n-hexane, or chloroform/methanol 50:50)"
+        identification_method: "Fatty-acid methyl-ester (FAME) analysis; up to 75.39% of the oil"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Tsaknis / Lalas"
+
+  # ------------------------------------------- indirect or unconfirmed (never ranked)
+
+  - compound_id: quercetin
+    preferred_name: Quercetin
+    synonyms: ["Quercetin aglycone"]
+    pubchem_cid: "5280343"
+    inchikey: "REFJWTPEDVJJIY-UHFFFAOYSA-N"
+    molecular_formula: "C15H10O6"
+    identifier_verified_via: pubchem
+    chemical_class: "Flavonol aglycone"
+    plant_part: both
+    extraction_category: indirect_or_unconfirmed
+    identity_caveat: >
+      Reported only by tentative LC-HRMS dereplication (Shady et al. 2022, solvent not
+      stated) and in a leaf table without an authentic standard (Wang et al. 2024). The
+      free aglycone may also form by hydrolysis of the abundant quercetin glycosides during
+      extraction or analysis, so a native free-aglycone assignment is unconfirmed.
+    notes: >
+      Quercetin has the strongest radiation-biology evidence of any compound considered
+      here, which makes its unconfirmed status in Moringa the single most consequential
+      evidence gap in this module: it cannot be ranked under the prespecified rules.
+    reports:
+      - citation: >
+          Shady NH, et al. Hepatoprotective effect and metabolomic profiling of Moringa
+          oleifera seeds. Antioxidants 2022;11(9):1743.
+        doi: "10.3390/antiox11091743"
+        pmid: "36139817"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Not stated in the abstract"
+        identification_method: "LC-HRMS dereplication (tentative annotation, no standard)"
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Shady (2022)"
+      - citation: >
+          Wang J, et al. Characterization of Moringa oleifera leaf constituents. Food
+          Chemistry X 2024;23:101585.
+        doi: "10.1016/j.fochx.2024.101585"
+        pmid: "39027684"
+        doi_verified_via: europepmc
+        reading_depth: full_text
+        is_review: false
+        plant_part: leaf
+        solvent_or_fraction: "Leaf water extract"
+        identification_method: "Listed in the constituent table; no authentic standard"
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Wang J (Food Chemistry X 2024)"
+
+  - compound_id: kaempferol
+    preferred_name: Kaempferol
+    synonyms: ["Kaempferol aglycone"]
+    pubchem_cid: "5280863"
+    inchikey: "IYRMWMYZSQPJKC-UHFFFAOYSA-N"
+    molecular_formula: "C15H10O6"
+    identifier_verified_via: pubchem
+    chemical_class: "Flavonol aglycone"
+    plant_part: both
+    extraction_category: indirect_or_unconfirmed
+    identity_caveat: >
+      As for quercetin: tentative dereplication only, and the free aglycone may be a
+      hydrolysis product of astragalin and related glycosides.
+    reports:
+      - citation: >
+          Shady NH, et al. Hepatoprotective effect and metabolomic profiling of Moringa
+          oleifera seeds. Antioxidants 2022;11(9):1743.
+        doi: "10.3390/antiox11091743"
+        pmid: "36139817"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: seed
+        solvent_or_fraction: "Not stated in the abstract"
+        identification_method: "LC-HRMS dereplication (tentative annotation, no standard)"
+        identification_strength: library_match_only
+        is_dcm: false
+        research_group: "Shady (2022)"
+
+  - compound_id: benzyl_isothiocyanate
+    preferred_name: Benzyl isothiocyanate
+    synonyms: ["BITC"]
+    pubchem_cid: "2346"
+    inchikey: "MDKCFLQDBWCQCV-UHFFFAOYSA-N"
+    molecular_formula: "C8H7NS"
+    identifier_verified_via: pubchem
+    chemical_class: "Aromatic isothiocyanate"
+    plant_part: other
+    extraction_category: indirect_or_unconfirmed
+    identity_caveat: >
+      NOT documented as a Moringa seed or leaf constituent. Bennett et al. 2003 report its
+      precursor, benzyl glucosinolate, in ROOTS only; seed and leaf carry the
+      rhamnosyloxy-benzyl glucosinolate instead. Studies that use BITC with Moringa
+      material employ it as a purchased test compound, not as an identified constituent.
+      BITC must never be equated with moringin.
+    notes: >
+      Retained in the inventory only so that its exclusion is explicit and auditable: BITC
+      carries the most consistent radiosensitisation evidence of any compound considered,
+      yet it is not a documented seed or leaf constituent and therefore cannot be ranked.
+      Its value here is as the chemical-class analogy discussed in the report text.
+    reports:
+      - citation: >
+          Bennett RN, Mellon FA, Foidl N, et al. Profiling glucosinolates and phenolics in
+          vegetative and reproductive tissues of Moringa oleifera L. and Moringa
+          stenopetala L. Journal of Agricultural and Food Chemistry 2003;51(12):3546-3553.
+        doi: "10.1021/jf0211480"
+        pmid: "12769522"
+        doi_verified_via: europepmc
+        reading_depth: abstract
+        is_review: false
+        plant_part: other
+        solvent_or_fraction: "Roots (precursor benzyl glucosinolate), not seed or leaf"
+        identification_method: "HPLC and GC-MS per MeSH"
+        identification_strength: not_stated
+        is_dcm: false
+        research_group: "Bennett / Mellon (Norwich)"

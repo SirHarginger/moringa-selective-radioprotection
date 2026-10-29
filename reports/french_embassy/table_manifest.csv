@@ -1,0 +1,15 @@
+report_label,table_id,title,path,produced_by,status
+Table 1,table_1,Dataset composition by tissue,results/tables/primary_v1/publication_v1/table_1_dataset_composition.csv,scripts/make_publication_tables.py,generated
+Table 2,table_2,Model comparison (MAE/RMSE/R-squared/calibration/paired delta-MAE),results/tables/primary_v1/publication_v1/table_2_model_comparison.csv,scripts/make_publication_tables.py,generated
+Table 3,table_3,Tissue-specific component-weighted MAE,results/tables/primary_v1/publication_v1/table_3_tissue_performance.csv,scripts/make_publication_tables.py,generated
+Table S1,table_s1,Delta-MAE per cross-validation repeat,results/tables/primary_v1/publication_v1/table_s1_repeat_delta_mae.csv,scripts/make_publication_tables.py,generated
+Table S2,table_s2,Exploratory Hallmark gene-set ranking with triage tiers,results/tables/primary_v1/publication_triage_v1/table_s2_gene_set_ranking.csv,scripts/make_publication_tables.py --part triage,generated
+Table S3,table_s3,Cell-line discrepancy review,results/tables/primary_v1/publication_triage_v1/table_s3_discrepancy_review.csv,scripts/make_publication_tables.py --part triage,generated
+Table S4,within_tissue_spearman_v2,Within-tissue Spearman correlation (corrected; version 1 superseded),results/tables/primary_v1/publication_v1/within_tissue_spearman_v2.csv,scripts/make_publication_tables.py,generated
+Table C1,table_c1,Moringa constituent inventory with extraction solvent and identification strength,results/tables/primary_v1/compounds_v1/table_c1_constituent_inventory.csv,scripts/make_compound_tables.py,generated
+Table C2,table_c2,Compound-biology evidence (primary purified-compound studies),results/tables/primary_v1/compounds_v1/table_c2_biology_evidence.csv,scripts/make_compound_tables.py,generated
+Table C3,table_c3,Candidate ranking (four dimensions 0-8 with justifications and tiers),results/tables/primary_v1/compounds_v1/table_c3_candidate_ranking.csv,scripts/make_compound_tables.py,generated
+Table C4,table_c4,Compound-pathway measured-gene overlap,results/tables/primary_v1/compounds_v1/table_c4_pathway_overlap.csv,scripts/make_compound_tables.py,generated
+Table R1,table_r1,Exploratory model comparison including the M3 random forest,results/tables/exploratory_m3_v1/model_metrics.csv,scripts/evaluate_models.py --config configs/experiment_exploratory_m3.yaml,generated
+Table R2,table_r2,Leave-one-tissue-out performance by held-out tissue,results/tables/loto_v1/held_out_tissue.csv,scripts/evaluate_models.py --config configs/experiment_loto.yaml,generated
+Table R3,table_r3,Outcome-scale sensitivity (neglog and logit),results/tables/scales_v1/comparisons.csv,scripts/evaluate_models.py --config configs/experiment_scales.yaml,generated

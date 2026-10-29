@@ -1,0 +1,71 @@
+% Cover page and document-information page.
+\begin{titlepage}
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[reportnavy] (current page.north west) rectangle
+      ([yshift=-17mm]current page.north east);
+    \node[anchor=west,text=white,font=\sffamily\small]
+      at ([xshift=26mm,yshift=-8.5mm]current page.north west)
+      {\addfontfeatures{LetterSpace=10}SCIENTIFIC PROJECT REPORT};
+    \fill[reportnavy] (current page.south west) rectangle
+      ([yshift=5mm]current page.south east);
+  \end{tikzpicture}%
+  \vspace*{34mm}
+
+  \begin{flushleft}
+    {\bfseries\color{reportnavy}\fontsize{26}{32}\selectfont
+      From \textit{Moringa oleifera} Radiobiology\\to Explainable Machine Learning\par}
+    \vspace{8mm}
+    {\color{reportnavy}\rule{0.32\linewidth}{1.2pt}}\par
+    \vspace{8mm}
+    {\fontsize{15.5}{21}\selectfont\color{reportgrey}
+      Cellular Radiosensitivity Prediction and\\
+      Evidence-Based Compound Prioritisation\par}
+  \end{flushleft}
+
+  \vfill
+
+  \begin{minipage}[b]{0.82\linewidth}
+    \small\color{reportgrey}
+    A reproducible investigation linking an experimental study of
+    \textit{Moringa oleifera} seed and leaf extracts in irradiated cells to an explainable
+    benchmark of clonogenic radiosensitivity across 237 independent cancer cell-line
+    components, and to a transparent, evidence-based shortlist of plant constituents for
+    future experimental validation.
+  \end{minipage}
+
+  \vspace{12mm}
+  {\color{reportrule}\rule{\linewidth}{0.5pt}}\par\vspace{2mm}
+  {\sffamily\small\color{reportgrey}22 October 2026\par}
+\end{titlepage}
+
+% ------------------------------------------------------------ document information
+\thispagestyle{empty}
+\vspace*{\fill}
+\begingroup\small
+\noindent{\sffamily\bfseries\color{reportnavy}Document information}\par\smallskip
+\noindent\begin{tabular}{@{}L{0.27\linewidth}L{0.69\linewidth}@{}}
+  \toprule
+  Title & From \textit{Moringa oleifera} Radiobiology to Explainable Machine Learning:
+    Cellular Radiosensitivity Prediction and Evidence-Based Compound Prioritisation \\
+  Document type & Scientific project report, final edition \\
+  Date & 22 October 2026 \\
+  Primary analysis & Run \path{primary_v1}: five prespecified models, ten repeats of
+    grouped five-fold nested cross-validation, 250 of 250 model-fold tasks completed \\
+  Further analyses & Runs \path{exploratory_m3_v1}, \path{loto_v1} and \path{scales_v1};
+    explainability and triage of \path{primary_v1}; compound evidence and ranking
+    \path{compounds_v1} \\
+  Not executed & Negative controls (1,000 draws of each null) and the coverage
+    simulation for an interval method (Chapter~\ref{ch:implementation}) \\
+  Outcome data licence & CLARIFi v1.0, CC BY-NC 4.0; data DOI
+    \doilink{10.5281/zenodo.20710748} and the licence must be cited in any reuse \\
+  \bottomrule
+\end{tabular}
+
+\medskip
+\noindent Every number in this report is taken from a saved output of the project
+pipeline; the source file of each result table is named in its caption, and the
+correspondence with the project's table identifiers is given in
+Table~\ref{tab:provenance}. The figures are the vector graphics produced by the
+project's figure scripts. No model was refitted for this report.
+\par\endgroup
+\clearpage

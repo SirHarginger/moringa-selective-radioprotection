@@ -1,0 +1,33 @@
+# Triage figures from the publication triage tables (make_publication_tables.py --part
+# triage first). Exploratory, hypothesis-generating. D04.07.
+tables_dir: results/tables/primary_v1
+output_dir: figures/generated
+version: 2
+dpi: 600
+formats: [pdf, svg, png]
+figures:
+  - id: fig_s07
+    slug: gene_set_ranking
+    kind: gene_set_ranking
+    inputs: {table_s2: publication_triage_v1/table_s2_gene_set_ranking.csv}
+    caption: >
+      Exploratory ranking of the 50 Hallmark gene-set scores in the tissue + expression
+      model (M2). Point: mean grouped permutation importance on held-out rows (increase
+      in component-weighted MAE when the score is permuted across components), over all
+      cross-validation fits; bar: SD across fits (split variability, not a confidence
+      interval); right: share of fits with positive importance. Colour: prespecified
+      triage tier. Tiers A and B were unreachable because no prediction gain was formally
+      shown and no negative-control draws were run; all rankings are exploratory and are
+      not validated biomarkers or radiation-response mechanisms.
+  - id: fig_s08
+    slug: discrepancy_errors
+    kind: discrepancy_errors
+    inputs: {table_s3: publication_triage_v1/table_s3_discrepancy_review.csv}
+    options: {top: 25}
+    caption: >
+      Cell lines with the largest held-out discrepancies (triage tiers A-C, up to 25
+      lines): absolute error of the repeat-averaged out-of-fold prediction under M1 and
+      M2. Open markers: technical review first (stranded RNA, related lines, identity
+      flags, small tissue group, unstable or disagreeing predictions). Measured CLARIFi
+      lines are not independent validation samples; large residuals are review signals,
+      not evidence of unusual radiobiology, and tend to shrink on re-measurement.

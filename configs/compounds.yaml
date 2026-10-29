@@ -1,0 +1,18 @@
+# Moringa compound-evidence curation and candidate prioritisation.
+# Literature-based only: no model is fitted, tuned or queried (scripts/make_compound_tables.py).
+# Write-once: bump `version` to regenerate. Scoring rules: docs/compound_protocol.md.
+run_id: primary_v1
+version: 1
+tables_root: results/tables   # writes <tables_root>/<run_id>/compounds_v<N>/
+
+# Curated evidence (every assertion carries its own source, DOI and verification route)
+constituents: data/compounds/moringa_constituents.yaml
+evidence: data/compounds/compound_biology_evidence.yaml
+
+# Optional pathway-overlap table (table_c4): genes a published experiment measured,
+# intersected with the members of gene sets the exploratory triage ranked. The tiers below
+# are the triage's own tiers; with the descriptive-only primary result no gene set exceeds
+# tier C, so in practice only tier C contributes.
+gene_sets_gmt: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
+pathway_candidates: results/triage/primary_v1/pathway_candidates.csv
+overlap_tiers: [A, B, C]

@@ -1,0 +1,54 @@
+\chapter{Recommendations for experimental validation}\label{ch:recommendations}
+
+The following priorities are proposals; none has been carried out. They are ordered so that
+each removes an uncertainty on which the next depends.
+
+\paragraph{Priority 1 --- close the chemistry gap.} Characterise the \emph{original}
+dichloromethane seed and leaf extracts by LC-MS/MS and GC-MS against authentic standards,
+using the published validated UPLC-MS/MS method for niazimicin \parencite{abdelsayed2021jfda}
+as a positive control. Until this is done, no compound-level interpretation of the original
+result is possible. Yields and concentrations should be reported as measured, never inferred.
+
+\paragraph{Priority 2 --- resolve identities.} Confirm the structures and public identifiers of
+the shortlisted compounds, settle the glucomoringin stereochemistry, obtain the paywalled
+full texts and recover the missing radiation doses and concentrations. Re-verify the
+retraction status of the flagged journal and read the outstanding erratum.
+
+\paragraph{Priority 3 --- complete the deferred statistical validation.} Run the coverage
+simulation to choose and justify an interval method, re-assess the primary comparison with
+the adopted method, and run at least 1,000 draws of each negative control (permuted outcome
+and random gene sets). Only then can superiority be assessed, gene-set attribution be
+permitted or any pathway exceed tier~C. The infrastructure for all of this is in place.
+
+\paragraph{Priority 4 --- test purified compounds against whole extracts on the right
+endpoint.} Use multi-dose \textbf{clonogenic survival} assays (not 72-hour biomass) with and
+without compound or extract, yielding linear-quadratic parameters,
+\begin{equation}
+  \mathrm{SF}(D) = \exp\bigl(-\alpha D-\beta D^{2}\bigr),
+  \label{eq:lq}
+\end{equation}
+where $\alpha$ and $\beta$ here denote the linear and quadratic radiobiological coefficients,
+and a dose-modifying factor for each treatment. Include vehicle-only and cell-free
+interference controls, which the original study did not describe, and independent biological
+repeats on separate days and passages, since the original replicates were technical wells and
+dose was confounded with plate.
+
+\paragraph{Priority 5 --- make the normal-versus-tumour comparison interpretable.} Use
+species-matched and tissue-matched normal and tumour pairs assayed identically, so that
+species, tissue and malignancy are not confounded as they were when one hamster fibroblast
+line was compared with two human carcinoma lines. A selectivity claim requires treated normal
+\emph{and} treated tumour measurements on the same endpoint. The best published model of how
+such a claim should be worded is the quercetin study of \textcite{horton2013}, which reports
+normal-tissue anti-fibrotic protection with \emph{no} effect on fibroblast or murine tumour
+radioresponse.
+
+\paragraph{Priority 6 --- test the prioritised pathways directly, if Priority 3 succeeds.}
+Perturb the implicated processes (for example p53-pathway activity) in a small panel of cell
+lines spanning the predicted range, and measure clonogenic survival. This is hypothesis
+testing of a model-derived conjecture, not confirmation.
+
+\paragraph{Priority 7 --- strengthen the benchmark.} Seek a second, independent
+radiosensitivity source for cross-assay evaluation, reported as heterogeneity rather than
+pooled. Consider prospective prediction on unassayed lines under a panel-selection rule
+written into the protocol \emph{before} predictions are viewed, reported as a designed
+validation panel rather than an unbiased external cohort.

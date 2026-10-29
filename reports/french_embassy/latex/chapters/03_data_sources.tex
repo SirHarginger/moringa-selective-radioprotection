@@ -1,0 +1,51 @@
+\chapter{Data sources and resources}\label{ch:data}
+
+The resources used by the project are listed in Table~\ref{tab:resources}. Every raw file
+carries a manifest recording its source, DOI, URL, access date, retrieval method, SHA-256
+checksum, size, column meanings, units, endpoint definition and transformations; the data
+loaders verify the checksum and stop on any mismatch. The outcome file, the expression
+matrix, the Hallmark gene-set file and the quality-control outputs were all verified
+against their pinned checksums before the analysis run.
+
+\begin{table}[tbp]
+  \caption{Data resources, releases, identifiers and licences.}\label{tab:resources}
+  \footnotesize
+  \begin{tabular}{@{}L{0.17\linewidth}L{0.13\linewidth}L{0.27\linewidth}L{0.15\linewidth}L{0.20\linewidth}@{}}
+    \toprule
+    \thead{Resource} & \thead{Release} & \thead{Identifier} & \thead{Licence}
+      & \thead{Role in the project} \\
+    \midrule
+    Original \textit{Moringa} manuscript & Unpublished scan, 8 pages
+      & SHA-256 \path{7f644f55…e870fb9} & Redistribution not authorised
+      & Biological motivation only \\
+    CLARIFi radiosensitivity & v1.0
+      & Data \doilink{10.5281/zenodo.20710748}; paper \doilink{10.1111/cas.16334}
+      & CC BY-NC 4.0 & Outcome: mSF2 \\
+    DepMap & 24Q4 Public & \doilink{10.25452/figshare.plus.27993248.v1} & CC BY 4.0
+      & Baseline expression; cell-line metadata \\
+    Cellosaurus & r56.0 & \doilink{10.26037/yareta:lbz6rhlaavbldmavv4k5jdaphe}
+      & CC BY 4.0 & Identity, problem flags, relatedness \\
+    MSigDB Hallmark & 2025.1.Hs & Paper \doilink{10.1016/j.cels.2015.12.004}
+      & MSigDB terms & 50 pathway features \\
+    PubChem, Europe PMC, Crossref & Accessed 22 Oct 2026 & \na & Public interfaces
+      & Compound identity; literature verification \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\paragraph{Licensing and provenance caveats.}
+\begin{itemize}
+  \item \textbf{CLARIFi is licensed CC BY-NC 4.0} (non-commercial), as confirmed from both
+    the Crossref licence record and the Europe PMC full text. The raw file is kept outside
+    version control, the data DOI and the licence must be cited in any publication, and the
+    non-commercial terms constrain downstream reuse.
+  \item The \textbf{Hallmark gene-set file} was downloaded manually, so no acquisition log
+    or published checksum exists for it. Its content was verified locally (48,689 bytes,
+    50 unique \texttt{HALLMARK\_} sets, standard layout, SHA-256 \path{f22066af…cbbdd8e9}),
+    but its identity with the official release has not yet been confirmed against the
+    official download address.
+  \item The \textbf{original manuscript may not be redistributed}; only its checksum and
+    the page-by-page extraction record are kept.
+  \item Compound curation used public databases and published literature only; no licensed
+    chemical database was queried.
+\end{itemize}

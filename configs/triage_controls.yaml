@@ -1,0 +1,33 @@
+# Triage of the NEGATIVE-CONTROL run (D05.06). Byte-identical to configs/triage.yaml
+# except `experiment_config`, which points this triage at controls_v1 instead of
+# primary_v1. Every threshold is the one frozen at the protocol freeze; none was changed
+# for this run, and none may be changed to move a gene set into a higher tier.
+#
+# WHY TRIAGE THIS RUN. With 1000 completed draws of each null, the gene-set tests in
+# controls_v1 carry real p-values and BH decisions, where primary_v1's are empty. The
+# `min_null_draws` requirement below is therefore met for the first time. The OTHER half
+# of the tier A/B gate -- a formally shown prediction gain -- is still not met, because no
+# interval method has been validated for this design, so tiers remain capped at C unless
+# the investigator first records a protocol amendment (docs/robustness_plan.md section 2).
+# Run this triage to obtain the null-referenced evidence, not to raise a tier.
+#
+# primary_v1's own triage output (results/triage/primary_v1/) is untouched: this run writes
+# to results/triage/controls_v1/.
+schema_version: 1
+experiment_config: configs/experiment_controls.yaml
+tables_root: results/tables
+output_dir: results/triage
+external_evidence: null
+
+pathway:
+  strong: 0.90
+  moderate: 0.75
+  exploratory: 0.50
+  max_share_zero: 0.50
+  correlation_flag: 0.80
+  min_null_draws: 1000
+
+cell_lines:
+  min_repeats: 10
+  high_percentile: 0.95
+  flag_percentile: 0.90

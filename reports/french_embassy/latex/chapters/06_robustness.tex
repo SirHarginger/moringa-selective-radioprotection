@@ -1,0 +1,182 @@
+\chapter{Robustness and tissue-generalisation analyses}\label{ch:robustness}
+
+The results of Chapter~\ref{ch:results} come from the frozen primary benchmark. A separate
+and clearly labelled layer of analyses tests how durable its small advantage is, without
+altering it (Table~\ref{tab:robustness}). Three of the four planned analyses were executed;
+the negative controls were configured but not run.
+
+\begin{table}[tbp]
+  \caption{The exploratory and robustness layer: questions, runs and execution status.}
+  \label{tab:robustness}
+  \footnotesize
+  \begin{tabular}{@{}L{0.20\linewidth}L{0.41\linewidth}L{0.13\linewidth}L{0.19\linewidth}@{}}
+    \toprule
+    \thead{Analysis} & \thead{Question} & \thead{Run} & \thead{Status} \\
+    \midrule
+    Random forest M3 & Does a different model family extract more signal from the same
+      features and splits? & \path{exploratory_m3_v1} & Completed, 200/200 tasks \\
+    Leave-one-tissue-out & Does an expression-only model transfer to a tissue it has never
+      seen? & \path{loto_v1} & Completed, 18/18 tasks \\
+    Outcome-scale sensitivity & Does the advantage survive the neglog and logit scales, or
+      is it a raw-scale artefact? & \path{scales_v1} & Completed, 400/400 tasks \\
+    Negative controls (1,000 draws of each null) & Is the advantage larger than the pipeline
+      produces when expression cannot carry signal? Are any gene sets more important than
+      matched random sets? & \path{controls_v1}
+      & Configured, about 10--20~h at six workers; \textbf{not executed} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{A different model family does not do better}\label{sec:m3}
+
+The random forest M3, fitted on the same splits with the same nested tuning, reached MAE
+0.13148 and out-of-sample $R^2$ $+0.00643$, against 0.13040 and $+0.00935$ for M2
+(Table~\ref{tab:r1}). Its gain over the tissue-only baseline, $\Delta\mathrm{MAE}=0.00275$,
+is \textbf{smaller} than the 0.00383 of M2. \textbf{M3 therefore performs worse than M2, and
+that is the result reported.} Within the same run, M0, M1 and M2 reproduced the primary run
+to the last decimal place, which also confirms that the frozen benchmark is reproducible.
+
+\begin{table}[tbp]
+  \caption[Exploratory model comparison including the random forest M3]{Exploratory model
+    comparison including the random forest M3, on the raw mSF2 scale (MAE and RMSE in mSF2
+    units). M0, M1 and M2 reproduce Table~\ref{tab:performance}. Source:
+    \path{results/tables/exploratory_m3_v1/model_metrics.csv}; the paired differences
+    quoted in the text are from \path{comparisons.csv} in the same folder.}
+  \label{tab:r1}
+  \small
+  \begin{tabular}{@{}l S[table-format=1.6] S[table-format=1.6] S[table-format=-1.6]
+      S[table-format=-1.2] S[table-format=1.2]@{}}
+    \toprule
+    \thead{Model} & {\thead{MAE}} & {\thead{RMSE}} & {\thead{$R^2_{\mathrm{oos}}$}}
+      & {\thead{Calibration slope}} & {\thead{Calibration intercept}} \\
+    \midrule
+    M0 & 0.133624 & 0.170755 & -0.009497 & -4.00 & 2.92 \\
+    M1 & 0.134228 & 0.171494 & -0.018275 & -1.21 & 1.29 \\
+    M2 & 0.130397 & 0.169115 & 0.009347 & 0.65 & 0.21 \\
+    M3 & 0.131480 & 0.169394 & 0.006434 & 0.55 & 0.26 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Transfer to an unseen tissue is weak and conditional}\label{sec:loto}
+
+Holding out each of the nine well-supported tissues in turn (185 components, 187 records),
+the expression-only model M2X reached MAE 0.12267 and out-of-sample $R^2$ \textbf{+0.0308},
+against 0.12753 and $-0.0084$ for the global mean ($\Delta\mathrm{MAE}=0.00487$ mSF2 units).
+This is the only analysis in the project in which out-of-sample $R^2$ is clearly above zero.
+It is, however, a different and easier comparison than the primary one --- expression alone
+against a global mean, with tissue removed from both sides --- so it is not comparable with
+the primary 0.00383 and does not revise it.
+
+The pooled figure conceals an uneven picture (Table~\ref{tab:r2}). The gain is largest when
+Ovary/Fallopian Tube ($+0.0156$) or Head and Neck ($+0.0153$) is held out, followed by
+Breast ($+0.0119$), Bowel ($+0.0092$), Bladder/Urinary Tract ($+0.0079$), Lung ($+0.0049$)
+and CNS/Brain ($+0.0025$). It is \textbf{negative for two tissues, Pancreas ($-0.0142$) and
+Esophagus/Stomach ($-0.0030$)}, where the expression-only model predicted worse than the
+global mean. The Pancreas loss is nearly three times the pooled gain, and Pancreas is also
+the one well-supported tissue in which M2 was worse than M1 in the primary benchmark
+(Table~\ref{tab:tissue}). Transfer of expression information to an unseen tissue is
+therefore conditional on the tissue, and the tissue-level results, not only the pooled
+gain, belong in any statement about generalisation.
+
+\begin{table}[tbp]
+  \caption[Leave-one-tissue-out performance by held-out tissue]{Leave-one-tissue-out
+    performance of the expression-only model M2X by held-out tissue. $\Delta$MAE is
+    MAE(global mean)$\,-\,$MAE(M2X) in mSF2 units, so positive values favour expression;
+    the Spearman correlation is that of M2X within the held-out tissue. The pooled row is
+    from \path{comparisons.csv} and \path{model_metrics.csv} of the same run. Source:
+    \path{results/tables/loto_v1/held_out_tissue.csv}.}
+  \label{tab:r2}
+  \small
+  \begin{tabular}{@{}l S[table-format=3.0] S[table-format=-1.4] S[table-format=-1.4]
+      S[table-format=-1.3]@{}}
+    \toprule
+    \thead{Held-out tissue} & {\thead{Components}} & {\thead{$\Delta$MAE}}
+      & {\thead{Mean prediction shift}} & {\thead{Spearman $\rho$}} \\
+    \midrule
+    Bladder/Urinary Tract & 11 & 0.0079 & -0.0425 & 0.327 \\
+    Bowel & 21 & 0.0092 & 0.0096 & 0.231 \\
+    Breast & 17 & 0.0119 & 0.0290 & 0.324 \\
+    CNS/Brain & 23 & 0.0025 & 0.0735 & 0.359 \\
+    Esophagus/Stomach & 23 & \bfseries -0.0030 & 0.0273 & -0.124 \\
+    Head and Neck & 18 & 0.0153 & -0.0284 & 0.187 \\
+    Lung & 46 & 0.0049 & -0.0221 & 0.178 \\
+    Ovary/Fallopian Tube & 10 & 0.0156 & -0.0452 & 0.576 \\
+    Pancreas & 16 & \bfseries -0.0142 & 0.0115 & -0.062 \\
+    \midrule
+    Pooled (nine tissues) & 185 & 0.0049 & {\na} & {\na} \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{The advantage depends on the outcome scale}\label{sec:scales}
+
+The most important negative finding of the robustness layer concerns the outcome scale.
+Repeating the M2-versus-M1 comparison with 20 repeats on two transformed scales gave
+$\Delta\mathrm{MAE}=0.00023$ on the neglog scale --- essentially nothing, with the
+out-of-sample $R^2$ of M2 falling to $-0.0322$ --- and 0.00980 on the logit scale
+(Table~\ref{tab:r3}). The direction favours M2 on all three scales. The magnitudes, however,
+are expressed in the units of each transformed scale, not in mSF2, so they cannot be
+compared directly with the raw-scale 0.00383; each must be read against the baseline error
+on its own scale, which is also given in the table. On the neglog scale the advantage is
+negligible; on the logit scale the out-of-sample $R^2$ of M2 is slightly positive (0.0045)
+while that of M1 is negative. The raw scale
+remains the protocol's prespecified primary scale, and these results are reported beside it
+rather than replacing it. Together they mean that the primary estimate should be read as
+\textbf{small, consistent in direction and sensitive to how the outcome is expressed}.
+
+\begin{table}[tbp]
+  \caption[Outcome-scale sensitivity of the primary comparison]{Outcome-scale sensitivity of
+    the primary comparison (M2 against M1). $\Delta$MAE and MAE are in the units of each
+    scale and are not comparable across scales. The raw row is the primary run (10 repeats);
+    the transformed scales used 20 repeats on the same 237 components and 241 records.
+    Descriptive only; no confirmatory method was adopted. Sources:
+    \path{results/tables/scales_v1/comparisons.csv} and \path{model_metrics.csv};
+    raw scale from Table~\ref{tab:performance}.}
+  \label{tab:r3}
+  \small
+  \begin{tabular}{@{}l S[table-format=1.5] S[table-format=1.5] S[table-format=2.0]
+      S[table-format=1.4] S[table-format=-1.4] S[table-format=-1.4]@{}}
+    \toprule
+    \thead{Scale} & {\thead{$\Delta$MAE}} & {\thead{Record-weighted}} & {\thead{Repeats}}
+      & {\thead{MAE M1}} & {\thead{$R^2_{\mathrm{oos}}$ M1}} & {\thead{$R^2_{\mathrm{oos}}$ M2}} \\
+    \midrule
+    raw (primary) & 0.00383 & 0.00382 & 10 & 0.1342 & -0.0183 & 0.0093 \\
+    neglog & 0.00023 & 0.00017 & 20 & 0.2596 & -0.0164 & -0.0322 \\
+    logit & 0.00980 & 0.00957 & 20 & 0.6398 & -0.0142 & 0.0045 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{Rules governing the exploratory layer}\label{sec:rules}
+
+Four rules keep this layer separate from the primary benchmark.
+
+\paragraph{It cannot promote a new primary model.} M3 was configured \emph{after} the
+primary results were seen, so M2 remains the primary benchmark whatever M3 scores. In the
+event M3 scored worse, which is the expected outcome for a tree ensemble on 237 components
+and 50 coarse features and suggests that the ceiling is set by the data rather than by the
+model family.
+
+\paragraph{Consistency with the frozen run is verified mechanically.} A dedicated check
+confirms that an exploratory run covers the same 241 records and 237 components; that no
+biological component straddles a training and test fold or two inner folds; that the split
+table and its checksum are identical to those of the primary run; that the input
+checksums, base seed and fold counts match; that tuning is nested; that models shared with
+the primary run reproduce its predictions exactly; and that the primary run's own files
+still match their recorded checksums.
+
+\paragraph{Negative controls would not by themselves create inference.} With 1,000 draws,
+the gene-set $p$-values that are currently empty would become available, and the observed
+$\Delta\mathrm{MAE}$ could be placed descriptively against a permuted-outcome null. Tiers A
+and B would stay closed, because that gate also requires a formally demonstrated prediction
+gain, which needs the interval method that the deferred coverage simulation was designed to
+validate. A permutation test would be a legitimate alternative route, but adopting it
+requires a protocol amendment recorded \emph{before} the null distribution is inspected;
+written afterwards, it would be a post-hoc test chosen in sight of the result and would have
+to be reported as such.
+
+\paragraph{The within-tissue correlation artefact is avoided.} None of these analyses
+reports the pooled within-tissue rank correlation produced by the first version of that
+table; the corrected statistic is undefined wherever a model predicts a constant within a
+tissue (Section~\ref{sec:correction}).

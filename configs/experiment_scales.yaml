@@ -13,7 +13,7 @@ inputs:
   clarifi_manifest: data/manifests/clarifi__v1_0.yaml
   expression: data/raw/depmap/24q4/OmicsExpressionProteinCodingGenesTPMLogp1.csv
   gene_sets: data/raw/msigdb/2025.1.Hs/h.all.v2025.1.Hs.symbols.gmt
-  gene_sets_sha256: null
+  gene_sets_sha256: f22066af72e215ccb7b89d88e492c07e1eef17534c2ca7b0f9902cfecbbdd8e9
 population: primary
 population_options:
   min_components_per_tissue: 10

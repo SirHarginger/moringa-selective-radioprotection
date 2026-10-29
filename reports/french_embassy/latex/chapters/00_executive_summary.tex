@@ -1,0 +1,87 @@
+\addchap{Executive summary}\label{ch:summary}
+
+\paragraph{Research motivation.}
+An experimental study of crude dichloromethane (DCM) seed and leaf extracts of
+\textit{Moringa oleifera} Lam.\ observed that the extracts changed how irradiated cells
+proliferated, and that the change differed between an apparently normal rodent fibroblast
+line (V79) and two human carcinoma lines (DU145 and MCF-7). A three-line experiment cannot
+say whether such differences reflect the cells' \emph{intrinsic} radiation response, nor
+whether measurable molecular features explain it. This project asked that broader question
+on a defensible endpoint and with public data, and then returned to the plant to ask which
+of its documented constituents deserve experimental testing.
+
+\paragraph{Computational question.}
+Does baseline gene expression, summarised as 50 Hallmark pathway scores, predict
+experimentally measured clonogenic radiosensitivity across cancer cell lines better than
+prespecified simple baselines, once related cell lines are kept together and tissue of
+origin is already taken into account?
+
+\paragraph{Data and design.}
+We assembled 241 eligible cell-line records, forming 237 independent biological components,
+by linking literature-derived clonogenic surviving fractions at 2~Gy (CLARIFi mSF2) to
+baseline expression (DepMap 24Q4). Cell-line identity and relatedness were resolved through
+Cellosaurus, and pathway features were computed from the MSigDB Hallmark gene sets. Five
+prespecified models, from a global mean to tissue, proliferation and expression together,
+were compared under ten repeats of five-fold cross-validation grouped by biological
+component and stratified by tissue, with every tuning and scaling step confined to training
+folds. All 250 model-fold tasks completed.
+
+\paragraph{Principal findings.}
+Adding expression features to a tissue-only baseline reduced the mean absolute error (MAE)
+by \textbf{0.00383 mSF2 units, 2.85\% of the baseline error}, and the richer model had the
+lower error in \textbf{nine of ten} cross-validation repeats. Out-of-sample $R^2$ stayed
+close to zero for every model ($-0.018$ to $+0.013$). Expression therefore carries a small
+amount of usable information beyond tissue of origin, while overall predictive power is
+weak --- a result that agrees with the strongest published benchmark in the field.
+Superiority was not formally tested: a protocol deviation, recorded before any result was
+seen, deferred the coverage simulation needed to validate an interval method, and no
+negative-control draws were run. The improvement is reported as a descriptive estimate.
+
+\paragraph{Robustness and generalisation.}
+Three further analyses of the same frozen cohort tested how durable this small advantage
+is. A random forest (M3) did \textbf{worse} than the linear offset model (gain over the
+tissue baseline 0.00275 against 0.00383). On transformed outcome scales the advantage kept
+its direction but almost vanished on the neglog scale (0.00023 in neglog units) and was
+larger in absolute terms on the logit scale (0.00980 in logit units), so its size depends on
+how the outcome is expressed. When one tissue at a time was held out, an expression-only model
+reached out-of-sample $R^2$ of \textbf{+0.031} against a global mean, the only clearly
+positive $R^2$ in the project; it nevertheless lost to the global mean when Pancreas
+($-0.0142$) or Esophagus/Stomach ($-0.0030$) was held out, so transfer to an unseen tissue
+is conditional on the tissue.
+
+\paragraph{Explainability.}
+Held-out permutation importance ranked the 50 Hallmark scores. Seven reached the
+prespecified exploratory tier~C, led by the p53 pathway; the higher tiers were unreachable
+by design, because they require a formally demonstrated prediction gain and at least 1,000
+negative-control draws. Importance magnitudes are as small as the predictive gain itself,
+rankings are only moderately stable across fits, and the DNA repair, G2M checkpoint and
+hypoxia sets that radiobiology would lead one to expect were not prioritised.
+
+\paragraph{Compound prioritisation.}
+\textit{M.~oleifera} seed and leaf constituents were curated from primary analytical
+studies, with the extraction solvent of every report recorded, and linked to
+radiation-response biology through a four-dimension score of 0--8 points fixed before any
+score was computed. Eighteen compounds were ranked and five reached tier~A. The curation
+exposed the central mismatch of the project: \textbf{niazimicin is the only constituent
+with a structurally confirmed identification in a dichloromethane fraction of both seed
+and leaf, yet no study has tested the purified compound in any radiation-response process;
+conversely, the compounds with the strongest radiation evidence have never been found in a
+dichloromethane extract.} Two prespecified safeguards visibly bound: chlorogenic acid scored
+7 of 8 but is held at tier~C because one study reports that it protects \emph{tumour} cells
+from radiation, and benzyl isothiocyanate is excluded despite strong radiation evidence
+because it is a root, not a seed or leaf, constituent. A tier summarises the state of the
+published evidence; it never asserts radioprotection.
+
+\paragraph{Significance.}
+The project delivers a reproducible, auditable pipeline, an honest benchmark whose
+negative-leaning result agrees with the best prior work, and a traceable route from the
+original radiobiology to a short list of experiments that could settle the question. Its
+value lies in the rigour of its methods and the transparency of its evidence rather than in
+a strong performance claim.
+
+\begin{keybox}[title={Recommended next steps.}]
+Characterise the original DCM extracts analytically (niazimicin and moringin first);
+complete the deferred coverage simulation and the negative controls; and test
+$\alpha$-tocopherol and $\beta$-sitosterol, purified and against whole extract, on
+clonogenic survival in matched normal and tumour cells over a dose range.
+\end{keybox}

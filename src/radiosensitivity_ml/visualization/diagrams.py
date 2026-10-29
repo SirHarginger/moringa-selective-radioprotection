@@ -88,6 +88,10 @@ def canvas(width_mm: float, height_mm: float) -> tuple[plt.Figure, plt.Axes]:
     ax = fig.add_axes((0, 0, 1, 1))
     ax.set_xlim(0, width_mm)
     ax.set_ylim(0, height_mm)
+    # A diagram is a drawing, not a plot: clear the tick locators as well as hiding the
+    # frame, so no tick marks or numeric tick labels can survive on the millimetre axes.
+    ax.set_xticks([])
+    ax.set_yticks([])
     ax.axis("off")
     fig.diagram_boxes = []  # type: ignore[attr-defined]
     return fig, ax
@@ -236,8 +240,8 @@ def study_workflow() -> plt.Figure:
             11,
             "process",
             [
-                "Coverage simulation on synthetic outcomes (real structure)",
-                "adopts the interval method and the number of CV repeats",
+                "Coverage simulation DEFERRED (deadline deviation D04.06)",
+                "descriptive-only inference; R = 10 CV repeats set by the investigator",
             ],
         ),
         (
@@ -503,7 +507,67 @@ def validation_pathway() -> plt.Figure:
     return fig
 
 
+# ------------------------------------------------------- report fig_01 (version 3)
+
+PROJECT_LEGEND = {
+    "source": "Data source",
+    "process": "Computation",
+    "secondary": "Literature curation",
+    "deferred": "Proposed work",
+}
+# Short factual descriptors only (<= 40 characters per line, as the report-figure contract
+# requires). Caveats, limitations and interpretation belong in the caption, never here.
+PROJECT_STAGES = (
+    ("1 · Original Moringa\nradiobiology study", "source",
+     "DCM seed and leaf extracts\nV79, DU145, MCF-7; 0 and 2 Gy\nCrystal-violet proliferation"),
+    ("2 · Public radiogenomic\ndata integration", "source",
+     "CLARIFi clonogenic SF2 at 2 Gy\nDepMap expression; Cellosaurus\nMSigDB Hallmark: 50 scores"),
+    ("3 · Explainable ML\nbenchmark", "process",
+     ("Tissue baseline vs + expression\nNested CV grouped by related lines\n"
+      "Five models, M0 to M2P")),
+    ("4 · Pathway and\ncell-line triage", "process",
+     "Importance on held-out rows\nCell-line discrepancy review\nPrespecified, capped tiers"),
+    ("5 · Moringa compound\nprioritisation", "secondary",
+     "Seed and leaf constituents\nExtract evidence kept separate\nFour dimensions, 0 to 8 points"),
+    ("6 · Proposed experimental\nvalidation", "deferred",
+     ("Profile the original extracts\nPurified compounds, clonogenic\n"
+      "Matched normal and tumour cells")),
+)  # fmt: skip
+
+
+def project_workflow() -> plt.Figure:
+    """Integrated project workflow for the report (conceptual; no data or results).
+
+    No title is drawn: the caption lives in the report. Box fills encode the kind of step
+    (data source, computation, literature curation, proposed work), not completion status.
+    """
+    width, height = 160, 152
+    fig, ax = canvas(width, height)
+    x, legend_y = 4.0, 145.0
+    for kind, label in PROJECT_LEGEND.items():
+        style = STYLES[kind]
+        ax.add_patch(
+            FancyBboxPatch(
+                (x, legend_y), 6, 3.5, boxstyle="round,pad=0,rounding_size=0.8",
+                facecolor=style.face, edgecolor=style.edge, linestyle=style.linestyle,
+                linewidth=style.linewidth,
+            )
+        )  # fmt: skip
+        ax.text(x + 7.5, legend_y + 1.75, label, fontsize=TEXT_PT, ha="left", va="center")
+        x += 7.5 + 1.75 * len(label) + 3
+    stages: list[Box] = []
+    for i, (stage, kind, detail) in enumerate(PROJECT_STAGES):
+        y = 121 - 23 * i
+        stages.append(box(ax, 4, y, 50, 17, stage, kind))
+        box(ax, 60, y, 96, 17, detail, "note", align="left")
+        ax.plot([54, 60], [y + 8.5, y + 8.5], color="#999999", lw=0.6)
+    for upper, lower in pairwise(stages):
+        down(ax, upper, lower, dashed=lower is stages[-1])
+    return fig
+
+
 DIAGRAMS = {
+    "project_workflow": project_workflow,
     "study_workflow": study_workflow,
     "triage_decision": triage_decision,
     "triage_evidence": triage_evidence,
